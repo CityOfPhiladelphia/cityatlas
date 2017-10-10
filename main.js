@@ -132,7 +132,7 @@ Mapboard.default({
     enabled: true
   },
   geolocation: {
-    enabled: true
+    enabled: false
   },
   rootStyle: {
     position: 'absolute',
