@@ -35,6 +35,77 @@
     })(window,document,'script','dataLayer','GTM-MC6CR2');</script>
     <!-- End Google Tag Manager -->
 
+    <!-- TEMP cityatlas modal -->
+    <style>
+      /* The Modal (background) */
+      .modal {
+          position: fixed; /* Stay in place */
+          z-index: 5000; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          display: none;
+      }
+      /* Modal Content/Box */
+      .modal-content {
+          background-color: #fefefe;
+          margin: 15% auto; /* 15% from the top and centered */
+          padding: 20px;
+          border: 1px solid #888;
+          width: 30%; /* Could be more or less, depending on screen size */
+          border-radius: 5px;
+      }
+      .modal-content p {
+          font-size: 14px;
+          padding-bottom: 14px;
+      }
+      .modal-content h1 {
+          font-size: 24px;
+          text-align: center;
+          padding-bottom: 14px;
+      }
+      .modal-content h2 {
+          font-size: 18px;
+          text-align: center;
+          padding-bottom: 14px;
+      }
+      #button-container {
+          text-align: right;
+      }
+      .modal-button {
+          padding: 5px;
+      }
+      .modal-button-yes {
+        margin-bottom: 0;
+      }
+    </style>
+    <div class="modal">
+      <div class="modal-content">
+        <h1>Hello!</h1>
+        <!--<h2>Parcel Explorer will be down from 5pm on 6/21 to 5pm on 6/22 for an urgent upgrade.</h2>
+        <br><br>-->
+        <p>The Atlas you've been using is now called <strong>CityAtlas</strong>, and we've
+        moved it to a new location: <a href="http://cityatlas.phila.gov/">
+        cityatlas.phila.gov</a>. Please update your bookmarks to use this new address.
+        We've redirected you automatically, but please note that the old address will stop working on <strong>Friday, November 3</strong>.
+        </p>
+        <p>CityAtlas is a special version of Atlas that was designed for City staff and is only accessible from City computers.
+        We're working on a separate version that will be available to the public&mdash;stay tuned for more updates.
+      </p>
+
+        <div id="button-container">
+    	<!-- <a class="modal-button modal-button-yes" href="http://atlas.phila.gov/#/1234 MARKET ST/deeds">OK</a> -->
+    	   <button class="button modal-button-yes">OK, got it!</button>
+    	<!-- <a class="modal-button modal-button-no" href="#">No, I'll continue using Parcel Explorer this time</a> -->
+        </div>
+      </div>
+    </div>
+    <!-- END cityatlas modal. but don't forget there's some javascript below -->
+
     <div class="full" id="application">
       <!-- demo alert -->
       <div id="alpha-alert">
@@ -109,5 +180,25 @@
     <script src="//unpkg.com/@cityofphiladelphia/mapboard@1.0.24/dist/build.js"></script>
 
     <script src="main.js"></script>
+
+    <!-- TEMP: cityatlas modal -->
+    <script>
+      // on document ready
+      $(function () {
+        var $modal = $('.modal'),
+            LOCAL_STORAGE_KEY = 'didConfirmCityAtlasRedirect';
+
+        // set ok button callback
+        $('.modal-button-yes').click(function (e) {
+          $modal.hide();
+          localStorage.setItem(LOCAL_STORAGE_KEY, true);
+        });
+
+        // only show modal if they've never seen it before
+        if (!localStorage.getItem(LOCAL_STORAGE_KEY)) {
+          $modal.show();
+        }
+      });
+    </script>
   </body>
 </html>
