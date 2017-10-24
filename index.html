@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Atlas | phila.gov</title>
+    <title>CityAtlas | phila.gov</title>
     <link rel='icon' type='image/x-icon' href="//cityofphiladelphia.github.io/patterns/images/favicon.ico">
     <meta name="description" content="">
 
@@ -35,23 +35,90 @@
     })(window,document,'script','dataLayer','GTM-MC6CR2');</script>
     <!-- End Google Tag Manager -->
 
+    <!-- TEMP cityatlas modal -->
+    <style>
+      /* The Modal (background) */
+      .modal {
+          position: fixed; /* Stay in place */
+          z-index: 5000; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          display: none;
+      }
+      /* Modal Content/Box */
+      .modal-content {
+          background-color: #fefefe;
+          margin: 15% auto; /* 15% from the top and centered */
+          padding: 20px;
+          border: 1px solid #888;
+          width: 30%; /* Could be more or less, depending on screen size */
+          border-radius: 5px;
+      }
+      .modal-content p {
+          font-size: 14px;
+          padding-bottom: 14px;
+      }
+      .modal-content h1 {
+          font-size: 24px;
+          text-align: center;
+          padding-bottom: 14px;
+      }
+      .modal-content h2 {
+          font-size: 18px;
+          text-align: center;
+          padding-bottom: 14px;
+      }
+      #button-container {
+          text-align: right;
+      }
+      .modal-button {
+          padding: 5px;
+      }
+      .modal-button-yes {
+        margin-bottom: 0;
+      }
+    </style>
+    <div class="modal">
+      <div class="modal-content">
+        <h1>Welcome to CityAtlas!</h1>
+
+        <p>
+          This internal version of Atlas has been renamed to <strong>CityAtlas
+          </strong> with a new address: <a href="http://cityatlas.phila.gov">
+          cityatlas.phila.gov</a>. Please update your bookmarks to use this new site.
+        </p>
+
+        <p>
+          A public version of Atlas using <a href="http://atlas.phila.gov">
+          atlas.phila.gov</a> will be released on <strong>
+          November 14</strong>,
+          which omits some of the sensitive information shown in CityAtlas.
+          A redirect from atlas.phila.gov to cityatlas.phila.gov will be in place
+          for City users through <strong>November 3</strong>.
+        </p>
+
+        <p>Please send us your <a href="http://philagsg.typeform.com/to/v0xlIR" class="external">feedback</a> if you have any questions or see something that could be better.</p>
+
+        <div id="button-container">
+    	<!-- <a class="modal-button modal-button-yes" href="http://atlas.phila.gov/#/1234 MARKET ST/deeds">OK</a> -->
+    	   <button class="button modal-button-yes">OK, got it!</button>
+    	<!-- <a class="modal-button modal-button-no" href="#">No, I'll continue using Parcel Explorer this time</a> -->
+        </div>
+      </div>
+    </div>
+    <!-- END cityatlas modal. but don't forget there's some javascript below -->
+
     <div class="full" id="application">
-
-      <!-- <div class="reveal" id="exampleModal1" data-reveal>
-        <h1>Awesome. I Have It.</h1>
-        <p class="lead">Your couch. It is mine.</p>
-        <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div> -->
-
       <!-- demo alert -->
       <div id="alpha-alert">
           <div class="row">
               <div class="large-16 columns">
                   <p>
-                      Please bookmark the new URL (<i class="fa fa-arrow-up" aria-hidden="true"></i>) for this site: https://cityatlas.phila.gov.
                       We value your
                       <a class="external" href="//philagsg.typeform.com/to/v0xlIR" target="_blank">feedback<span class="accessible">Opens in new window</span></a>.
                       Please let us know how we can improve this application.
@@ -68,7 +135,7 @@
             </a>
             <div class="page-title-container">
               <a href="#/">
-                <h1 class="page-title">Atlas</h1>
+                <h1 class="page-title">CityAtlas</h1>
               </a>
             </div>
           </div>
@@ -120,9 +187,25 @@
     <script src="//unpkg.com/@cityofphiladelphia/mapboard@1.0.25/dist/build.js"></script>
 
     <script src="main.js"></script>
-    <!-- <script>
-      var $modal = $('#exampleModal1');
-      $modal.foundation('open');
-    </script> -->
+
+    <!-- TEMP: cityatlas modal -->
+    <script>
+      // on document ready
+      $(function () {
+        var $modal = $('.modal'),
+            LOCAL_STORAGE_KEY = 'didConfirmCityAtlasRedirect';
+
+        // set ok button callback
+        $('.modal-button-yes').click(function (e) {
+          $modal.hide();
+          localStorage.setItem(LOCAL_STORAGE_KEY, true);
+        });
+
+        // only show modal if they've never seen it before
+        if (!localStorage.getItem(LOCAL_STORAGE_KEY)) {
+          $modal.show();
+        }
+      });
+    </script>
   </body>
 </html>
