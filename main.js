@@ -1010,7 +1010,7 @@ Mapboard.default({
           }
         }
         else {
-          return 'There is no OPA record for this address.';
+          return 'There is no property assessment record for this address.';
         }
       },
     },
