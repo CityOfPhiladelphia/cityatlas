@@ -2898,7 +2898,7 @@ Mapboard.default({
       ]
     },
     {
-      key: 'water',
+      key: 'stormwater',
       icon: 'tint',
       label: 'Stormwater',
       dataSources: ['stormwater'],
