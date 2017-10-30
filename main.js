@@ -1543,7 +1543,7 @@ Mapboard.default({
       imageOverlayGroup: 'regmaps',
     },
     {
-      key: 'permits',
+      key: 'li',
       icon: 'wrench',
       label: 'Licenses & Inspections',
       dataSources: [
