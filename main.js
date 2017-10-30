@@ -543,6 +543,8 @@ Mapboard.default({
         return data;
       }
     },
+    // TODO call this opaCondoList or something to explain how it's different
+    // from dorCondoList
     condoList: {
       type: 'http-get',
       url: 'http://api.phila.gov/ais/v1/search/',
