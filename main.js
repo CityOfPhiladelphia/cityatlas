@@ -1545,7 +1545,7 @@ Mapboard.default({
     {
       key: 'permits',
       icon: 'wrench',
-      label: 'Permits',
+      label: 'Licenses & Inspections',
       dataSources: [
         'liPermits',
         'liInspections',
