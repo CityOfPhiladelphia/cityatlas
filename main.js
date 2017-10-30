@@ -1077,9 +1077,12 @@ Mapboard.default({
           type: 'callout',
           slots: {
             text: '\
-              Deed information and document transactions for this address. The map faithfully reflects property boundaries as described in recorded deeds including multiple types of easements. Click on Registry Maps to see images of hard-copy deed maps, some of which have hand-written information that may be useful in historical deed research.<br><br>\
-              \
-              The property boundaries displayed on the map are for reference only and should not be used in place of the recorded deeds or land surveys. Source: Department of Records\
+              Deed information and document transactions for this address.\
+              The map faithfully reflects property boundaries as described in \
+              recorded deeds including multiple types of easements.\
+              The property boundaries displayed on the map are for reference \
+              only and should not be used in place of the recorded deeds or \
+              land surveys. Source: Department of Records\
             ',
           }
         },
@@ -1379,6 +1382,18 @@ Mapboard.default({
               }, // end condos table
 
               {
+                type: 'callout',
+                slots: {
+                  text: ' The list of documents \
+                    shown below may not be a complete history of title to this \
+                    parcel.  The list is based solely on documents recorded from\
+                    1974 forward where those documents contained street addresses\
+                    in the original recorded document.\
+                  '
+                },
+              },
+
+              {
                 type: 'horizontal-table',
                 options: {
                   topicKey: 'deeds',
@@ -1469,6 +1484,16 @@ Mapboard.default({
             }
           }
         }, // end dor parcel tab group comp
+        {
+          type: 'callout',
+          slots: {
+            text: '\
+              Use the buttons below to view images of hard-copy deed maps, some\
+              of which have handwritten information that may be useful for\
+              historical deed research.\
+            ',
+          },
+        },
         {
           type: 'overlay-toggle-group',
           options: {
