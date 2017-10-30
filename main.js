@@ -788,9 +788,9 @@ Mapboard.default({
   },
   topics: [
     {
-      key: 'opa',
-      icon: 'map-marker',
-      label: 'Assessments',
+      key: 'property',
+      icon: 'home',
+      label: 'Property Assessments',
       // REVIEW can these be calculated from vue deps?
       dataSources: ['opa'],
       components: [
