@@ -1007,7 +1007,7 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Click any individual condominium unit below to see information on that unit.  Use the back button to get back to this list.'
+            text: 'Click an individual condominium unit below to see information for that unit.  Use the back button to return to this list.'
           }
         },
         {
