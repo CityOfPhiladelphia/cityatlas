@@ -552,6 +552,9 @@ Mapboard.default({
       url: 'http://api.phila.gov/ais/v1/search/',
       options: {
         params: {
+          urlAddition: function (feature) {
+            return feature.properties.street_address;
+          },
           gatekeeperKey: GATEKEEPER_KEY,
           include_units: true,
           opa_only: true,
@@ -772,10 +775,20 @@ Mapboard.default({
     }
   },
   greeting:{
-    initialMessage: "Explore permits, zoning, deeds and other related City data by searching on an address.<br><br> \
-    See results mapped against present and past aerial and street-view imagery or using historical maps of Philadelphia.<br><br> \
-    To start your search, type an address, street intersection, tax account number, or deed Map Registry number into the search box – or – click anywhere on the map.",
-
+    initialMessage: '\
+      <h2>CityAtlas connects you with information about any address in the city.</h2>\
+      <p>Here are some things you can do with CityAtlas:</p>\
+      <div class="callout">\
+        <ul>\
+          <li>Research real estate information including property values, zoning, and document archives</li>\
+          <li>Get the history of permits, licenses, and inspections at any address</li>\
+          <li>Easily access high-resolution street-level and aerial imagery</li>\
+          <li>View activity around an address, including vacancy, crime, 311 service requests, and more</li>\
+          <li>Explore historical imagery and maps</li>\
+        </ul>\
+      </div>\
+      <p>To get started, click anywhere on the map, or type an address, intersection, OPA account number, or DOR Map Registry number into the search box.</p>\
+    ',
   },
   topics: [
     {
@@ -788,8 +801,9 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            // text: 'This information is provided by the Office of Property Assessments (OPA), the agency responsible for estimating property values in the City of Philadelphia. OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City websites may still use that name.'
-            text: 'Property assessment and sale information. Source: Office of Property Assessments (OPA). OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City records may still use that name.'
+            text: '\
+              Property assessment and sale information for this address. Source: Office of Property Assessments (OPA). OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City records may still use that name.\
+            '
           }
         },
 
@@ -993,7 +1007,7 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Click any individual condominium unit below to see information on that unit.  Use the back button to get back to this list.'
+            text: 'Click an individual condominium unit below to see information for that unit.  Use the back button to return to this list.'
           }
         },
         {
@@ -1062,8 +1076,14 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Deed information as maintained by the Department of Records. The map faithfully reflects property boundaries as described in recorded deeds including multiple types of easements. Click on Registry Maps to see images of the last hard-copy deed maps some of which have hand written information that may be useful in historical deed research.<br><br> \
-                  The property boundaries displayed on the map are for reference only and should not be used in place of the recorded deeds or land surveys. Source: Department of Records'
+            text: '\
+              Deed information and document transactions for this address.\
+              The map faithfully reflects property boundaries as described in \
+              recorded deeds including multiple types of easements.\
+              The property boundaries displayed on the map are for reference \
+              only and should not be used in place of the recorded deeds or \
+              land surveys. Source: Department of Records\
+            ',
           }
         },
         {
@@ -1362,6 +1382,18 @@ Mapboard.default({
               }, // end condos table
 
               {
+                type: 'callout',
+                slots: {
+                  text: ' The list of documents \
+                    shown below may not be a complete history of title to this \
+                    parcel.  The list is based solely on documents recorded from\
+                    1974 forward where those documents contained street addresses\
+                    in the original recorded document.\
+                  '
+                },
+              },
+
+              {
                 type: 'horizontal-table',
                 options: {
                   topicKey: 'deeds',
@@ -1370,13 +1402,13 @@ Mapboard.default({
                   fields: [
                     {
                       label: 'ID',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return "<a target='_blank' href='//pdx-app01/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.R_NUM+"'>"+item.attributes.R_NUM+"<i class='fa fa-external-link'></i></a>"
                       },
                     },
                     {
                       label: 'Date',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         // return item.attributes.RECORDING_DATE;
                         return item.attributes.DISPLAY_DATE;
                       },
@@ -1387,26 +1419,26 @@ Mapboard.default({
                     },
                     {
                       label: 'Type',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.DOCUMENT_TYPE;
                       },
                     },
                     {
                       label: 'Grantor',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.GRANTORS;
                       },
                     },
                     {
                       label: 'Grantee',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.GRANTEES;
                       },
                     },
                   ], // end fields
                   sort: {
                     // this should return the val to sort on
-                    getValue: function(item) {
+                    getValue: function (item) {
                       // return item.attributes.RECORDING_DATE;
                       return item.attributes.DISPLAY_DATE;
                     },
@@ -1417,7 +1449,7 @@ Mapboard.default({
                 slots: {
                   title: 'Documents',
                   // defaultIncrement: 25,
-                  items: function(state, item) {
+                  items: function (state, item) {
                     var id = item.properties.OBJECTID;
                     if (state.sources.dorDocuments.targets[id]) {
                       return state.sources.dorDocuments.targets[id].data;
@@ -1452,6 +1484,16 @@ Mapboard.default({
             }
           }
         }, // end dor parcel tab group comp
+        {
+          type: 'callout',
+          slots: {
+            text: '\
+              Use the buttons below to view images of hard-copy deed maps, some\
+              of which have handwritten information that may be useful for\
+              historical deed research.\
+            ',
+          },
+        },
         {
           type: 'overlay-toggle-group',
           options: {
@@ -1495,7 +1537,7 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Building permits, licenses, property maintenance code violations. Source: Department of Licenses and Inspections.'
+            text: 'Building permits, licenses, and property maintenance code violations at your search address. Source: Department of Licenses and Inspections'
           }
         },
         {
@@ -1949,7 +1991,7 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Base district zoning maps and associated zoning overlays and Registered Community Organizations. Source: Department of Planning and Development'
+            text: 'Base district zoning maps, associated zoning overlays, and Registered Community Organizations applicable to your search address. Source: Department of Planning and Development'
           }
         },
         {
@@ -2675,7 +2717,11 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'A more detailed look at 311 requests near the search address that includes records marked private by the public and Description field content that cannot be shared with the public.'
+            text: 'A more detailed look at 311 service requests near your \
+              search address. This includes sensitive information, such as \
+              request descriptions and records marked private by the customer,\
+              that cannot be shared with the public.\
+            '
           }
         },
         {
@@ -2843,7 +2889,7 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'The property boundaries displayed on the map for reference only and may not be used in place of recorded deeds or land surveys. Boundaries are generalized for ease of visualization. Source: Philadelphia Water'
+            text: 'Stormwater billing accounts associated with your search address. The property boundaries displayed on the map for reference only and may not be used in place of recorded deeds or land surveys. Boundaries are generalized for ease of visualization. Source: Philadelphia Water Department'
           }
         },
         {
