@@ -1556,7 +1556,11 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Building permits, licenses, and property maintenance code violations at your search address. Source: Department of Licenses and Inspections'
+            text: '\
+              Licenses, inspections, permits, and property maintenance \
+              violations at your search address. Source: Department of \
+              Licenses & Inspections\
+            '
           }
         },
         {
