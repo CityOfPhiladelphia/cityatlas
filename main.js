@@ -991,7 +991,7 @@ Mapboard.default({
       },
     },
     {
-      key: 'condos',
+      key: 'condominiums',
       icon: 'map-marker',
       label: 'Condominiums',
       dataSources: ['condoList'],
@@ -1011,7 +1011,7 @@ Mapboard.default({
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'condos',
+            topicKey: 'condominiums',
             id: 'condoList',
             useApiCount: true,
             defaultIncrement: 25,
