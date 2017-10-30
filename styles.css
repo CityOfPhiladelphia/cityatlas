@@ -5,3 +5,7 @@ header.site-header > .row:last-of-type {
 html {
   overflow-y: hidden;
 }
+
+.greeting > h2 {
+  margin-bottom: 30px;
+}
