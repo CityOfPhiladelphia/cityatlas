@@ -2717,7 +2717,11 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'A more detailed look at 311 service requests near your search address. This includes requests marked as private by the client and request descriptions that cannot be shared with the public.'
+            text: 'A more detailed look at 311 service requests near your \
+              search address. This includes sensitive information, such as \
+              request descriptions and records marked private by the customer,\
+              that cannot be shared with the public.\
+            '
           }
         },
         {
