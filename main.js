@@ -1402,13 +1402,13 @@ Mapboard.default({
                   fields: [
                     {
                       label: 'ID',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return "<a target='_blank' href='//pdx-app01/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.R_NUM+"'>"+item.attributes.R_NUM+"<i class='fa fa-external-link'></i></a>"
                       },
                     },
                     {
                       label: 'Date',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         // return item.attributes.RECORDING_DATE;
                         return item.attributes.DISPLAY_DATE;
                       },
@@ -1419,26 +1419,26 @@ Mapboard.default({
                     },
                     {
                       label: 'Type',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.DOCUMENT_TYPE;
                       },
                     },
                     {
                       label: 'Grantor',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.GRANTORS;
                       },
                     },
                     {
                       label: 'Grantee',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.GRANTEES;
                       },
                     },
                   ], // end fields
                   sort: {
                     // this should return the val to sort on
-                    getValue: function(item) {
+                    getValue: function (item) {
                       // return item.attributes.RECORDING_DATE;
                       return item.attributes.DISPLAY_DATE;
                     },
@@ -1449,7 +1449,7 @@ Mapboard.default({
                 slots: {
                   title: 'Documents',
                   // defaultIncrement: 25,
-                  items: function(state, item) {
+                  items: function (state, item) {
                     var id = item.properties.OBJECTID;
                     if (state.sources.dorDocuments.targets[id]) {
                       return state.sources.dorDocuments.targets[id].data;
