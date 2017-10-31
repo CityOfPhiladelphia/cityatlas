@@ -13,3 +13,9 @@ deploy:
     bucket: 'cityatlas-dev.phila.gov'
     on:
       branch: develop
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: 'cityatlas-streets.phila.gov'
+    on:
+      branch: stviolations

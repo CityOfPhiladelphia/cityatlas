@@ -507,6 +507,17 @@ Mapboard.default({
         params: {}
       }
     },
+    streetsViolations: {
+      type: 'http-get-nearby',
+      url: 'https://phl.carto.com/api/v2/sql',
+      options: {
+        table: 'streets_code_violation_notices',
+        dateMinNum: 1,
+        dateMinType: 'year',
+        dateField: 'date_added',
+        params: {}
+      }
+    },
     vacantLand: {
       type: 'esri',
       url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Land/FeatureServer/0',
@@ -2309,7 +2320,7 @@ Mapboard.default({
       key: 'vacancy',
       icon: 'map-marker',
       label: 'Vacancy',
-      dataSources: ['vacantLand', 'vacantBuilding', '311Carto', 'crimeIncidents', 'nearbyZoningAppeals'],
+      dataSources: ['vacantLand', 'vacantBuilding', '311Carto', 'crimeIncidents', 'nearbyZoningAppeals', 'streetsViolations'],
       basemap: 'pwd',
       featureLayers: [
         'vacantLand',
@@ -2385,6 +2396,10 @@ Mapboard.default({
                   {
                     label: 'Zoning Appeals',
                     value: 'nearbyZoningAppeals',
+                  },
+                  {
+                    label: 'Streets Violations',
+                    value: 'streetsViolations',
                   }
                 ]
               },
@@ -2706,6 +2721,125 @@ Mapboard.default({
                   data: 'nearbyZoningAppeals',
                   items: function(state) {
                     var data = state.sources['nearbyZoningAppeals'].data || [];
+                    var rows = data.map(function(row){
+                      var itemRow = row;
+                      // var itemRow = Object.assign({}, row);
+                      return itemRow;
+                    });
+                    return rows;
+                  },
+                } // end of slots
+              }, // end of horizontal-table
+              {
+                type: 'horizontal-table',
+                options: {
+                  topicKey: 'vacancy',
+                  id: 'streetsViolations',
+                  sort: {
+                    select: true,
+                    getValue: function(item, method) {
+                      var val;
+
+                      if (method === 'date') {
+                        val = item.date_added;
+                      } else if (method === 'distance') {
+                        val = item.distance;
+                      }
+
+                      return val;
+                    }
+                  },
+                  // filters: [
+                  //   {
+                  //     type: 'time',
+                  //     getValue: function(item) {
+                  //       return item.date_added;
+                  //     },
+                  //     label: 'From the last',
+                  //     values: [
+                  //       {
+                  //         label: '30 days',
+                  //         value: '30',
+                  //         unit: 'days',
+                  //         direction: 'subtract',
+                  //       },
+                  //       {
+                  //         label: '90 days',
+                  //         value: '90',
+                  //         unit: 'days',
+                  //         direction: 'subtract',
+                  //       },
+                  //     ]
+                  //   }
+                  // ],
+                  filterByText: {
+                    label: 'Filter by',
+                    fields: [
+                      'st_name',
+                      'violation_description'
+                    ]
+                  },
+                  mapOverlay: {
+                    marker: 'circle',
+                    style: {
+                      radius: 6,
+                      fillColor: '#6674df',
+                    	color: '#6674df',
+                    	weight: 1,
+                    	opacity: 1,
+                    	fillOpacity: 1.0
+                    },
+                    hoverStyle: {
+                      radius: 6,
+                      fillColor: 'yellow',
+                    	color: '#6674df',
+                    	weight: 1,
+                    	opacity: 1,
+                    	fillOpacity: 1.0
+                    }
+                  },
+                  fields: [
+                    {
+                      label: 'Date',
+                      value: function(state, item) {
+                        return item.date_added;
+                      },
+                      nullValue: 'no date available',
+                      transforms: [
+                        'date'
+                      ]
+                    },
+                    // {
+                    //   label: 'Location',
+                    //   value: function(state, item) {
+                    //     return item.location_block;
+                    //   }
+                    // },
+                    {
+                      label: 'Description',
+                      value: function(state, item) {
+                        return item.violation_description;
+                      }
+                    },
+                    {
+                      label: 'Comments',
+                      value: function(state, item) {
+                        return item.comments;
+                      }
+                    },
+                    {
+                      label: 'Distance',
+                      value: function(state, item) {
+                        return parseInt(item.distance) + ' ft';
+                      }
+                    }
+                  ]
+                },
+                slots: {
+                  title: 'Streets Violations',
+                  data: 'streetsViolations',
+                  items: function(state) {
+                    var data = state.sources['streetsViolations'].data || [];
                     var rows = data.map(function(row){
                       var itemRow = row;
                       // var itemRow = Object.assign({}, row);
