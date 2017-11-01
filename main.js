@@ -2306,9 +2306,9 @@ Mapboard.default({
       parcels: 'dor'
     },
     {
-      key: 'vacancy',
+      key: 'nearby',
       icon: 'map-marker',
-      label: 'Vacancy',
+      label: 'Nearby',
       dataSources: ['vacantLand', 'vacantBuilding', '311Carto', 'crimeIncidents', 'nearbyZoningAppeals'],
       basemap: 'pwd',
       featureLayers: [
@@ -2394,7 +2394,7 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'vacancy',
+                  topicKey: 'nearby',
                   id: '311',
                   sort: {
                     select: true,
@@ -2517,7 +2517,7 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'vacancy',
+                  topicKey: 'nearby',
                   id: 'crimeIncidents',
                   sort: {
                     select: true,
@@ -2629,7 +2629,7 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'vacancy',
+                  topicKey: 'nearby',
                   id: 'nearbyZoningAppeals',
                   sort: {
                     select: true,
