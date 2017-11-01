@@ -1393,17 +1393,14 @@ Mapboard.default({
                   }
                 },
                 slots: {
-                  title: 'DOR Condominium Records',
-                  items: function(state, item) {
-                    console.log('dorcondo item', item);
-                    var id = item.properties.OBJECTID;
-                    if (state.sources.dorCondoList.targets[id]) {
-                      if (state.sources.dorCondoList.targets[id].data) {
-                        return state.sources.dorCondoList.targets[id].data.rows;
-                      }
-                    } else {
-                      return [];
-                    }
+                  title: 'Condominiums',
+                  items: function (state, item) {
+                    var id = item.properties.OBJECTID,
+                        target = state.sources.dorCondoList.targets[id],
+                        data = target && target.data,
+                        rows = (data && data.rows) || [];
+
+                    return rows
                   },
                 } // end slots
               }, // end condos table
