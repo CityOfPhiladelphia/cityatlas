@@ -1333,14 +1333,18 @@ Mapboard.default({
               //     ]
               //   }
               // },
-              {
-                type: 'callout',
-                slots: {
-                  text: 'Condominium units associated with this parcel.\
-                    This list may differ from the Condominiums tab above based\
-                    on how the deed was recorded. Source: Department of Records'
-                },
-              },
+              // TODO this text is helpful but it has to show up only when the
+              // condos table shows up. commenting out for now.
+              // {
+              //   type: 'callout',
+              //   slots: {
+              //     text: '\
+              //       Condominium units associated with this parcel.\
+              //       This list may differ from the Condominiums tab above based\
+              //       on how the deed was recorded. Source: Department of Records\
+              //     '
+              //   },
+              // },
               {
                 type: 'horizontal-table',
                 options: {
