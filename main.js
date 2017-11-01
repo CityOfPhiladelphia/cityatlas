@@ -1397,7 +1397,7 @@ Mapboard.default({
                   }
                 },
                 slots: {
-                  title: 'Condominiums',
+                  title: 'Deeded Condominiums',
                   items: function (state, item) {
                     var id = item.properties.OBJECTID,
                         target = state.sources.dorCondoList.targets[id],
