@@ -1334,6 +1334,14 @@ Mapboard.default({
               //   }
               // },
               {
+                type: 'callout',
+                slots: {
+                  text: 'Condominium units associated with this parcel.\
+                    This list may differ from the Condominiums tab above based\
+                    on how the deed was recorded. Source: Department of Records'
+                },
+              },
+              {
                 type: 'horizontal-table',
                 options: {
                   topicKey: 'deeds',
