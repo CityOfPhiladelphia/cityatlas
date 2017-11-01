@@ -2341,15 +2341,19 @@ Mapboard.default({
         {
           type: 'badge',
           options: {
-            titleBackground: function(state) {
+            titleBackground: function (state) {
               var text = getVacancyText(state);
-              if (text.includes('Land')) {
-                return 'orange';
-              } else if (text.includes('Building')) {
-                return 'purple';
+              var background;
+
+              if (text.indexOf('Land') > -1) {
+                background = 'orange';
+              } else if (text.indexOf('Building') > -1) {
+                background = 'purple';
               } else {
-                return '#58c04d';
+                background = '#58c04d';
               }
+
+              return background;
             }
           },
           slots: {
