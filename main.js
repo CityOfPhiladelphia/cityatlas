@@ -402,25 +402,21 @@ Mapboard.default({
       url: '//ase.phila.gov/arcgis/rest/services/DOR/rttsummary/MapServer/0/query',
       options: {
         params: {
-          where: function(feature, state) {
+          where: function (feature, state) {
             // METHOD 1: via address
             var parcelBaseAddress = concatDorAddress(feature);
             var geocode = state.geocode.data.properties;
-            console.log('parcelBaseAddress', parcelBaseAddress)
 
             // REVIEW if the parcel has no address, we don't want to query
             // WHERE ADDRESS = 'null' (doesn't make sense), so use this for now
             if (!parcelBaseAddress || parcelBaseAddress === 'null'){
               var where = "MATCHED_REGMAP = '" + state.parcels.dor.data[0].properties.BASEREG + "'";
-              console.log('DOR Parcel BASEREG', state.parcels.dor.data[0].properties.BASEREG);
             } else {
-              const address_low = state.geocode.data.properties.address_low
-              roundto100 = function(address) { return Math.floor(address/100, 1)*100}
-              const address_floor = roundto100(address_low);
-              const address_remainder = address_low - address_floor;
-              console.log('address_low:', address_low, 'address_floor:', address_floor);
-              var where = "((ADDRESS_LOW = " + address_low
-                        + " OR (ADDRESS_LOW >= " + address_floor + " AND ADDRESS_LOW <= " + address_low + " AND ADDRESS_HIGH >= " + address_remainder + " ))"
+              var addressLow = state.geocode.data.properties.address_low,
+                  addressFloor = Math.floor(addressLow / 100, 1) * 100,
+                  addressRemainder = addressLow - addressFloor,
+                  where = "((ADDRESS_LOW = " + addressLow
+                        + " OR (ADDRESS_LOW >= " + addressFloor + " AND ADDRESS_LOW <= " + addressLow + " AND ADDRESS_HIGH >= " + addressRemainder + " ))"
                         + " AND STREET_NAME = '" + geocode.street_name
                         + "' AND STREET_SUFFIX = '" + geocode.street_suffix
                         + "'"
@@ -433,10 +429,10 @@ Mapboard.default({
               if (geocode.street_postdir != '') {
                 where += " AND STREET_POSTDIR = '" + geocode.street_postdir + "'";
               }
+
               // check for unit num
-              var unitNum = cleanDorAttribute(feature.properties.UNIT);
-              console.log('DOR Parcel BASEREG - feature:', feature);
-              var unitNum2 = geocode.unit_num;
+              var unitNum = cleanDorAttribute(feature.properties.UNIT),
+                  unitNum2 = geocode.unit_num;
               if (unitNum) {
                 where += " AND UNIT_NUM = '" + unitNum + "'";
               } else if (unitNum2 != '') {
@@ -547,6 +543,8 @@ Mapboard.default({
         return data;
       }
     },
+    // TODO call this opaCondoList or something to explain how it's different
+    // from dorCondoList
     condoList: {
       type: 'http-get',
       url: 'http://api.phila.gov/ais/v1/search/',
@@ -775,24 +773,35 @@ Mapboard.default({
     }
   },
   greeting:{
-    initialMessage: "Explore permits, zoning, deeds and other related City data by searching on an address.<br><br> \
-    See results mapped against present and past aerial and street-view imagery or using historical maps of Philadelphia.<br><br> \
-    To start your search, type an address, street intersection, tax account number, or deed Map Registry number into the search box – or – click anywhere on the map.",
-
+    initialMessage: '\
+      <h2>CityAtlas connects you with information about any address in the city.</h2>\
+      <p>Here are some things you can do with CityAtlas:</p>\
+      <div class="callout">\
+        <ul>\
+          <li>Research real estate information including property values, zoning, and document archives</li>\
+          <li>Get the history of permits, licenses, and inspections at any address</li>\
+          <li>Easily access high-resolution street-level and aerial imagery</li>\
+          <li>View activity around an address, including vacancy, crime, 311 service requests, and more</li>\
+          <li>Explore historical imagery and maps</li>\
+        </ul>\
+      </div>\
+      <p>To get started, click anywhere on the map, or type an address, intersection, OPA account number, or DOR Map Registry number into the search box.</p>\
+    ',
   },
   topics: [
     {
-      key: 'opa',
-      icon: 'map-marker',
-      label: 'Assessments',
+      key: 'property',
+      icon: 'home',
+      label: 'Property Assessments',
       // REVIEW can these be calculated from vue deps?
       dataSources: ['opa'],
       components: [
         {
           type: 'callout',
           slots: {
-            // text: 'This information is provided by the Office of Property Assessments (OPA), the agency responsible for estimating property values in the City of Philadelphia. OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City websites may still use that name.'
-            text: 'Property assessment and sale information. Source: Office of Property Assessments (OPA). OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City records may still use that name.'
+            text: '\
+              Property assessment and sale information for this address. Source: Office of Property Assessments (OPA). OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City records may still use that name.\
+            '
           }
         },
 
@@ -970,19 +979,43 @@ Mapboard.default({
       identifyFeature: 'address-marker',
       // we might not need this anymore, now that we have identifyFeature
       parcels: 'pwd',
-      errorMessage: function(state) {
-        if (state.sources.condoList.data){
-          if (state.sources.condoList.data.features.length > 1) {
-            return 'There is no OPA record for this address. Please select a condominum unit address below to see the record for that unit.';
+      errorMessage: function (state) {
+        var data = state.sources.condoList.data;
+            // features = data.features;
+
+        if (data) {
+          var numCondos = data.total_size;
+
+          if (numCondos > 0) {
+            var shouldPluralize = numCondos > 1,
+                isOrAre = shouldPluralize ? 'are' : 'is',
+                unitOrUnits = shouldPluralize ? 'units' : 'unit',
+                message = [
+                  '<h3>',
+                  'There ',
+                  isOrAre,
+                  // ' <strong>',
+                  ' ',
+                  numCondos,
+                  ' condominium ',
+                  unitOrUnits,
+                  // '</strong> at this address.</h3>',
+                  ' at this address.</h3>',
+                  // ' at this address. ',
+                  '<p>You can use the Condominiums tab below to see information for an individual unit.</p>'
+                  // 'Please select a unit from the Condominiums tab below.'
+                ].join('');
+
+            return message;
           }
         }
         else {
-          return 'There is no OPA record for this address.';
+          return 'There is no property assessment record for this address.';
         }
       },
     },
     {
-      key: 'condos',
+      key: 'condominiums',
       icon: 'map-marker',
       label: 'Condominiums',
       dataSources: ['condoList'],
@@ -996,31 +1029,28 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Click any individual condominium unit below to see information on that unit.  Use the back button to get back to this list.'
+            text: 'Condominium units at your search address, as recorded for property assessment purposes. Click one of the addresses below to see information for that unit.  Use the back button to return to this list. Source: Office of Property Assessment'
           }
         },
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'condos',
+            topicKey: 'condominiums',
             id: 'condoList',
             useApiCount: true,
             defaultIncrement: 25,
             fields: [
               {
-                label: 'OPA Account',
-                value: function(state, item) {
-                  var url = window.location.origin + window.location.pathname + '#/' + item.properties.opa_account_num + '/opa'
-                  return "<a href="+url+">"+item.properties.opa_account_num+" <i class='fa fa-external-link'></i></a>";
-                  // console.log('value function item:', item, 'controller:', controller);
-                  // return "<a onclick='" + controller + "'>"+item.properties.opa_account_num+"</a>"
+                label: 'Address',
+                value: function (state, item) {
+                  var address = item.properties.street_address;
+                  return '<a href="#/' + address + '/property">' + address + '</a>';
                 },
               },
               {
-                label: 'Address',
-                value: function(state, item) {
-                  var url = window.location.origin + window.location.pathname + '#/' + item.properties.opa_account_num + '/opa'
-                  return "<a href="+url+">"+item.properties.street_address+" <i class='fa fa-external-link'></i></a>";
+                label: 'OPA Account #',
+                value: function (state, item) {
+                  return item.properties.opa_account_num;
                 },
               },
             ], // end fields
@@ -1065,8 +1095,14 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Deed information as maintained by the Department of Records. The map faithfully reflects property boundaries as described in recorded deeds including multiple types of easements. Click on Registry Maps to see images of the last hard-copy deed maps some of which have hand written information that may be useful in historical deed research.<br><br> \
-                  The property boundaries displayed on the map are for reference only and should not be used in place of the recorded deeds or land surveys. Source: Department of Records'
+            text: '\
+              Deed information and document transactions for this address.\
+              The map faithfully reflects property boundaries as described in \
+              recorded deeds including multiple types of easements.\
+              The property boundaries displayed on the map are for reference \
+              only and should not be used in place of the recorded deeds or \
+              land surveys. Source: Department of Records\
+            ',
           }
         },
         {
@@ -1298,6 +1334,14 @@ Mapboard.default({
               //   }
               // },
               {
+                type: 'callout',
+                slots: {
+                  text: 'Condominium units associated with this parcel.\
+                    This list may differ from the Condominiums tab above based\
+                    on how the deed was recorded. Source: Department of Records'
+                },
+              },
+              {
                 type: 'horizontal-table',
                 options: {
                   topicKey: 'deeds',
@@ -1349,20 +1393,29 @@ Mapboard.default({
                   }
                 },
                 slots: {
-                  title: 'DOR Condominium Records',
-                  items: function(state, item) {
-                    console.log('dorcondo item', item);
-                    var id = item.properties.OBJECTID;
-                    if (state.sources.dorCondoList.targets[id]) {
-                      if (state.sources.dorCondoList.targets[id].data) {
-                        return state.sources.dorCondoList.targets[id].data.rows;
-                      }
-                    } else {
-                      return [];
-                    }
+                  title: 'Condominiums',
+                  items: function (state, item) {
+                    var id = item.properties.OBJECTID,
+                        target = state.sources.dorCondoList.targets[id],
+                        data = target && target.data,
+                        rows = (data && data.rows) || [];
+
+                    return rows
                   },
                 } // end slots
               }, // end condos table
+
+              {
+                type: 'callout',
+                slots: {
+                  text: ' The list of documents \
+                    shown below may not be a complete history of title to this \
+                    parcel.  The list is based solely on documents recorded from\
+                    1974 forward where those documents contained street addresses\
+                    in the original recorded document.\
+                  '
+                },
+              },
 
               {
                 type: 'horizontal-table',
@@ -1373,13 +1426,13 @@ Mapboard.default({
                   fields: [
                     {
                       label: 'ID',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return "<a target='_blank' href='//pdx-app01/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.R_NUM+"'>"+item.attributes.R_NUM+"<i class='fa fa-external-link'></i></a>"
                       },
                     },
                     {
                       label: 'Date',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         // return item.attributes.RECORDING_DATE;
                         return item.attributes.DISPLAY_DATE;
                       },
@@ -1390,26 +1443,26 @@ Mapboard.default({
                     },
                     {
                       label: 'Type',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.DOCUMENT_TYPE;
                       },
                     },
                     {
                       label: 'Grantor',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.GRANTORS;
                       },
                     },
                     {
                       label: 'Grantee',
-                      value: function(state, item) {
+                      value: function (state, item) {
                         return item.attributes.GRANTEES;
                       },
                     },
                   ], // end fields
                   sort: {
                     // this should return the val to sort on
-                    getValue: function(item) {
+                    getValue: function (item) {
                       // return item.attributes.RECORDING_DATE;
                       return item.attributes.DISPLAY_DATE;
                     },
@@ -1420,7 +1473,7 @@ Mapboard.default({
                 slots: {
                   title: 'Documents',
                   // defaultIncrement: 25,
-                  items: function(state, item) {
+                  items: function (state, item) {
                     var id = item.properties.OBJECTID;
                     if (state.sources.dorDocuments.targets[id]) {
                       return state.sources.dorDocuments.targets[id].data;
@@ -1456,6 +1509,16 @@ Mapboard.default({
           }
         }, // end dor parcel tab group comp
         {
+          type: 'callout',
+          slots: {
+            text: '\
+              Use the buttons below to view images of hard-copy deed maps, some\
+              of which have handwritten information that may be useful for\
+              historical deed research.\
+            ',
+          },
+        },
+        {
           type: 'overlay-toggle-group',
           options: {
             getKey: function(item) {
@@ -1485,9 +1548,9 @@ Mapboard.default({
       imageOverlayGroup: 'regmaps',
     },
     {
-      key: 'permits',
+      key: 'li',
       icon: 'wrench',
-      label: 'Permits',
+      label: 'Licenses & Inspections',
       dataSources: [
         'liPermits',
         'liInspections',
@@ -1498,7 +1561,11 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Building permits, licenses, property maintenance code violations. Source: Department of Licenses and Inspections.'
+            text: '\
+              Licenses, inspections, permits, and property maintenance \
+              violations at your search address. Source: Department of \
+              Licenses & Inspections\
+            '
           }
         },
         {
@@ -1952,7 +2019,7 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'Base district zoning maps and associated zoning overlays and Registered Community Organizations. Source: Department of Planning and Development'
+            text: 'Base district zoning maps, associated zoning overlays, and Registered Community Organizations applicable to your search address. Source: Department of Planning and Development'
           }
         },
         {
@@ -2244,9 +2311,9 @@ Mapboard.default({
       parcels: 'dor'
     },
     {
-      key: 'vacancy',
+      key: 'nearby',
       icon: 'map-marker',
-      label: 'Vacancy',
+      label: 'Nearby',
       dataSources: ['vacantLand', 'vacantBuilding', '311Carto', 'crimeIncidents', 'nearbyZoningAppeals'],
       basemap: 'pwd',
       featureLayers: [
@@ -2279,15 +2346,19 @@ Mapboard.default({
         {
           type: 'badge',
           options: {
-            titleBackground: function(state) {
+            titleBackground: function (state) {
               var text = getVacancyText(state);
-              if (text.includes('Land')) {
-                return 'orange';
-              } else if (text.includes('Building')) {
-                return 'purple';
+              var background;
+
+              if (text.indexOf('Land') > -1) {
+                background = 'orange';
+              } else if (text.indexOf('Building') > -1) {
+                background = 'purple';
               } else {
-                return '#58c04d';
+                background = '#58c04d';
               }
+
+              return background;
             }
           },
           slots: {
@@ -2332,7 +2403,7 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'vacancy',
+                  topicKey: 'nearby',
                   id: '311',
                   sort: {
                     select: true,
@@ -2455,7 +2526,7 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'vacancy',
+                  topicKey: 'nearby',
                   id: 'crimeIncidents',
                   sort: {
                     select: true,
@@ -2567,7 +2638,7 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'vacancy',
+                  topicKey: 'nearby',
                   id: 'nearbyZoningAppeals',
                   sort: {
                     select: true,
@@ -2678,7 +2749,11 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'A more detailed look at 311 requests near the search address that includes records marked private by the public and Description field content that cannot be shared with the public.'
+            text: 'A more detailed look at 311 service requests near your \
+              search address. This includes sensitive information, such as \
+              request descriptions and records marked private by the customer,\
+              that cannot be shared with the public.\
+            '
           }
         },
         {
@@ -2832,7 +2907,7 @@ Mapboard.default({
       ]
     },
     {
-      key: 'water',
+      key: 'stormwater',
       icon: 'tint',
       label: 'Stormwater',
       dataSources: ['stormwater'],
@@ -2846,7 +2921,7 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'The property boundaries displayed on the map for reference only and may not be used in place of recorded deeds or land surveys. Boundaries are generalized for ease of visualization. Source: Philadelphia Water'
+            text: 'Stormwater billing accounts associated with your search address. The property boundaries displayed on the map for reference only and may not be used in place of recorded deeds or land surveys. Boundaries are generalized for ease of visualization. Source: Philadelphia Water Department'
           }
         },
         {
