@@ -1,4 +1,4 @@
-var GATEKEEPER_KEY = '82fe014b6575b8c38b44235580bc8b11';
+var GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033';
 // var BASE_CONFIG_URL = '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js';
 var BASE_CONFIG_URL = '//rawgit.com/rbrtmrtn/mapboard-base-config/e2a99da8f5d1c66a74a288bf94ac00944efdf5cd/config.js';
 
