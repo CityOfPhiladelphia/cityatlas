@@ -547,7 +547,7 @@ Mapboard.default({
     // from dorCondoList
     condoList: {
       type: 'http-get',
-      url: 'http://api.phila.gov/ais/v1/search/',
+      url: '//api.phila.gov/ais/v1/search/',
       options: {
         params: {
           urlAddition: function (feature) {
