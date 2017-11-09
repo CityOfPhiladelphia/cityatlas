@@ -2669,7 +2669,11 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'See 311 requests, neighborhood services, vacant property and more in the last 30 or 90 days near your search address. Filter or sort by records.'
+            text: '\
+              See recent activity near your search address including 311 \
+              service requests, crimes, zoning appeals, and more. Hover over a\
+              record below to highlight it on the map.\
+            '
           }
         },
         // {
