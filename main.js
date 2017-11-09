@@ -1344,14 +1344,16 @@ Mapboard.default({
               //     ]
               //   }
               // },
-              {
-                type: 'callout',
-                slots: {
-                  text: 'Condominium units associated with this parcel.\
-                    This list may differ from the Condominiums tab above based\
-                    on how the deed was recorded. Source: Department of Records'
-                },
-              },
+              // REVIEW this callout should only show up when the condos tab
+              // is visible. commenting out for now.
+              // {
+              //   type: 'callout',
+              //   slots: {
+              //     text: 'Condominium units associated with this parcel.\
+              //       This list may differ from the Condominiums tab above based\
+              //       on how the deed was recorded. Source: Department of Records'
+              //   },
+              // },
               {
                 type: 'horizontal-table',
                 options: {
