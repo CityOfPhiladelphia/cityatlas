@@ -1032,8 +1032,7 @@ Mapboard.default({
 
             return message;
           }
-        }
-        else {
+        } else {
           return 'There is no property assessment record for this address.';
         }
       },
