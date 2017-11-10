@@ -3178,36 +3178,5 @@ Mapboard.default({
         }
       ]
     },
-    // {
-    //   key: 'related',
-    //   icon: 'home',
-    //   label: 'Related Addresses',
-    //   components: [
-    //     // {
-    //     //   type: 'callout',
-    //     //   slots: {
-    //     //     text: 'This information is a test.'
-    //     //   }
-    //     // },
-    //     {
-    //       type: 'list',
-    //       slots: {
-    //         relatedAddresses: function(state) {
-    //           if (state.geocode.related.length > 0) {
-    //             return state.geocode.related;
-    //           } else {
-    //             return false;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   ],
-    // }
   ],
-  // events: {
-  //   geocodeResult(e) {
-  //     console.log('**HOST** geocode result:', e.properties.street_address);
-  //   }
-  // }
-
 });
