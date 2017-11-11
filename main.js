@@ -452,11 +452,12 @@ Mapboard.default({
                 where += " AND UNIT_NUM = '" + unitNum2 + "'";
               }
 
-              where += ") OR (STREET_ADDRESS='" + parcelBaseAddress + "'";
-              if (unitNum) {
-                where +="AND UNIT_NUM = '" + unitNum + "'";
-              }
-              where += ")"
+              where += ") or MATCHED_REGMAP = '" + state.parcels.dor.data[0].properties.BASEREG + "'";
+              // where += ") OR (STREET_ADDRESS='" + parcelBaseAddress + "'";
+              // if (unitNum) {
+              //   where +="AND UNIT_NUM = '" + unitNum + "'";
+              // }
+              // where += ")"
             }
 
             // METHOD 2: via parcel id - the layer doesn't have mapreg yet, though
