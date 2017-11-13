@@ -1,6 +1,19 @@
+/*
+   _____   __  .__
+  /  _  \_/  |_|  | _____    ______
+ /  /_\  \   __\  | \__  \  /  ___/
+/    |    \  | |  |__/ __ \_\___ \
+\____|__  /__| |____(____  /____  >
+        \/               \/     \/
+*/
+
+// turn off console logging in production
+// TODO come up with better way of doing this with webpack + env vars
+console.log = console.info = console.debug = console.error = function () {};
+
 var GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033';
 // var BASE_CONFIG_URL = '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js';
-var BASE_CONFIG_URL = '//rawgit.com/rbrtmrtn/mapboard-base-config/e2a99da8f5d1c66a74a288bf94ac00944efdf5cd/config.js';
+var BASE_CONFIG_URL = '//rawgit.com/rbrtmrtn/mapboard-base-config/d9892943dc4df94ba2b1e51dbe2aeb0b0bcd4aab/config.js';
 
 var ZONING_CODE_MAP = {
   'RSD-1': 'Residential Single Family Detached-1',
@@ -439,11 +452,12 @@ Mapboard.default({
                 where += " AND UNIT_NUM = '" + unitNum2 + "'";
               }
 
-              where += ") OR (STREET_ADDRESS='" + parcelBaseAddress + "'";
-              if (unitNum) {
-                where +="AND UNIT_NUM = '" + unitNum + "'";
-              }
-              where += ")"
+              where += ") or MATCHED_REGMAP = '" + state.parcels.dor.data[0].properties.BASEREG + "'";
+              // where += ") OR (STREET_ADDRESS='" + parcelBaseAddress + "'";
+              // if (unitNum) {
+              //   where +="AND UNIT_NUM = '" + unitNum + "'";
+              // }
+              // where += ")"
             }
 
             // METHOD 2: via parcel id - the layer doesn't have mapreg yet, though
@@ -547,7 +561,7 @@ Mapboard.default({
     // from dorCondoList
     condoList: {
       type: 'http-get',
-      url: 'http://api.phila.gov/ais/v1/search/',
+      url: '//api.phila.gov/ais/v1/search/',
       options: {
         params: {
           urlAddition: function (feature) {
@@ -1019,15 +1033,14 @@ Mapboard.default({
 
             return message;
           }
-        }
-        else {
+        } else {
           return 'There is no property assessment record for this address.';
         }
       },
     },
     {
       key: 'condominiums',
-      icon: 'map-marker',
+      icon: 'building',
       label: 'Condominiums',
       dataSources: ['condoList'],
       onlyShowTopicIfDataExists: {
@@ -1344,16 +1357,14 @@ Mapboard.default({
               //     ]
               //   }
               // },
-              // TODO this text is helpful but it has to show up only when the
-              // condos table shows up. commenting out for now.
+              // REVIEW this callout should only show up when the condos tab
+              // is visible. commenting out for now.
               // {
               //   type: 'callout',
               //   slots: {
-              //     text: '\
-              //       Condominium units associated with this parcel.\
+              //     text: 'Condominium units associated with this parcel.\
               //       This list may differ from the Condominiums tab above based\
-              //       on how the deed was recorded. Source: Department of Records\
-              //     '
+              //       on how the deed was recorded. Source: Department of Records'
               //   },
               // },
               {
@@ -1423,9 +1434,9 @@ Mapboard.default({
               {
                 type: 'callout',
                 slots: {
-                  text: ' The list of documents \
+                  text: 'The list of documents \
                     shown below may not be a complete history of title to this \
-                    parcel.  The list is based solely on documents recorded from\
+                    parcel. The list is based solely on documents recorded from\
                     1974 forward where those documents contained street addresses\
                     in the original recorded document.\
                   '
@@ -2025,7 +2036,7 @@ Mapboard.default({
     },
     {
       key: 'zoning',
-      icon: 'building-o',
+      icon: 'university',
       label: 'Zoning',
       dataSources: [
         'zoningOverlay'
@@ -2354,7 +2365,7 @@ Mapboard.default({
               getValue: function(item, method) {
                 var val;
 
-                if (method === 'date') {
+                if (method === 'date' || !method) {
                   val = item.properties.REQUESTED_DATETIME;
                 } else if (method === 'distance') {
                   val = item._distance;
@@ -2671,7 +2682,11 @@ Mapboard.default({
         {
           type: 'callout',
           slots: {
-            text: 'See 311 requests, neighborhood services, vacant property and more in the last 30 or 90 days near your search address. Filter or sort by records.'
+            text: '\
+              See recent activity near your search address including 311 \
+              service requests, crimes, zoning appeals, and more. Hover over a\
+              record below to highlight it on the map.\
+            '
           }
         },
         // {
@@ -2741,7 +2756,7 @@ Mapboard.default({
                     getValue: function(item, method) {
                       var val;
 
-                      if (method === 'date') {
+                      if (method === 'date' || !method) {
                         val = item.requested_datetime;
                       } else if (method === 'distance') {
                         val = item.distance;
@@ -2780,7 +2795,7 @@ Mapboard.default({
                     }
                   ],
                   filterByText: {
-                    label: 'Filter by',
+                    label: 'Filter by text',
                     fields: [
                       'service_name',
                       'address'
@@ -2864,7 +2879,7 @@ Mapboard.default({
                     getValue: function(item, method) {
                       var val;
 
-                      if (method === 'date') {
+                      if (method === 'date' || !method) {
                         val = item.dispatch_date;
                       } else if (method === 'distance') {
                         val = item.distance;
@@ -2976,7 +2991,7 @@ Mapboard.default({
                     getValue: function(item, method) {
                       var val;
 
-                      if (method === 'date') {
+                      if (method === 'date' || !method) {
                         val = item.decisiondate;
                       } else if (method === 'distance') {
                         val = item.distance;
@@ -3069,7 +3084,7 @@ Mapboard.default({
                     getValue: function(item, method) {
                       var val;
 
-                      if (method === 'type') {
+                      if (method === 'type' || !method) {
                         val = item.properties.VACANT_FLAG;
                       } else if (method === 'distance') {
                         val = item._distance;
@@ -3164,36 +3179,5 @@ Mapboard.default({
         }
       ]
     },
-    // {
-    //   key: 'related',
-    //   icon: 'home',
-    //   label: 'Related Addresses',
-    //   components: [
-    //     // {
-    //     //   type: 'callout',
-    //     //   slots: {
-    //     //     text: 'This information is a test.'
-    //     //   }
-    //     // },
-    //     {
-    //       type: 'list',
-    //       slots: {
-    //         relatedAddresses: function(state) {
-    //           if (state.geocode.related.length > 0) {
-    //             return state.geocode.related;
-    //           } else {
-    //             return false;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   ],
-    // }
   ],
-  // events: {
-  //   geocodeResult(e) {
-  //     console.log('**HOST** geocode result:', e.properties.street_address);
-  //   }
-  // }
-
 });
