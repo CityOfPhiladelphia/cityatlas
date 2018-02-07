@@ -1303,7 +1303,8 @@ Mapboard.default({
                     {
                       label: 'Perimeter',
                       value: function(state, item) {
-                        return Math.round(item.properties['SHAPE.LEN']) + ' ft';
+                        // return Math.round(item.properties['SHAPE.LEN']) + ' ft';
+                        return Math.round(item.properties['Shape__Length']) + ' ft';
                       },
                       transforms: [
                         'thousandsPlace'
@@ -1312,7 +1313,8 @@ Mapboard.default({
                     {
                       label: 'Area',
                       value: function(state, item) {
-                        return Math.round(item.properties['SHAPE.AREA']) + ' sq ft';
+                        // return Math.round(item.properties['SHAPE.AREA']) + ' sq ft';
+                        return Math.round(item.properties['Shape__Area']) + ' sq ft';
                       },
                       transforms: [
                         'thousandsPlace'
