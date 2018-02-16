@@ -13,7 +13,7 @@ console.log = console.info = console.debug = console.error = function () {};
 
 var GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033';
 // var BASE_CONFIG_URL = '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js';
-var BASE_CONFIG_URL = '//rawgit.com/rbrtmrtn/mapboard-base-config/5378749141d2fd7a2dcd1a3cc1a74ea61aa7f51d/config.js';
+var BASE_CONFIG_URL = '//rawgit.com/rbrtmrtn/mapboard-base-config/c5c5b33fee4b375c0856f6b1215dc990b80f569c/config.js';
 
 var ZONING_CODE_MAP = {
   'RSD-1': 'Residential Single Family Detached-1',
