@@ -13,7 +13,8 @@ console.log = console.info = console.debug = console.error = function () {};
 
 var GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033';
 // var BASE_CONFIG_URL = '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js';
-var BASE_CONFIG_URL = '//rawgit.com/rbrtmrtn/mapboard-base-config/13a6bde61aec47278ccb1baff07b6dbbbd614fc1/config.js';
+// var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/e45803b240e14717fb452805fa90c134870eb14b/config.js';
+var BASE_CONFIG_URL = 'https://cdn.rawgit.com/Alexander-M-Waldman/mapboard-base-config/e446a4ddbef74c22281c42d4d0dc5d34f7ba1abd/config.js';
 
 var ZONING_CODE_MAP = {
   'RSD-1': 'Residential Single Family Detached-1',
@@ -356,7 +357,8 @@ Mapboard.default({
     // // TODO take zoningBase out and use AIS for base zoning district
     zoningBase: {
       type: 'esri',
-      url: 'https://gis.phila.gov/arcgis/rest/services/PhilaGov/ZoningMap/MapServer/6/',
+      // url: 'https://gis.phila.gov/arcgis/rest/services/PhilaGov/ZoningMap/MapServer/6/',
+      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Zoning_BaseDistricts/FeatureServer/0/',
       options: {
         relationship: 'contains',
       },
@@ -411,8 +413,7 @@ Mapboard.default({
           return target.properties.OBJECTID;
         },
       },
-      // url: '//ase.phila.gov/arcgis/rest/services/RTT/MapServer/0/query',
-      url: '//ase.phila.gov/arcgis/rest/services/DOR/rttsummary/MapServer/0/query',
+      url: '//gis.phila.gov/arcgis/rest/services/DOR/rtt_service/MapServer/0/query',
       options: {
         params: {
           where: function (feature, state) {
@@ -438,6 +439,10 @@ Mapboard.default({
               }
               if (geocode.address_low_suffix != '') {
                 where += " AND ADDRESS_LOW_SUFFIX = '" + geocode.address_low_suffix + "'";
+              }
+              // this is hardcoded right now to handle DOR address suffixes that are actually fractions
+              if (geocode.address_low_frac = '1/2') {
+                where += " AND ADDRESS_LOW_SUFFIX = '2'" //+ geocode.address_low_frac + "'";
               }
               if (geocode.street_postdir != '') {
                 where += " AND STREET_POSTDIR = '" + geocode.street_postdir + "'";
@@ -480,9 +485,9 @@ Mapboard.default({
     },
     '311': {
       type: 'esri-nearby',
-      url: 'http://192.168.103.143:6080/arcgis/rest/services/GSG/GIS311_365DAYS/MapServer/0',
+      url: 'http://ase.phila.gov/arcgis/rest/services/GSG/GIS311_365DAYS/MapServer/0',
       options: {
-        geometryServerUrl: 'http://192.168.103.143:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
+        geometryServerUrl: 'http://ase.phila.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
         calculateDistance: true,
       },
     },
@@ -547,7 +552,8 @@ Mapboard.default({
     },
     zoningOverlay: {
       type: 'esri',
-      url: 'https://gis.phila.gov/arcgis/rest/services/PhilaGov/ZoningMap/MapServer/1/',
+      // url: 'https://gis.phila.gov/arcgis/rest/services/PhilaGov/ZoningMap/MapServer/1/',
+      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Zoning_Overlays/FeatureServer/0/',
       options: {
         relationship: 'contains',
         returnGeometry: false,
@@ -578,7 +584,7 @@ Mapboard.default({
     },
     regmaps: {
       type: 'esri',
-      url: '//gis.phila.gov/arcgis/rest/services/DOR_ParcelExplorer/rtt_basemap/MapServer/0',
+      url: '//services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/MASTERMAPINDEX/FeatureServer/0',
       // deps: ['dorParcels'],
       deps: ['parcels.dor'],
       options: {
@@ -664,9 +670,6 @@ Mapboard.default({
       url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
       options: {
         geometryServerUrl: 'http://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
-        // geometryServerUrl: 'http://192.168.103.143:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
-        // radius: 500,
-        // units: 'feet',
         calculateDistance: true,
       },
     },
@@ -821,6 +824,26 @@ Mapboard.default({
         var label = String(value).replace(/[0-9]/g, '') || '';
         return number + ' ' + label;
       }
+    },
+    integer: {
+      transform: function (value) {
+        return !isNaN(value) && parseInt(value);
+      },
+    },
+    prettyNumber: {
+      transform: function (value) {
+        return !isNaN(value) && value.toLocaleString();
+      },
+    },
+    feet: {
+      transform: function (value) {
+        return value && value + ' ft';
+      },
+    },
+    squareFeet: {
+      transform: function (value) {
+        return value && value + ' sq ft';
+      },
     }
   },
   greeting:{
@@ -954,7 +977,7 @@ Mapboard.default({
                 }
               },
               {
-                label: 'Assessed Value ',// + new Date().getFullYear(),
+                label: 'Assessed Value',// + new Date().getFullYear(),
                 value: function(state) {
                   var data = state.sources.opa.data;
                   // return data.market_value;
@@ -1303,20 +1326,24 @@ Mapboard.default({
                     },
                     {
                       label: 'Perimeter',
-                      value: function(state, item) {
-                        return Math.round(item.properties['SHAPE.LEN']) + ' ft';
+                      value: function (state, item) {
+                        return (item.properties || {})['TURF_PERIMETER'];
                       },
                       transforms: [
-                        'thousandsPlace'
+                        'integer',
+                        'prettyNumber',
+                        'feet',
                       ]
                     },
                     {
                       label: 'Area',
                       value: function(state, item) {
-                        return Math.round(item.properties['SHAPE.AREA']) + ' sq ft';
+                        return (item.properties || {})['TURF_AREA'];
                       },
                       transforms: [
-                        'thousandsPlace'
+                        'integer',
+                        'prettyNumber',
+                        'squareFeet',
                       ]
                     },
                   ]
@@ -1607,7 +1634,8 @@ Mapboard.default({
         'liPermits',
         'liInspections',
         'liViolations',
-        'liBusinessLicenses'
+        'liBusinessLicenses',
+        'zoningDocs',
       ],
       components: [
         {
@@ -1685,6 +1713,111 @@ Mapboard.default({
                 return itemRow;
               });
               return rows;
+            },
+          },
+        },
+        {
+          type: 'horizontal-table',
+          options: {
+            topicKey: 'zoning',
+            id: 'zoningDocs',
+            // limit: 100,
+            fields: [
+              {
+                label: 'Date',
+                value: function(state, item){
+                  return item.scan_date
+                },
+                nullValue: 'no date available',
+                transforms: [
+                  'date'
+                ]
+              },
+              {
+                label: 'ID',
+                value: function (state, item) {
+                  console.log('zoning doc', item);
+
+                  var appId = item.app_id;
+
+                  if (appId.length < 3) {
+                    appId = '0' + appId;
+                  }
+
+                  return '<a target="_blank" class="external" href="//s3.amazonaws.com/lni-zoning-pdfs/'
+                          + item.doc_id
+                          + '.pdf">'
+                          + item.doc_id
+                          // + '<i class='fa fa-external-link'></i></a>'
+                          + '</a>'
+                  // return item.appid + '-' + item.docid
+                }
+              },
+              // {
+              //   label: 'ID',
+              //   value: function(state, item){
+              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address="
+              //             + item.address
+              //             + "&&docType="
+              //             + item.doc_type
+              //             + "&numofPages="
+              //             + item.num_pages
+              //             + "&docID="
+              //             + item.app_doc_id
+              //             + "&app="
+              //             + item.app_id
+              //             +"'>"
+              //             // + item.app_id + '-'
+              //             + item.doc_id + ' '
+              //             + "<i class='fa fa-external-link'></i></a>"
+              //     // return item.appid + '-' + item.docid
+              //   }
+              // },
+              {
+                label: 'Type',
+                value: function(state, item){
+                  return item.doc_type
+                }
+              },
+              {
+                label: '# Pages',
+                value: function(state, item){
+                  return item.num_pages
+                }
+              },
+              // {
+              //   label: 'Link',
+              //   value: function(state, item){
+              //     // return "<a href='//www.washingtonpost.com/'>View Scan</a>"
+              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address=" + item.address + "&&docType=" + item.doctype + "&numofPages=" + item.page_numbers + "&docID=" + item.docid + "&app=" + item.appid +"'>View Scan <i class='fa fa-external-link'></i></a>"
+              //   }
+              // },
+            ],
+            sort: {
+              // this should return the val to sort on
+              getValue: function(item) {
+                return item.scandate;
+              },
+              // asc or desc
+              order: 'desc'
+            },
+          },
+          slots: {
+            title: 'Archived Documents',
+            subtitle: 'aka "Zoning Archive"',
+            items: function(state) {
+              if (state.sources['zoningDocs'].data) {
+                if (state.sources['zoningDocs'].data.rows) {
+                  var data = state.sources['zoningDocs'].data.rows;
+                  var rows = data.map(function(row){
+                    var itemRow = row;
+                    // var itemRow = Object.assign({}, row);
+                    //itemRow.DISTANCE = 'TODO';
+                    return itemRow;
+                  });
+                  return rows;
+                }
+              }
             },
           },
         },
@@ -2202,88 +2335,9 @@ Mapboard.default({
           },
         },
         {
-          type: 'horizontal-table',
-          options: {
-            topicKey: 'zoning',
-            id: 'zoningDocs',
-            // limit: 100,
-            fields: [
-              {
-                label: 'Date',
-                value: function(state, item){
-                  return item.scan_date
-                },
-                nullValue: 'no date available',
-                transforms: [
-                  'date'
-                ]
-              },
-              {
-                label: 'ID',
-                value: function(state, item){
-                  return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address="
-                          + item.address
-                          + "&&docType="
-                          + item.doc_type
-                          + "&numofPages="
-                          + item.num_pages
-                          + "&docID="
-                          + item.app_doc_id
-                          + "&app="
-                          + item.app_id
-                          +"'>"
-                          // + item.app_id + '-'
-                          + item.doc_id + ' '
-                          + "<i class='fa fa-external-link'></i></a>"
-                  // return item.appid + '-' + item.docid
-                }
-              },
-              {
-                label: 'Type',
-                value: function(state, item){
-                  return item.doc_type
-                }
-              },
-              {
-                label: '# Pages',
-                value: function(state, item){
-                  return item.num_pages
-                }
-              },
-              // {
-              //   label: 'Link',
-              //   value: function(state, item){
-              //     // return "<a href='//www.washingtonpost.com/'>View Scan</a>"
-              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address=" + item.address + "&&docType=" + item.doctype + "&numofPages=" + item.page_numbers + "&docID=" + item.docid + "&app=" + item.appid +"'>View Scan <i class='fa fa-external-link'></i></a>"
-              //   }
-              // },
-            ],
-            sort: {
-              // this should return the val to sort on
-              getValue: function(item) {
-                return item.scandate;
-              },
-              // asc or desc
-              order: 'desc'
-            },
-          },
+          type: 'callout',
           slots: {
-            title: 'Archived Documents',
-            subtitle: 'aka "Zoning Archive"',
-            items: function(state) {
-              if (state.sources['zoningDocs'].data) {
-                if (state.sources['zoningDocs'].data.rows) {
-                  var data = state.sources['zoningDocs'].data.rows;
-                  var rows = data.map(function(row){
-                    var itemRow = row;
-                    // var itemRow = Object.assign({}, row);
-                    //itemRow.DISTANCE = 'TODO';
-                    return itemRow;
-                  });
-                  return rows;
-                }
-              }
-            },
+            text: 'Looking for zoning documents? They are now located in the Licenses & Inspections tab under "Zoning Permit Documents".',
           },
         },
         {
