@@ -1633,7 +1633,8 @@ Mapboard.default({
         'liPermits',
         'liInspections',
         'liViolations',
-        'liBusinessLicenses'
+        'liBusinessLicenses',
+        'zoningDocs',
       ],
       components: [
         {
@@ -1711,6 +1712,111 @@ Mapboard.default({
                 return itemRow;
               });
               return rows;
+            },
+          },
+        },
+        {
+          type: 'horizontal-table',
+          options: {
+            topicKey: 'zoning',
+            id: 'zoningDocs',
+            // limit: 100,
+            fields: [
+              {
+                label: 'Date',
+                value: function(state, item){
+                  return item.scan_date
+                },
+                nullValue: 'no date available',
+                transforms: [
+                  'date'
+                ]
+              },
+              {
+                label: 'ID',
+                value: function (state, item) {
+                  console.log('zoning doc', item);
+
+                  var appId = item.app_id;
+
+                  if (appId.length < 3) {
+                    appId = '0' + appId;
+                  }
+
+                  return '<a target="_blank" class="external" href="//s3.amazonaws.com/lni-zoning-pdfs/'
+                          + item.doc_id
+                          + '.pdf">'
+                          + item.doc_id
+                          // + '<i class='fa fa-external-link'></i></a>'
+                          + '</a>'
+                  // return item.appid + '-' + item.docid
+                }
+              },
+              // {
+              //   label: 'ID',
+              //   value: function(state, item){
+              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address="
+              //             + item.address
+              //             + "&&docType="
+              //             + item.doc_type
+              //             + "&numofPages="
+              //             + item.num_pages
+              //             + "&docID="
+              //             + item.app_doc_id
+              //             + "&app="
+              //             + item.app_id
+              //             +"'>"
+              //             // + item.app_id + '-'
+              //             + item.doc_id + ' '
+              //             + "<i class='fa fa-external-link'></i></a>"
+              //     // return item.appid + '-' + item.docid
+              //   }
+              // },
+              {
+                label: 'Type',
+                value: function(state, item){
+                  return item.doc_type
+                }
+              },
+              {
+                label: '# Pages',
+                value: function(state, item){
+                  return item.num_pages
+                }
+              },
+              // {
+              //   label: 'Link',
+              //   value: function(state, item){
+              //     // return "<a href='//www.washingtonpost.com/'>View Scan</a>"
+              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address=" + item.address + "&&docType=" + item.doctype + "&numofPages=" + item.page_numbers + "&docID=" + item.docid + "&app=" + item.appid +"'>View Scan <i class='fa fa-external-link'></i></a>"
+              //   }
+              // },
+            ],
+            sort: {
+              // this should return the val to sort on
+              getValue: function(item) {
+                return item.scandate;
+              },
+              // asc or desc
+              order: 'desc'
+            },
+          },
+          slots: {
+            title: 'Archived Documents',
+            subtitle: 'aka "Zoning Archive"',
+            items: function(state) {
+              if (state.sources['zoningDocs'].data) {
+                if (state.sources['zoningDocs'].data.rows) {
+                  var data = state.sources['zoningDocs'].data.rows;
+                  var rows = data.map(function(row){
+                    var itemRow = row;
+                    // var itemRow = Object.assign({}, row);
+                    //itemRow.DISTANCE = 'TODO';
+                    return itemRow;
+                  });
+                  return rows;
+                }
+              }
             },
           },
         },
@@ -2228,88 +2334,9 @@ Mapboard.default({
           },
         },
         {
-          type: 'horizontal-table',
-          options: {
-            topicKey: 'zoning',
-            id: 'zoningDocs',
-            // limit: 100,
-            fields: [
-              {
-                label: 'Date',
-                value: function(state, item){
-                  return item.scan_date
-                },
-                nullValue: 'no date available',
-                transforms: [
-                  'date'
-                ]
-              },
-              {
-                label: 'ID',
-                value: function(state, item){
-                  return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address="
-                          + item.address
-                          + "&&docType="
-                          + item.doc_type
-                          + "&numofPages="
-                          + item.num_pages
-                          + "&docID="
-                          + item.app_doc_id
-                          + "&app="
-                          + item.app_id
-                          +"'>"
-                          // + item.app_id + '-'
-                          + item.doc_id + ' '
-                          + "<i class='fa fa-external-link'></i></a>"
-                  // return item.appid + '-' + item.docid
-                }
-              },
-              {
-                label: 'Type',
-                value: function(state, item){
-                  return item.doc_type
-                }
-              },
-              {
-                label: '# Pages',
-                value: function(state, item){
-                  return item.num_pages
-                }
-              },
-              // {
-              //   label: 'Link',
-              //   value: function(state, item){
-              //     // return "<a href='//www.washingtonpost.com/'>View Scan</a>"
-              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address=" + item.address + "&&docType=" + item.doctype + "&numofPages=" + item.page_numbers + "&docID=" + item.docid + "&app=" + item.appid +"'>View Scan <i class='fa fa-external-link'></i></a>"
-              //   }
-              // },
-            ],
-            sort: {
-              // this should return the val to sort on
-              getValue: function(item) {
-                return item.scandate;
-              },
-              // asc or desc
-              order: 'desc'
-            },
-          },
+          type: 'callout',
           slots: {
-            title: 'Archived Documents',
-            subtitle: 'aka "Zoning Archive"',
-            items: function(state) {
-              if (state.sources['zoningDocs'].data) {
-                if (state.sources['zoningDocs'].data.rows) {
-                  var data = state.sources['zoningDocs'].data.rows;
-                  var rows = data.map(function(row){
-                    var itemRow = row;
-                    // var itemRow = Object.assign({}, row);
-                    //itemRow.DISTANCE = 'TODO';
-                    return itemRow;
-                  });
-                  return rows;
-                }
-              }
-            },
+            text: 'Looking for zoning documents? They are now located in the Licenses & Inspections tab under "Zoning Permit Documents".',
           },
         },
         {
