@@ -976,7 +976,7 @@ Mapboard.default({
                 }
               },
               {
-                label: 'Assessed Value ' + new Date().getFullYear(),
+                label: 'Assessed Value',// + new Date().getFullYear(),
                 value: function(state) {
                   var data = state.sources.opa.data;
                   // return data.market_value;
