@@ -7,16 +7,28 @@
         \/               \/     \/
 */
 
+import mapboard from '@cityofphiladelphia/mapboard';
+import accounting from 'accounting';
+import moment from 'moment';
+
+// styles
+// TODO move all styles here (that have a npm package)
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-easybutton/src/easy-button.css';
+import 'leaflet-measure/dist/leaflet-measure.css';
+// REVIEW not sure why the hard path is necessary for vector icon
+// REVIEW the vector icons seem to be working without this - why?
+// import '../node_modules/@cityofphiladelphia/mapboard/node_modules/leaflet-vector-icon/dist/leaflet-vector-icon.css';
+
 // turn off console logging in production
 // TODO come up with better way of doing this with webpack + env vars
 if (location.hostname !== 'localhost') {
-  console.log = console.info = console.debug = console.error = function () {};
+  // console.log = console.info = console.debug = console.error = function () {};
 }
 
-var GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033';
 // var BASE_CONFIG_URL = '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js';
+// var BASE_CONFIG_URL = '//rawgit.com/rbrtmrtn/mapboard-base-config/e45803b240e14717fb452805fa90c134870eb14b/config.js';
 var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/e45803b240e14717fb452805fa90c134870eb14b/config.js';
-// var BASE_CONFIG_URL = 'https://cdn.rawgit.com/Alexander-M-Waldman/mapboard-base-config/e446a4ddbef74c22281c42d4d0dc5d34f7ba1abd/config.js';
 
 var ZONING_CODE_MAP = {
   'RSD-1': 'Residential Single Family Detached-1',
@@ -54,7 +66,6 @@ var ZONING_CODE_MAP = {
   'SPINS': 'Institutional Development',
   'SPSTA': 'Stadium',
   'SPPOA': 'Recreation',
-  'SP-PO-A': 'Recreation',
   'SPPOP': 'Recreation',
 };
 
@@ -141,7 +152,7 @@ function getVacancyText(state) {
 // configure accounting.js
 accounting.settings.currency.precision = 0;
 
-Mapboard.default({
+mapboard({
   // DEV
   // defaultAddress: '1234 MARKET ST',
   router: {
@@ -249,18 +260,18 @@ Mapboard.default({
     //     return data;
     //   }
     // },
-    stormwater: {
-      type: 'http-get',
-      url: 'https://api.phila.gov/stormwater',
-      options: {
-        params: {
-          search: function(feature){ return feature.properties.street_address; }
-        },
-        success: function(data) {
-          return data[0];
-        }
-      }
-    },
+    // stormwater: {
+    //   type: 'http-get',
+    //   url: 'https://api.phila.gov/stormwater',
+    //   options: {
+    //     params: {
+    //       search: function(feature){ return feature.properties.street_address; }
+    //     },
+    //     success: function(data) {
+    //       return data[0];
+    //     }
+    //   }
+    // },
     liPermits: {
       type: 'http-get',
       url: 'https://phl.carto.com/api/v2/sql',
@@ -270,22 +281,22 @@ Mapboard.default({
         }
       }
     },
-    liPermitsAdditional: {
-      type: 'http-get',
-      url: 'http://ase.phila.gov/arcgis/rest/services/GSG/GIS_LNI_LI_PERMITS_PLANNING/FeatureServer/0/query?',
-      options: {
-        params: {
-          where: function(feature) {
-            return "ADDRESS = '" + feature.properties.street_address + "' OR ADDRESSKEY = '" + feature.properties.li_address_key + "'"
-          },
-          outFields: '*',
-          f: 'json'
-        },
-        success: function(data) {
-          return data.features;
-        },
-      },
-    },
+    // liPermitsAdditional: {
+    //   type: 'http-get',
+    //   url: 'http://ase.phila.gov/arcgis/rest/services/GSG/GIS_LNI_LI_PERMITS_PLANNING/FeatureServer/0/query?',
+    //   options: {
+    //     params: {
+    //       where: function(feature) {
+    //         return "ADDRESS = '" + feature.properties.street_address + "' OR ADDRESSKEY = '" + feature.properties.li_address_key + "'"
+    //       },
+    //       outFields: '*',
+    //       f: 'json'
+    //     },
+    //     success: function(data) {
+    //       return data.features;
+    //     },
+    //   },
+    // },
     liInspections: {
       type: 'http-get',
       url: 'https://phl.carto.com/api/v2/sql',
@@ -358,131 +369,26 @@ Mapboard.default({
     },
     // // TODO take zoningBase out and use AIS for base zoning district
     zoningBase: {
+      // type: 'esri',
+      // // url: 'https://gis.phila.gov/arcgis/rest/services/PhilaGov/ZoningMap/MapServer/6/',
+      // url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Zoning_BaseDistricts/FeatureServer/0/',
+      // options: {
+      //   relationship: 'contains',
+      // },
+      // success: function(data) {
+      //   return data;
+      // }
       type: 'http-get',
-      dependent: 'parcel',
-      targets: {
-        get: function(state) {
-          return state.parcels.dor.data;
-        },
-        getTargetId: function(target) {
-          return target.properties.OBJECTID;
-        },
-      },
       url: 'https://phl.carto.com/api/v2/sql',
       options: {
         params: {
-          q: function(feature, state) {
-            // console.log('feature:', feature, 'state.parcels.dor:', state.parcels.dor, 'state.parcels.dor.data[0]', state.parcels.dor.data[0]);
-            // var stmt = "with all_zoning as (select * from zoning_basedistricts),"
-            //          + "parcel as (select * from dor_parcel where dor_parcel.mapreg = '" + feature.properties.MAPREG + "'),"
-            //          // + "parcel as (select * from dor_parcel where dor_parcel.mapreg = '" + state.parcels.dor.data[0].properties.MAPREG + "'),"
-            //          + "zp as (select all_zoning.* from all_zoning, parcel where st_intersects(parcel.the_geom, all_zoning.the_geom)),"
-            //          // + "select zp.source_object_id, zp.value, st_area(st_intersection(zp.the_geom, parcel.the_geom)) / st_area(parcel.the_geom) as geom from zp, parcel";
-            //          + "total as (select zp.objectid, zp.long_code, st_area(st_intersection(zp.the_geom, parcel.the_geom)) / st_area(parcel.the_geom) as overlap_area from zp, parcel)"
-            //          + "select * from total where overlap_area >= 0.01"
-            //          // + "select * from zp";
-            var mapreg = feature.properties.MAPREG,
-                stmt = "\
-                  WITH all_zoning AS \
-                    ( \
-                      SELECT * \
-                      FROM   phl.zoning_basedistricts \
-                    ), \
-                  parcel AS \
-                    ( \
-                      SELECT * \
-                      FROM   phl.dor_parcel \
-                      WHERE  dor_parcel.mapreg = '" + mapreg + "' \
-                    ), \
-                  zp AS \
-                    ( \
-                      SELECT all_zoning.* \
-                      FROM   all_zoning, parcel \
-                      WHERE  St_intersects(parcel.the_geom, all_zoning.the_geom) \
-                    ), \
-                  combine AS \
-                    ( \
-                      SELECT zp.objectid, \
-                      zp.long_code, \
-                      St_area(St_intersection(zp.the_geom, parcel.the_geom)) / St_area(parcel.the_geom) AS overlap_area \
-                      FROM zp, parcel \
-                    ), \
-                  total AS \
-                    ( \
-                      SELECT long_code, sum(overlap_area) as sum_overlap_area \
-                      FROM combine \
-                      GROUP BY long_code \
-                    ) \
-                  SELECT * \
-                  FROM total \
-                  WHERE sum_overlap_area >= 0.01 \
-                ";
-            return stmt;
-          }
-        }
-      }
-    },
-    zoningOverlay: {
-      type: 'http-get',
-      dependent: 'parcel',
-      targets: {
-        get: function(state) {
-          return state.parcels.dor.data;
-        },
-        getTargetId: function(target) {
-          return target.properties.OBJECTID;
-        },
-      },
-      url: 'https://phl.carto.com/api/v2/sql',
-      options: {
-        params: {
-          q: function(feature, state) {
-            // var stmt = "with all_zoning as (select * from zoning_overlays),"
-            //          + "parcel as (select * from dor_parcel where dor_parcel.mapreg = '" + feature.properties.dor_parcel_id + "'),"
-            //          // + "parcel as (select * from dor_parcel where dor_parcel.mapreg = '" + feature.properties.MAPREG + "'),"
-            //          // + "parcel as (select * from dor_parcel where dor_parcel.mapreg = '" + state.parcels.dor.data[0].properties.MAPREG + "'),"
-            //          + "zp as (select all_zoning.* from all_zoning, parcel where st_intersects(parcel.the_geom, all_zoning.the_geom)),"
-            //          + "total as (select zp.*, st_area(st_intersection(zp.the_geom, parcel.the_geom)) / st_area(parcel.the_geom) as overlap_area from zp, parcel)"
-            //          + "select * from total where overlap_area >= 0.01"
-            var mapreg = feature.properties.MAPREG,
-                stmt = "\
-                WITH all_zoning AS \
-                  ( \
-                    SELECT * \
-                    FROM   phl.zoning_overlays \
-                  ), \
-                parcel AS \
-                  ( \
-                    SELECT * \
-                    FROM   phl.dor_parcel \
-                    WHERE  dor_parcel.mapreg = '" + mapreg + "' \
-                  ), \
-                zp AS \
-                  ( \
-                    SELECT all_zoning.* \
-                    FROM all_zoning, parcel \
-                    WHERE st_intersects(parcel.the_geom, all_zoning.the_geom) \
-                  ), \
-                total AS \
-                  ( \
-                    SELECT zp.*, st_area(St_intersection(zp.the_geom, parcel.the_geom)) / st_area(parcel.the_geom) AS overlap_area \
-                    FROM   zp, parcel \
-                  ) \
-                SELECT cartodb_id, \
-                      code_section, \
-                      code_section_link, \
-                      objectid, \
-                      overlap_area, \
-                      overlay_name, \
-                      overlay_symbol, \
-                      pending, \
-                      pendingbill, \
-                      pendingbillurl, \
-                      sunset_date, \
-                      type \
-                FROM total \
-                WHERE overlap_area >= 0.01 \
-              ";
+          q: function(feature) {
+            var stmt = "with all_zoning as (select * from zoning_basedistricts),"
+                     + "parcel as (select * from dor_parcel where dor_parcel.mapreg = '" + feature.properties.dor_parcel_id + "'),"
+                     + "zp as (select all_zoning.* from all_zoning, parcel where st_intersects(parcel.the_geom, all_zoning.the_geom))"
+                     // + "select zp.source_object_id, zp.value, st_area(st_intersection(zp.the_geom, parcel.the_geom)) / st_area(parcel.the_geom) as geom from zp, parcel";
+                     + "select zp.objectid, zp.long_code, st_area(st_intersection(zp.the_geom, parcel.the_geom)) / st_area(parcel.the_geom) as geom from zp, parcel";
+                     // + "select * from zp";
             return stmt;
           }
         }
@@ -519,9 +425,8 @@ Mapboard.default({
       options: {
         params: {
           q: function(feature, state){
-            console.log(state.parcels.dor.data[0].properties, 'mapreg', state.parcels.dor.data[0].properties.MAPREG);
             return "select * from condominium where mapref = '" + state.parcels.dor.data[0].properties.MAPREG + "'"
-          },// + "' or addresskey = '" + feature.properties.li_address_key.toString() + "'",
+          },
         }
       }
     },
@@ -538,7 +443,7 @@ Mapboard.default({
       url: '//gis.phila.gov/arcgis/rest/services/DOR/rtt_service/MapServer/0/query',
       options: {
         params: {
-          where: function (feature, state) {
+          where: function(feature, state) {
             // METHOD 1: via address
             var parcelBaseAddress = concatDorAddress(feature);
             var geocode = state.geocode.data.properties;
@@ -548,24 +453,36 @@ Mapboard.default({
             if (!parcelBaseAddress || parcelBaseAddress === 'null'){
               var where = "MATCHED_REGMAP = '" + state.parcels.dor.data[0].properties.BASEREG + "'";
             } else {
-              var addressLow = state.geocode.data.properties.address_low,
-                  addressFloor = Math.floor(addressLow / 100, 1) * 100,
-                  addressRemainder = addressLow - addressFloor,
-                  where = "((ADDRESS_LOW = " + addressLow
-                        + " OR (ADDRESS_LOW >= " + addressFloor + " AND ADDRESS_LOW <= " + addressLow + " AND ADDRESS_HIGH >= " + addressRemainder + " ))"
+              // TODO make these all camel case
+              var props = state.geocode.data.properties,
+                  address_low = props.address_low,
+                  address_floor = Math.floor(address_low / 100, 1) * 100,
+                  address_remainder = address_low - address_floor,
+                  addressHigh = props.address_high,
+                  addressCeil = addressHigh || address_low;
+
+              // form where clause
+              var where = "(((ADDRESS_LOW >= " + address_low + " AND ADDRESS_LOW <= " + addressCeil + ")"
+                        + " OR (ADDRESS_LOW >= " + address_floor + " AND ADDRESS_LOW <= " + addressCeil + " AND ADDRESS_HIGH >= " + address_remainder + " ))"
                         + " AND STREET_NAME = '" + geocode.street_name
                         + "' AND STREET_SUFFIX = '" + geocode.street_suffix
-                        + "'"
+                        + "' AND (MOD(ADDRESS_LOW,2) = MOD( " + address_low + ",2))";
+
+
+
               if (geocode.street_predir != '') {
                 where += " AND STREET_PREDIR = '" + geocode.street_predir + "'";
               }
+
               if (geocode.address_low_suffix != '') {
                 where += " AND ADDRESS_LOW_SUFFIX = '" + geocode.address_low_suffix + "'";
               }
+
               // this is hardcoded right now to handle DOR address suffixes that are actually fractions
               if (geocode.address_low_frac = '1/2') {
                 where += " AND ADDRESS_LOW_SUFFIX = '2'" //+ geocode.address_low_frac + "'";
               }
+
               if (geocode.street_postdir != '') {
                 where += " AND STREET_POSTDIR = '" + geocode.street_postdir + "'";
               }
@@ -573,25 +490,15 @@ Mapboard.default({
               // check for unit num
               var unitNum = cleanDorAttribute(feature.properties.UNIT),
                   unitNum2 = geocode.unit_num;
+
               if (unitNum) {
                 where += " AND UNIT_NUM = '" + unitNum + "'";
-              } else if (unitNum2 != '') {
+              } else if (unitNum2 !== '') {
                 where += " AND UNIT_NUM = '" + unitNum2 + "'";
               }
 
               where += ") or MATCHED_REGMAP = '" + state.parcels.dor.data[0].properties.BASEREG + "'";
-              // where += ") OR (STREET_ADDRESS='" + parcelBaseAddress + "'";
-              // if (unitNum) {
-              //   where +="AND UNIT_NUM = '" + unitNum + "'";
-              // }
-              // where += ")"
             }
-
-            // METHOD 2: via parcel id - the layer doesn't have mapreg yet, though
-            // var mapreg = feature.properties.MAPREG;
-            // var where = `MAPREG = '${mapreg}'`;
-
-            // console.log('dor docs where', where);
 
             return where;
           },
@@ -602,16 +509,8 @@ Mapboard.default({
         },
         success: function(data) {
           return data.features;
+          // return data.rows;
         }
-      },
-    },
-    '311': {
-      type: 'esri-nearby',
-      url: 'http://ase.phila.gov/arcgis/rest/services/GSG/GIS311_365DAYS/MapServer/0',
-      options: {
-        geometryServerUrl: 'http://ase.phila.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
-        distances: 500,
-        calculateDistance: true,
       },
     },
     '311Carto': {
@@ -647,28 +546,23 @@ Mapboard.default({
         params: {}
       }
     },
-    vacantLand: {
-      type: 'esri',
-      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Land/FeatureServer/0',
+    vacantIndicatorsPoints: {
+      type: 'esri-nearby',
+      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
       options: {
-        relationship: 'contains',
+        geometryServerUrl: '//gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
+        calculateDistance: true,
+        distances: 500,
       },
-      // params: {
-      //   query: feature => L.esri.query({url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Land/FeatureServer/0'}).contains(feature)
-      // },
-      success: function(data) {
-        return data;
-      }
     },
-    vacantBuilding: {
+    zoningOverlay: {
       type: 'esri',
-      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Bldg/FeatureServer/0',
+      // url: 'https://gis.phila.gov/arcgis/rest/services/PhilaGov/ZoningMap/MapServer/1/',
+      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Zoning_Overlays/FeatureServer/0/',
       options: {
         relationship: 'contains',
+        returnGeometry: false,
       },
-      // params: {
-      //   query: feature => L.esri.query({url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Bldg/FeatureServer/0'}).contains(feature)
-      // },
       success: function(data) {
         return data;
       }
@@ -717,8 +611,6 @@ Mapboard.default({
             // loop over parts (whether it's simple or multipart)
             parts.forEach(function (coordPairs) {
               coordPairs.forEach(function (coordPair) {
-                console.log('coordPair', coordPair);
-
                 // if the polygon has a hole, it has another level of coord
                 // pairs, presumably one for the outer coords and another for
                 // inner. for simplicity, add them all.
@@ -770,19 +662,11 @@ Mapboard.default({
           ]);
 
           return bounds;
-        },
+        }
       },
       success: function(data) {
         return data;
       }
-    },
-    vacantIndicatorsPoints: {
-      type: 'esri-nearby',
-      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
-      options: {
-        geometryServerUrl: 'http://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
-        calculateDistance: true,
-      },
     },
   },
   imageOverlayGroups: {
@@ -799,6 +683,7 @@ Mapboard.default({
         topics: ['water'],
         showWithBaseMapOnly: false
       },
+      // TODO give these an id instead of using the label as a key
       data: {
         'Roof': {
           'background-color': '#FEFF7F',
@@ -814,6 +699,7 @@ Mapboard.default({
         showWithBaseMapOnly: true
       },
       data: {
+        // TODO give these an id instead of using the label as a key
         'Easements': {
           'border-color': 'rgb(255, 0, 197)',
           'border-style': 'solid',
@@ -874,12 +760,12 @@ Mapboard.default({
   //   },
   // },
   cyclomedia: {
-    enabled: true,
-    measurementAllowed: true,
+    enabled: false,
+    measurementAllowed: false,
     popoutAble: true,
   },
   pictometry: {
-    enabled: true,
+    enabled: false,
   },
   // reusable transforms for topic data. see `topics` section for usage.
   transforms: {
@@ -887,27 +773,28 @@ Mapboard.default({
       // a list of global objects this transform depends on
       globals: ['accounting'],
       // this is the function that gets called to perform the transform
-      transform: function(value, globals) {
+      transform: function (value, globals) {
         // var accounting = globals.accounting;
+        // console.log('gonna format some money!!', accounting);
         return accounting.formatMoney(value);
       }
     },
     date: {
       globals: ['moment'],
-      transform: function(value, globals) {
+      transform: function (value, globals) {
         // var moment = globals.moment;
         return moment(value).format('MM/DD/YYYY');
       },
     },
     phoneNumber: {
-      transform: function(value) {
+      transform: function (value) {
         var s2 = (""+value).replace(/\D/g, '');
         var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
         return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
       }
     },
     rcoPrimaryContact: {
-      transform: function(value) {
+      transform: function (value) {
         var PHONE_NUMBER_PAT = /\(?(\d{3})\)?( |-)?(\d{3})(-| )?(\d{4})/g;
         var m = PHONE_NUMBER_PAT.exec(value);
 
@@ -929,13 +816,6 @@ Mapboard.default({
         return value ? 'Yes' : 'No';
       }
     },
-    thousandsPlace: {
-      transform: function(value) {
-        var number = String(value).match(/\d+/)[0].replace(/(.)(?=(\d{3})+$)/g,'$1,');
-        var label = String(value).replace(/[0-9]/g, '') || '';
-        return number + ' ' + label;
-      }
-    },
     integer: {
       transform: function (value) {
         return !isNaN(value) && parseInt(value);
@@ -955,32 +835,22 @@ Mapboard.default({
       transform: function (value) {
         return value && value + ' sq ft';
       },
-    },
-    nowrap: {
-      transform: function (value) {
-        return '<span style="white-space: nowrap;">' + value + '</span>';
-      },
-    },
-    bold: {
-      transform: function (value) {
-        return '<strong>' + value + '</strong>';
-      },
-    },
+    }
   },
   greeting:{
     initialMessage: '\
-      <h2>CityAtlas connects you with information about any address in the city.</h2>\
-      <p>Here are some things you can do with CityAtlas:</p>\
+      <h2>Atlas is your front door to the City of Philadelphia.</h2>\
+      <p>Here are some things you can do with Atlas:</p>\
       <div class="callout">\
         <ul>\
-          <li>Research real estate information including property values, zoning, and document archives</li>\
           <li>Get the history of permits, licenses, and inspections at any address</li>\
-          <li>Easily access high-resolution street-level and aerial imagery</li>\
-          <li>View activity around an address, including vacancy, crime, 311 service requests, and more</li>\
+          <li>Research real estate information including property values, zoning, and document archives</li>\
+          <li>Get easy access to a variety of hard-to-find City resources</li>\
+          <li>View recent activity around your address, such as crimes, 311 service requests, and more</li>\
           <li>Explore historical imagery and maps</li>\
         </ul>\
       </div>\
-      <p>To get started, click anywhere on the map, or type an address, intersection, OPA account number, or DOR Map Registry number into the search box.</p>\
+      <p>To get started, click anywhere on the map, or type an address, intersection, property assessment account number, or Department of Records Map Registry number into the search box.</p>\
     ',
   },
   topics: [
@@ -999,80 +869,6 @@ Mapboard.default({
             '
           }
         },
-
-        // TODO - remove all of this code eventually, now that we are not using a table-group
-        // {
-        //   type: 'table-group',
-        //   options: {
-        //     alternate: {
-        //       mainTable: {
-        //         dataSource: 'opa',
-        //         id:'opaData',
-        //       },
-        //       dependentTable: {
-        //         dataSource: 'condoList',
-        //         id: 'condoList',
-        //       }
-        //     },
-        //     components: [
-
-              // {
-              //   type: 'horizontal-table',
-              //   options: {
-              //     topicKey: 'opa',
-              //     id: 'condoList',
-              //     useApiCount: true,
-              //     // limit: 100,
-              //     fields: [
-              //       {
-              //         label: 'OPA Account',
-              //         value: function(state, item) {
-              //           var url = window.location.origin + window.location.pathname + '#/' + item.properties.opa_account_num + '/opa'
-              //           return "<a href="+url+">"+item.properties.opa_account_num+" <i class='fa fa-external-link'></i></a>";
-              //         },
-              //       },
-              //       {
-              //         label: 'Address',
-              //         value: function(state, item) {
-              //           var url = window.location.origin + window.location.pathname + '#/' + item.properties.opa_account_num + '/opa'
-              //           return "<a href="+url+">"+item.properties.street_address+" <i class='fa fa-external-link'></i></a>";
-              //         },
-              //       },
-              //       {
-              //         label: 'Owners',
-              //         value: function(state, item) {
-              //           var owners = item.properties.opa_owners;
-              //           var ownersJoined = owners.join(', ');
-              //           return ownersJoined;
-              //         }
-              //       }
-              //     ], // end fields
-              //     // sort: {
-              //     //   // this should return the val to sort on
-              //     //   getValue: function(item) {
-              //     //     // return item.attributes.RECORDING_DATE;
-              //     //     return item.attributes.DOCUMENT_DATE;
-              //     //   },
-              //     //   // asc or desc
-              //     //   order: 'desc'
-              //     // }
-              //   },
-              //   slots: {
-              //     title: 'Condominiums',
-              //     highestPageRetrieved: function(state) { return state.sources['condoList'].data.page },
-              //     pageCount: function(state) { return state.sources['condoList'].data.page_count },
-              //     totalSize: function(state) { return state.sources['condoList'].data.total_size },
-              //     items: function(state) {
-              //       var data = state.sources['condoList'].data.features;
-              //       var rows = data.map(function(row){
-              //         var itemRow = row;
-              //         return itemRow;
-              //       });
-              //       return rows;
-              //     },
-              //   } // end slots
-              // },
-
         {
           type: 'vertical-table',
           slots: {
@@ -1098,7 +894,7 @@ Mapboard.default({
                 }
               },
               {
-                label: 'Assessed Value',// + new Date().getFullYear(),
+                label: 'Assessed Value ' + new Date().getFullYear(),
                 value: function(state) {
                   var data = state.sources.opa.data;
                   // return data.market_value;
@@ -1160,7 +956,7 @@ Mapboard.default({
               name: 'Property Search',
               href: function(state) {
                 var id = state.geocode.data.properties.opa_account_num;
-                return '//property.phila.gov/?p=' + id;
+                return 'http://property.phila.gov/?p=' + id;
               }
             }
           }
@@ -1229,7 +1025,6 @@ Mapboard.default({
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'condominiums',
             id: 'condoList',
             useApiCount: true,
             defaultIncrement: 25,
@@ -1470,81 +1265,9 @@ Mapboard.default({
                   ]
                 }  // end slots
               },  // end vertical table
-              // {
-              //   type: 'horizontal-table',
-              //   options: {
-              //     topicKey: 'dor',
-              //     id: 'condoList',
-              //     shouldShowButton: true,
-              //     useApiCount: true,
-              //     // limit: 100,
-              //     fields: [
-              //       {
-              //         label: 'OPA Account',
-              //         value: function(state, item) {
-              //           var url = window.location.origin + window.location.pathname + '#/' + item.properties.opa_account_num + '/opa'
-              //           return "<a href="+url+">"+item.properties.opa_account_num+" <i class='fa fa-external-link'></i></a>";
-              //         },
-              //       },
-              //       {
-              //         label: 'Address',
-              //         value: function(state, item) {
-              //           var url = window.location.origin + window.location.pathname + '#/' + item.properties.opa_account_num + '/opa'
-              //           return "<a href="+url+">"+item.properties.street_address+" <i class='fa fa-external-link'></i></a>";
-              //         },
-              //       },
-              //       {
-              //         label: 'Owners',
-              //         value: function(state, item) {
-              //           var owners = item.properties.opa_owners;
-              //           var ownersJoined = owners.join(', ');
-              //           return ownersJoined;
-              //         }
-              //       }
-              //     ], // end fields
-              //     // sort: {
-              //     //   // this should return the val to sort on
-              //     //   getValue: function(item) {
-              //     //     // return item.attributes.RECORDING_DATE;
-              //     //     return item.attributes.DOCUMENT_DATE;
-              //     //   },
-              //     //   // asc or desc
-              //     //   order: 'desc'
-              //     // }
-              //   },
-              //   slots: {
-              //     title: 'Condominiums',
-              //     highestPageRetrieved: function(state) { return state.sources['condoList'].data.page },
-              //     pageCount: function(state) { return state.sources['condoList'].data.page_count },
-              //     totalSize: function(state) { return state.sources['condoList'].data.total_size },
-              //     items: function(state) {
-              //       var data = state.sources['condoList'].data.features;
-              //       var rows = data.map(function(row){
-              //         var itemRow = row;
-              //         return itemRow;
-              //       });
-              //       return rows;
-              //     },
-              //   } // end slots
-              // },
-
-              //     ]
-              //   }
-              // },
-              // REVIEW this callout should only show up when the condos tab
-              // is visible. commenting out for now.
-              // {
-              //   type: 'callout',
-              //   slots: {
-              //     text: 'Condominium units associated with this parcel.\
-              //       This list may differ from the Condominiums tab above based\
-              //       on how the deed was recorded. Source: Department of Records'
-              //   },
-              // },
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'deeds',
                   id: 'dorCondoList',
                   defaultIncrement: 10,
                   showAllRowsOnFirstClick: true,
@@ -1593,14 +1316,17 @@ Mapboard.default({
                   }
                 },
                 slots: {
-                  title: 'Deeded Condominiums',
+                  title: 'Condominiums',
                   items: function (state, item) {
-                    var id = item.properties.OBJECTID,
-                        target = state.sources.dorCondoList.targets[id],
-                        data = target && target.data,
-                        rows = (data && data.rows) || [];
+                    var id = item.properties.OBJECTID;
 
-                    return rows
+                    if (state.sources.dorCondoList.targets[id]) {
+                      if (state.sources.dorCondoList.targets[id].data) {
+                        return state.sources.dorCondoList.targets[id].data.rows;
+                      }
+                    } else {
+                      return [];
+                    }
                   },
                 } // end slots
               }, // end condos table
@@ -1620,20 +1346,22 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'deeds',
                   id: 'dorDocuments',
                   defaultIncrement: 25,
                   fields: [
                     {
                       label: 'ID',
                       value: function (state, item) {
-                        return "<a target='_blank' href='//pdx-app01/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.R_NUM+"'>"+item.attributes.R_NUM+"<i class='fa fa-external-link'></i></a>"
+                        // return "<a target='_blank' href='//pdx-app01/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.R_NUM+"'>"+item.attributes.R_NUM+"<i class='fa fa-external-link'></i></a>"
+                        // return item.document_id;
+                        return item.attributes.R_NUM;
                       },
                     },
                     {
                       label: 'Date',
-                      value: function (state, item) {
+                      value: function(state, item) {
                         // return item.attributes.RECORDING_DATE;
+                        // return item.display_date;
                         return item.attributes.DISPLAY_DATE;
                       },
                       nullValue: 'no date available',
@@ -1643,28 +1371,33 @@ Mapboard.default({
                     },
                     {
                       label: 'Type',
-                      value: function (state, item) {
+                      value: function(state, item) {
+                        // return item.document_type;
                         return item.attributes.DOCUMENT_TYPE;
                       },
                     },
                     {
                       label: 'Grantor',
-                      value: function (state, item) {
+                      value: function(state, item) {
+                        // return item.grantors;
                         return item.attributes.GRANTORS;
                       },
                     },
                     {
                       label: 'Grantee',
-                      value: function (state, item) {
+                      value: function(state, item) {
+                        // return item.grantees;
                         return item.attributes.GRANTEES;
                       },
                     },
                   ], // end fields
                   sort: {
                     // this should return the val to sort on
-                    getValue: function (item) {
+                    getValue: function(item) {
                       // return item.attributes.RECORDING_DATE;
+                      // console.log('dor docs sort function running, display_date:', Date.parse(item.display_date));
                       return item.attributes.DISPLAY_DATE;
+                      // return Date.parse(item.display_date);
                     },
                     // asc or desc
                     order: 'desc'
@@ -1673,7 +1406,7 @@ Mapboard.default({
                 slots: {
                   title: 'Documents',
                   // defaultIncrement: 25,
-                  items: function (state, item) {
+                  items: function(state, item) {
                     var id = item.properties.OBJECTID;
                     if (state.sources.dorDocuments.targets[id]) {
                       return state.sources.dorDocuments.targets[id].data;
@@ -1706,7 +1439,7 @@ Mapboard.default({
               // return state.dorParcels.data;
               return state.parcels.dor.data;
             }
-          },
+          }
         }, // end dor parcel tab group comp
         {
           type: 'callout',
@@ -1755,24 +1488,22 @@ Mapboard.default({
         'liPermits',
         'liInspections',
         'liViolations',
-        'liBusinessLicenses',
-        'zoningDocs'
+        'liBusinessLicenses'
       ],
       components: [
         {
           type: 'callout',
           slots: {
             text: '\
-              Licenses, inspections, permits, property maintenance \
-              violations, and zoning permit documents at your search address. \
-              Source: Department of Licenses & Inspections\
+              Licenses, inspections, permits, and property maintenance \
+              violations at your search address. Source: Department of \
+              Licenses & Inspections\
             '
           }
         },
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'permits',
             id: 'liPermits',
             limit: 5,
             fields: [
@@ -1789,7 +1520,7 @@ Mapboard.default({
               {
                 label: 'ID',
                 value: function(state, item){
-                  return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.permitnumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.permitnumber+" <i class='fa fa-external-link'></i></a>"
+                  return "<a target='_blank' href='http://li.phila.gov/#details?entity=permits&eid="+item.permitnumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.permitnumber+" <i class='fa fa-external-link'></i></a>"
                 }
               },
               {
@@ -1821,7 +1552,7 @@ Mapboard.default({
               href: function(state) {
                 var address = state.geocode.data.properties.street_address;
                 var addressEncoded = encodeURIComponent(address);
-                return '//li.phila.gov/#summary?address=' + addressEncoded;
+                return 'http://li.phila.gov/#summary?address=' + addressEncoded;
               }
             }
           },
@@ -1840,98 +1571,6 @@ Mapboard.default({
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'zoning',
-            id: 'zoningDocs',
-            // limit: 100,
-            fields: [
-              {
-                label: 'Date',
-                value: function(state, item){
-                  return item.scan_date
-                },
-                nullValue: 'no date available',
-                transforms: [
-                  'date'
-                ]
-              },
-              {
-                label: 'Permit Number',
-                value: function(state, item){
-                  return item.permit_number
-                }
-              },
-              // {
-              //   label: 'Type',
-              //   value: function(state, item){
-              //     return item.doc_type
-              //   }
-              // },
-              {
-                label: '# Pages',
-                value: function(state, item){
-                  return item.num_pages
-                }
-              },
-              {
-                label: 'ID',
-                value: function (state, item) {
-                  console.log('zoning doc', item);
-
-                  var appId = item.app_id;
-
-                  if (appId.length < 3) {
-                    appId = '0' + appId;
-                  }
-
-                  return '<a target="_blank" class="external" href="//s3.amazonaws.com/lni-zoning-pdfs/'
-                          + item.doc_id
-                          + '.pdf">'
-                          + item.doc_id
-                          // + '<i class='fa fa-external-link'></i></a>'
-                          + '</a>'
-                  // return item.appid + '-' + item.docid
-                }
-              },
-              // {
-              //   label: 'Link',
-              //   value: function(state, item){
-              //     // return "<a href='//www.washingtonpost.com/'>View Scan</a>"
-              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address=" + item.address + "&&docType=" + item.doctype + "&numofPages=" + item.page_numbers + "&docID=" + item.docid + "&app=" + item.appid +"'>View Scan <i class='fa fa-external-link'></i></a>"
-              //   }
-              // },
-            ],
-            sort: {
-              // this should return the val to sort on
-              getValue: function(item) {
-                return item.scandate;
-              },
-              // asc or desc
-              order: 'desc'
-            },
-          },
-          slots: {
-            title: 'Zoning Permit Documents',
-            subtitle: 'formerly "Zoning Archive"',
-            items: function(state) {
-              if (state.sources['zoningDocs'].data) {
-                if (state.sources['zoningDocs'].data.rows) {
-                  var data = state.sources['zoningDocs'].data.rows;
-                  var rows = data.map(function(row){
-                    var itemRow = row;
-                    // var itemRow = Object.assign({}, row);
-                    //itemRow.DISTANCE = 'TODO';
-                    return itemRow;
-                  });
-                  return rows;
-                }
-              }
-            },
-          },
-        },
-        {
-          type: 'horizontal-table',
-          options: {
-            topicKey: 'permits',
             id: 'liInspections',
             limit: 5,
             fields: [
@@ -1948,7 +1587,7 @@ Mapboard.default({
               {
                 label: 'ID',
                 value: function(state, item){
-                  return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link'></i></a>"
+                  return "<a target='_blank' href='http://li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link'></i></a>"
                   // return item.casenumber
                 }
               },
@@ -1982,7 +1621,7 @@ Mapboard.default({
               href: function(state) {
                 var address = state.geocode.data.properties.street_address;
                 var addressEncoded = encodeURIComponent(address);
-                return '//li.phila.gov/#summary?address=' + addressEncoded;
+                return 'http://li.phila.gov/#summary?address=' + addressEncoded;
               }
             }
           },
@@ -2004,7 +1643,6 @@ Mapboard.default({
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'permits',
             id: 'liViolations',
             limit: 5,
             fields: [
@@ -2021,7 +1659,7 @@ Mapboard.default({
               {
                 label: 'ID',
                 value: function(state, item){
-                  return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link'></i></a>"
+                  return "<a target='_blank' href='http://li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link'></i></a>"
                   // return item.casenumber
                 }
               },
@@ -2054,7 +1692,7 @@ Mapboard.default({
               href: function(state) {
                 var address = state.geocode.data.properties.street_address;
                 var addressEncoded = encodeURIComponent(address);
-                return '//li.phila.gov/#summary?address=' + addressEncoded;
+                return 'http://li.phila.gov/#summary?address=' + addressEncoded;
               }
             }
           },
@@ -2076,7 +1714,6 @@ Mapboard.default({
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'permits',
             id: 'liBusinessLicenses',
             limit: 5,
             fields: [
@@ -2092,7 +1729,7 @@ Mapboard.default({
               {
                 label: 'License Number',
                 value: function(state, item){
-                  return "<a target='_blank' href='//li.phila.gov/#details?entity=licenses&eid="+item.licensenum+"&key="+item.street_address+"&address="+item.street_address+"'>"+item.licensenum+" <i class='fa fa-external-link'></i></a>"
+                  return "<a target='_blank' href='http://li.phila.gov/#details?entity=licenses&eid="+item.licensenum+"&key="+item.street_address+"&address="+item.street_address+"'>"+item.licensenum+" <i class='fa fa-external-link'></i></a>"
                   return item.licensenum
                 }
               },
@@ -2131,7 +1768,7 @@ Mapboard.default({
               href: function(state) {
                 var address = state.geocode.data.properties.street_address;
                 var addressEncoded = encodeURIComponent(address);
-                return '//li.phila.gov/#summary?address=' + addressEncoded;
+                return 'http://li.phila.gov/#summary?address=' + addressEncoded;
               }
             }
           },
@@ -2150,78 +1787,6 @@ Mapboard.default({
             },
           },
         },
-        {
-          type: 'horizontal-table',
-          options: {
-            topicKey: 'permits',
-            id: 'liPermitsAdditional',
-            defaultIncrement: 25,
-            fields: [
-              {
-                label: 'Date',
-                value: function(state, item){
-                  return item.attributes.PERMITISSUEDATE
-                },
-                nullValue: 'no date available',
-                transforms: [
-                  'date'
-                ]
-              },
-              {
-                label: 'ID',
-                value: function(state, item){
-                  return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.attributes.PERMITNUMBER+"&key="+item.attributes.ADDRESSKEY+"&address="+item.attributes.ADDRESS+"'>"+item.attributes.PERMITNUMBER+" <i class='fa fa-external-link'></i></a>"
-                }
-              },
-              {
-                label: 'Building Area',
-                value: function(state, item){
-                  return item.attributes.BLDGAREA
-                },
-                nullValue: 'no area available',
-                transforms: [
-                  'thousandsPlace'
-                ]
-              },
-              {
-                label: 'Declared Value',
-                value: function(state, item){
-                  return item.attributes.DECLAREDVALUE
-                },
-                nullValue: 'no value available',
-                transforms: [
-                  'currency'
-                ]
-              },
-            ],
-            sort: {
-              // this should return the val to sort on
-              getValue: function(item) {
-                return item.attributes.PERMITISSUEDATE;
-              },
-              // asc or desc
-              order: 'desc'
-            },
-          },
-          slots: {
-            title: 'Building Area and Value',
-            items: function(state) {
-              var data = state.sources['liPermitsAdditional'].data;
-              if (data === null || data === undefined) {
-                return;
-              }
-              var rows = data.map(function(row){
-                var itemRow = row;
-                // var itemRow = Object.assign({}, row);
-                //itemRow.DISTANCE = 'TODO';
-                return itemRow;
-              });
-              // console.log('rows', rows);
-              return rows;
-            },
-          },
-        }
-
       ],
       basemap: 'pwd',
       dynamicMapLayers: [
@@ -2248,199 +1813,110 @@ Mapboard.default({
           }
         },
         {
-          type: 'collection-summary',
+          type: 'badge-custom',
           options: {
-            descriptor: 'parcel',
-            // this will include zero quantities
-            // includeZeroes: true,
-            getValue: function(item) {
-              return item.properties.STATUS;
-            },
-            context: {
-              singular: function(list){ return 'There is ' + list + ' at this address.'},
-              plural: function(list){ return 'There are ' + list + ' at this address.'}
-            },
-            types: [
-              {
-                value: 1,
-                label: 'active parcel'
-              },
-              {
-                value: 2,
-                label: 'inactive parcel'
-              },
-              {
-                value: 3,
-                label: 'remainder parcel'
-              }
-            ]
-          },
-          slots: {
-            items: function(state) {
-              // return state.dorParcels.data;
-              return state.parcels.dor.data;
-            }
-          }
-        },
-        {
-          type: 'tab-group',
-          options: {
-            getKey: function(item) {
-              return item.properties.OBJECTID;
-            },
-            getTitle: function(item) {
-              return item.properties.MAPREG;
-            },
-            getAddress: function(item) {
-              var address = concatDorAddress(item);
-              return address;
-            },
-            // components for the content pane. this essentially a topic body.
+            titleBackground: '#58c04d',
             components: [
-              {
-                type: 'badge-custom',
-                options: {
-                  titleBackground: '#58c04d',
-                  components: [
-                    {
-                      type: 'horizontal-table',
-                      options: {
-                        topicKey: 'zoning',
-                        shouldShowHeaders: false,
-                        id: 'baseZoning',
-                        // defaultIncrement: 10,
-                        // showAllRowsOnFirstClick: true,
-                        // showOnlyIfData: true,
-                        fields: [
-                          {
-                            label: 'code',
-                            value: function(state, item) {
-                              return item.long_code;
-                            },
-                            transforms: [
-                              'nowrap',
-                              'bold'
-                            ]
-                          },
-                          {
-                            label: 'definition',
-                            value: function(state, item) {
-                              return ZONING_CODE_MAP[item.long_code];
-                            },
-                          },
-                        ], // end fields
-                        // sort: {
-                        //   // this should return the val to sort on
-                        //   getValue: function(item) {
-                        //     return item.long_code;
-                        //   },
-                        //   // asc or desc
-                        //   order: 'asc'
-                        // }
-                      },
-                      slots: {
-                        // title: 'Base Zoning',
-                        items: function(state, item) {
-                          // console.log('state.sources:', state.sources['zoningBase'].data.rows);
-                          var id = item.properties.OBJECTID,
-                              target = state.sources.zoningBase.targets[id] || {},
-                              data = target.data || {};
-                          // console.log('zoningbase target:', target);
-                          return data.rows || [];
-                          // if (target) {
-                          //   return target.data;
-                          // } else {
-                          //   return [];
-                          // }
-                        },
-
-
-                          // var data = state.sources['zoningBase'].data.rows;
-                          // var rows = data.map(function(row){
-                          //   var itemRow = row;
-                          //   return itemRow;
-                          // });
-                          // return rows;
-                        // },
-                      }, // end slots
-                    }, // end table
-
-                  ],
-                },
-                slots: {
-                  title: 'Base District',
-                  // data: function(state) {
-                  //   return state.sources.zoningBase.data.rows;
-                  // },
-                  // value: function(state) {
-                  //   return state.sources.zoningBase.data.rows;
-                  // },
-                  // description: function(state) {
-                  //   var code = state.sources.zoningBase.data.rows;
-                  //   return ZONING_CODE_MAP[code];
-                  // },
-                },
-              }, // end of badge-custom
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'zoning',
-                  id: 'zoningOverlay',
-                  // limit: 100,
+                  shouldShowHeaders: false,
+                  id: 'baseZoning',
+                  // defaultIncrement: 10,
+                  // showAllRowsOnFirstClick: true,
+                  // showOnlyIfData: true,
                   fields: [
                     {
-                      label: 'Name',
-                      value: function(state, item){
-                        return item.overlay_name
-                      }
+                      label: 'code',
+                      value: function(state, item) {
+                        return item.long_code;
+                      },
                     },
                     {
-                      label: 'Code Section',
-                      value: function(state, item){
-                        return "<a target='_blank' href='"+item.code_section_link+"'>"+item.code_section+" <i class='fa fa-external-link'></i></a>"
-                      }
+                      label: 'definition',
+                      value: function(state, item) {
+                        return ZONING_CODE_MAP[item.long_code];
+                      },
                     },
-                  ],
+                  ], // end fields
+                  // sort: {
+                  //   // this should return the val to sort on
+                  //   getValue: function(item) {
+                  //     return item.long_code;
+                  //   },
+                  //   // asc or desc
+                  //   order: 'asc'
+                  // }
                 },
                 slots: {
-                  title: 'Overlays',
-                  items: function(state, item) {
+                  // title: 'Base Zoning',
+                  items: function(state) {
                     // console.log('state.sources:', state.sources['zoningBase'].data.rows);
-                    var id = item.properties.OBJECTID,
-                        target = state.sources.zoningOverlay.targets[id] || {},
-                        data = target.data || {};
-                    // console.log('zoningbase target:', target);
-                    return data.rows || [];
+                    var data = state.sources['zoningBase'].data.rows;
+                    var rows = data.map(function(row){
+                      var itemRow = row;
+                      return itemRow;
+                    });
+                    return rows;
                   },
-                },
+                } // end slots
+              }, // end table
 
-
-                  // items: function(state) {
-                  //   var data = state.sources['zoningOverlay'].data.rows
-                  //   var rows = data.map(function(row){
-                  //     var itemRow = row;
-                  //     // var itemRow = Object.assign({}, row);
-                  //     //itemRow.DISTANCE = 'TODO';
-                  //     return itemRow;
-                  //   });
-                  //   return rows;
-                  // },
-              },
-            ], // end of tab-group components
+            ],
           },
           slots: {
-            items: function (state) {
-              // return state.dorParcels.data;
-              return state.parcels.dor.data;
-            }
+            title: 'Base District',
+            data: function(state) {
+              return state.sources.zoningBase.data.rows;
+            },
+            // value: function(state) {
+            //   return state.sources.zoningBase.data.rows;
+            // },
+            // description: function(state) {
+            //   var code = state.sources.zoningBase.data.rows;
+            //   return ZONING_CODE_MAP[code];
+            // },
           },
         },
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'zoning',
+            id: 'zoningOverlay',
+            fields: [
+              {
+                label: 'Name',
+                value: function(state, item){
+                  return item.properties.OVERLAY_NAME
+                }
+              },
+              {
+                label: 'Code Section',
+                value: function(state, item){
+                  // return item.properties.CODE_SECTION
+                  return "<a target='_blank' href='"+item.properties.CODE_SECTION_LINK+"'>"+item.properties.CODE_SECTION+" <i class='fa fa-external-link'></i></a>"
+                }
+              },
+            ],
+          },
+          slots: {
+            title: 'Overlays',
+            items: function(state) {
+              var data = state.sources['zoningOverlay'].data
+              var rows = data.map(function(row){
+                var itemRow = row;
+                // var itemRow = Object.assign({}, row);
+                //itemRow.DISTANCE = 'TODO';
+                return itemRow;
+              });
+              // console.log('rows', rows);
+              return rows;
+            },
+          },
+        },
+        {
+          type: 'horizontal-table',
+          options: {
             id: 'zoningAppeals',
-            // limit: 100,
             fields: [
               {
                 label: 'Processed Date',
@@ -2510,17 +1986,92 @@ Mapboard.default({
           },
         },
         {
-          type: 'callout',
+          type: 'horizontal-table',
+          options: {
+            id: 'zoningDocs',
+            fields: [
+              {
+                label: 'Date',
+                value: function(state, item){
+                  return item.scan_date
+                },
+                nullValue: 'no date available',
+                transforms: [
+                  'date'
+                ]
+              },
+              {
+                label: 'ID',
+                value: function(state, item){
+                  return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address="
+                          + item.address
+                          + "&&docType="
+                          + item.doc_type
+                          + "&numofPages="
+                          + item.num_pages
+                          + "&docID="
+                          + item.app_doc_id
+                          + "&app="
+                          + item.app_id
+                          +"'>"
+                          // + item.app_id + '-'
+                          + item.doc_id + ' '
+                          + "<i class='fa fa-external-link'></i></a>"
+                  // return item.appid + '-' + item.docid
+                }
+              },
+              {
+                label: 'Type',
+                value: function(state, item){
+                  return item.doc_type
+                }
+              },
+              {
+                label: '# Pages',
+                value: function(state, item){
+                  return item.num_pages
+                }
+              },
+              // {
+              //   label: 'Link',
+              //   value: function(state, item){
+              //     // return "<a href='//www.washingtonpost.com/'>View Scan</a>"
+              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address=" + item.address + "&&docType=" + item.doctype + "&numofPages=" + item.page_numbers + "&docID=" + item.docid + "&app=" + item.appid +"'>View Scan <i class='fa fa-external-link'></i></a>"
+              //   }
+              // },
+            ],
+            sort: {
+              // this should return the val to sort on
+              getValue: function(item) {
+                return item.scandate;
+              },
+              // asc or desc
+              order: 'desc'
+            },
+          },
           slots: {
-            text: 'Looking for zoning documents? They are now located in the Licenses & Inspections tab under "Zoning Permit Documents".',
+            title: 'Archived Documents',
+            subtitle: 'aka "Zoning Archive"',
+            items: function(state) {
+              if (state.sources['zoningDocs'].data) {
+                if (state.sources['zoningDocs'].data.rows) {
+                  var data = state.sources['zoningDocs'].data.rows;
+                  var rows = data.map(function(row){
+                    var itemRow = row;
+                    // var itemRow = Object.assign({}, row);
+                    //itemRow.DISTANCE = 'TODO';
+                    return itemRow;
+                  });
+                  return rows;
+                }
+              }
+            },
           },
         },
         {
           type: 'horizontal-table',
           options: {
-            topicKey: 'zoning',
             id: 'rco',
-            // limit: 100,
             fields: [
               {
                 label: 'RCO',
@@ -2592,321 +2143,6 @@ Mapboard.default({
       parcels: 'dor'
     },
     {
-      key: '311',
-      icon: 'phone',
-      label: '311',
-      dataSources: ['311'],
-      basemap: 'pwd',
-      identifyFeature: 'address-marker',
-      parcels: 'pwd',
-      components: [
-        {
-          type: 'callout',
-          slots: {
-            text: 'A more detailed look at 311 service requests near your \
-              search address. This includes sensitive information, such as \
-              request descriptions and records marked private by the customer,\
-              that cannot be shared with the public.\
-            '
-          }
-        },
-        {
-          type: 'horizontal-table',
-          options: {
-            topicKey: '311',
-            id: '311',
-            sort: {
-              select: true,
-              getValue: function(item, method) {
-                var val;
-
-                if (method === 'date' || !method) {
-                  val = item.properties.REQUESTED_DATETIME;
-                } else if (method === 'distance') {
-                  val = item._distance;
-                }
-
-                return val;
-              }
-            },
-            filters: [
-              {
-                type: 'time',
-                getValue: function(item) {
-                  return item.properties.REQUESTED_DATETIME;
-                },
-                label: 'From the last',
-                values: [
-                  {
-                    label: '30 days',
-                    value: '30',
-                    unit: 'days',
-                    direction: 'subtract',
-                  },
-                  {
-                    label: '90 days',
-                    value: '90',
-                    unit: 'days',
-                    direction: 'subtract',
-                  },
-                  {
-                    label: 'year',
-                    value: '1',
-                    unit: 'years',
-                    direction: 'subtract',
-                  }
-                ]
-              }
-            ],
-            filterByText: {
-              label: 'Filter by',
-              fields: [
-                'DESCRIPTION',
-                'SUBJECT',
-                'ADDRESS'
-              ]
-            },
-            mapOverlay: {
-              marker: 'circle',
-              style: {
-                radius: 6,
-                fillColor: '#ff3f3f',
-              	color: '#ff0000',
-              	weight: 1,
-              	opacity: 1,
-              	fillOpacity: 1.0
-              },
-              hoverStyle: {
-                radius: 6,
-                fillColor: 'yellow',
-              	color: '#ff0000',
-              	weight: 1,
-              	opacity: 1,
-              	fillOpacity: 1.0
-              }
-            },
-            fields: [
-              {
-                label: 'Date',
-                value: function(state, item) {
-                  return item.properties.REQUESTED_DATETIME;
-                },
-                nullValue: 'no date available',
-                transforms: [
-                  'date'
-                ]
-              },
-              {
-                label: 'Address',
-                value: function(state, item) {
-                  return item.properties.ADDRESS;
-                }
-              },
-              {
-                label: 'Subject',
-                value: function(state, item) {
-                  if (item.properties.MEDIA_URL) {
-                    return '<a target="_blank" href='+item.properties.MEDIA_URL+'>'+item.properties.SUBJECT+'</a>';
-                  } else {
-                    return item.properties.SUBJECT;
-                  }
-                }
-              },
-              {
-                label: 'Description (not shared with the public)',
-                value: function(state, item) {
-                  return item.properties.DESCRIPTION;
-                }
-              },
-              {
-                label: 'Distance',
-                value: function(state, item) {
-                  // return `${item._distance} ft`;
-                  return item._distance + ' ft';
-                }
-              }
-            ]
-          },
-          slots: {
-            title: 'Nearby Service Requests',
-            items: function(state) {
-              var data = state.sources['311'].data;
-              var rows = data.map(function(row){
-                var itemRow = row;
-                // var itemRow = Object.assign({}, row);
-                // itemRow.DISTANCE = 'TODO';
-                return itemRow;
-              });
-              return rows;
-            },
-            // filterText() {
-            //   return 'from the last';
-            // },
-            // filterValues: {
-            //   value1: {
-            //     text: '30 days',
-            //     value: '30'
-            //   },
-            //   value2: {
-            //     text: '90 days',
-            //     value: '90'
-            //   },
-            //   value3: {
-            //     text: 'year',
-            //     value: '365'
-            //   }
-            // },
-          }
-        }
-      ]
-    },
-    {
-      key: 'stormwater',
-      icon: 'tint',
-      label: 'Stormwater',
-      dataSources: ['stormwater'],
-      basemap: 'pwd',
-      dynamicMapLayers: [
-        'stormwater'
-      ],
-      identifyFeature: 'pwd-parcel',
-      parcels: 'pwd',
-      components: [
-        {
-          type: 'callout',
-          slots: {
-            text: 'Stormwater billing accounts associated with your search address. The property boundaries displayed on the map for reference only and may not be used in place of recorded deeds or land surveys. Boundaries are generalized for ease of visualization. Source: Philadelphia Water Department'
-          }
-        },
-        {
-          type: 'vertical-table',
-          slots: {
-            title: 'Parcel',
-            fields: [
-              {
-                label: 'Parcel ID',
-                value: function(state) {
-                  // return state.geocode.data.properties.pwd_parcel_id;
-                  return state.sources.stormwater.data.Parcel.ParcelID;
-                }
-              },
-              {
-                label: 'Address',
-                value: function(state) {
-                  return state.sources.stormwater.data.Parcel.Address;
-                }
-              },
-              {
-                label: 'Building Type',
-                value: function(state) {
-                  return state.sources.stormwater.data.Parcel.BldgType;
-                }
-              },
-              {
-                label: 'Gross Area',
-                value: function(state) {
-                  return state.sources.stormwater.data.Parcel.GrossArea + ' sq ft';
-                },
-                transforms: [
-                  'thousandsPlace'
-                ]
-              },
-              {
-                label: 'Impervious Area',
-                value: function(state) {
-                  return state.sources.stormwater.data.Parcel.ImpervArea + ' sq ft';
-                },
-                transforms: [
-                  'thousandsPlace'
-                ]
-              },
-              {
-                label: 'CAP Eligible',
-                value: function(state) {
-                  return state.sources.stormwater.data.Parcel.CAPEligible;
-                },
-                transforms: [
-                  'booleanToYesNo'
-                ]
-              },
-            ]
-          },
-        },
-        {
-          type: 'horizontal-table',
-          options: {
-            topicKey: 'water',
-            id: 'stormwater',
-            // limit: 100,
-            // TODO this isn't used yet, but should be for highlighting rows/
-            // map features.
-            // overlay: '311',
-            fields: [
-              {
-                label: 'Account #',
-                value: function(state, item) {
-                  return item.AccountNumber;
-                }
-              },
-              {
-                label: 'Customer',
-                value: function(state, item) {
-                  return item.CustomerName;
-                }
-              },
-              {
-                label: 'Status',
-                value: function(state, item) {
-                  return item.AcctStatus;
-                }
-              },
-              {
-                label: 'Service Type',
-                value: function(state, item) {
-                  return item.ServiceTypeLabel;
-                }
-              },
-              {
-                label: 'Size',
-                value: function(state, item) {
-                  return item.MeterSize;
-                }
-              },
-              {
-                label: 'Stormwater',
-                value: function(state, item) {
-                  return item.StormwaterStatus;
-                }
-              }
-            ],
-            externalLink: {
-              forceShow: true,
-              action: function(count) {
-                return 'See more at Stormwater Billing';
-              },
-              name: 'Stormwater Billing',
-              href: function(state) {
-                var id = state.sources.stormwater.data.Parcel.ParcelID;
-                return '//www.phila.gov/water/swmap/Parcel.aspx?parcel_id=' + id;
-              }
-            }
-          },
-          slots: {
-            title: 'Accounts',
-            items: function(state) {
-              var data = state.sources['stormwater'].data
-              var rows = data.Accounts.map(function(row){
-                var itemRow = row;
-                // var itemRow = Object.assign({}, row);
-                return itemRow;
-              });
-              return rows;
-            }
-          }
-        }
-      ]
-    },
-    {
       key: 'nearby',
       icon: 'map-marker',
       label: 'Nearby',
@@ -2971,7 +2207,7 @@ Mapboard.default({
         //   }
         // },
         {
-          type: 'table-group',
+          type: 'horizontal-table-group',
           options: {
             filters: [
               {
@@ -3001,11 +2237,10 @@ Mapboard.default({
               },
             ],
             // components for the content pane.
-            components: [
+            tables: [
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: '311',
                   sort: {
                     select: true,
@@ -3139,7 +2374,6 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'crimeIncidents',
                   sort: {
                     select: true,
@@ -3262,7 +2496,6 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'nearbyZoningAppeals',
                   sort: {
                     select: true,
@@ -3362,13 +2595,12 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'vacantIndicatorsPoints',
                   sort: {
                     select: true,
                     sortFields: [
+                      'distance',
                       'type',
-                      'distance'
                     ],
                     getValue: function(item, sortField) {
                       var val;
