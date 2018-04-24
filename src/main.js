@@ -621,7 +621,7 @@ mapboard({
       url: 'http://ase.phila.gov/arcgis/rest/services/GSG/GIS311_365DAYS/MapServer/0',
       options: {
         geometryServerUrl: 'http://ase.phila.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
-        distances: 500,
+        distances: 800,
         calculateDistance: true,
       },
     },
@@ -634,6 +634,7 @@ mapboard({
         dateMinType: 'year',
         dateField: 'requested_datetime',
         params: {},
+        distances: 250,
       }
     },
     crimeIncidents: {
@@ -645,6 +646,7 @@ mapboard({
         dateMinType: 'year',
         dateField: 'dispatch_date',
         params: {},
+        distances: 250,
       }
     },
     nearbyZoningAppeals: {
@@ -655,8 +657,18 @@ mapboard({
         dateMinNum: 1,
         dateMinType: 'year',
         dateField: 'decisiondate',
-        params: {}
+        params: {},
+        distances: 250,
       }
+    },
+    vacantIndicatorsPoints: {
+      type: 'esri-nearby',
+      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
+      options: {
+        geometryServerUrl: 'http://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
+        distances: 800,
+        calculateDistance: true,
+      },
     },
     vacantLand: {
       type: 'esri',
@@ -728,7 +740,7 @@ mapboard({
             // loop over parts (whether it's simple or multipart)
             parts.forEach(function (coordPairs) {
               coordPairs.forEach(function (coordPair) {
-                console.log('coordPair', coordPair);
+                // console.log('coordPair', coordPair);
 
                 // if the polygon has a hole, it has another level of coord
                 // pairs, presumably one for the outer coords and another for
@@ -786,14 +798,6 @@ mapboard({
       success: function(data) {
         return data;
       }
-    },
-    vacantIndicatorsPoints: {
-      type: 'esri-nearby',
-      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
-      options: {
-        geometryServerUrl: 'http://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
-        calculateDistance: true,
-      },
     },
   },
   imageOverlayGroups: {
@@ -1914,7 +1918,7 @@ mapboard({
             sort: {
               // this should return the val to sort on
               getValue: function(item) {
-                return item.scandate;
+                return item.scan_date;
               },
               // asc or desc
               order: 'desc'
@@ -2628,17 +2632,30 @@ mapboard({
             id: '311',
             sort: {
               select: true,
-              getValue: function(item, method) {
+              sortFields: [
+                'distance',
+                'date',
+              ],
+              getValue: function(item, sortField) {
                 var val;
 
-                if (method === 'date' || !method) {
+                if (sortField === 'date' || !sortField) {
                   val = item.properties.REQUESTED_DATETIME;
-                } else if (method === 'distance') {
+                } else if (sortField === 'distance') {
                   val = item._distance;
                 }
 
                 return val;
-              }
+              },
+              order: function(sortField) {
+                var val;
+                if (sortField === 'date') {
+                  val = 'desc';
+                } else {
+                  val = 'asc';
+                }
+                return val;
+              },
             },
             filters: [
               {
@@ -2740,6 +2757,7 @@ mapboard({
           },
           slots: {
             title: 'Nearby Service Requests',
+            data: '311',
             items: function(state) {
               var data = state.sources['311'].data;
               var rows = data.map(function(row){
@@ -2750,23 +2768,6 @@ mapboard({
               });
               return rows;
             },
-            // filterText() {
-            //   return 'from the last';
-            // },
-            // filterValues: {
-            //   value1: {
-            //     text: '30 days',
-            //     value: '30'
-            //   },
-            //   value2: {
-            //     text: '90 days',
-            //     value: '90'
-            //   },
-            //   value3: {
-            //     text: 'year',
-            //     value: '365'
-            //   }
-            // },
           }
         }
       ]
