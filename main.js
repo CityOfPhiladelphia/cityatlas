@@ -2617,6 +2617,10 @@ Mapboard.default({
             id: '311',
             sort: {
               select: true,
+              sortFields: [
+                'distance',
+                'date',
+              ],
               getValue: function(item, method) {
                 var val;
 
@@ -2625,7 +2629,15 @@ Mapboard.default({
                 } else if (method === 'distance') {
                   val = item._distance;
                 }
-
+                return val;
+              },
+              order: function(sortField) {
+                var val;
+                if (sortField === 'date') {
+                  val = 'desc';
+                } else {
+                  val = 'asc';
+                }
                 return val;
               }
             },
