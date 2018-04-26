@@ -1,9 +1,9 @@
 {
-  "name": "atlas",
+  "name": "cityatlas",
   "version": "0.0.1",
   "description": "A map-based data viewer for the City of Philadelphia",
   "main": "",
-  "repository": "https://github.com/cityofphiladelphia/atlas",
+  "repository": "https://github.com/cityofphiladelphia/cityatlas",
   "author": "City of Philadelphia <maps@phila.gov>",
   "license": "MIT",
   "private": false,
@@ -12,7 +12,7 @@
     "dev": "webpack-dev-server"
   },
   "dependencies": {
-    "@cityofphiladelphia/mapboard": "https://github.com/CityOfPhiladelphia/mapboard#86a1a87079fc4986491217fb1a048eb689392dcb",
+    "@cityofphiladelphia/mapboard": "2.0.0-5",
     "accounting": "^0.4.1",
     "moment": "^2.21.0"
   },
