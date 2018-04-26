@@ -14,7 +14,8 @@
   "dependencies": {
     "@cityofphiladelphia/mapboard": "2.0.0-5",
     "accounting": "^0.4.1",
-    "moment": "^2.21.0"
+    "moment": "^2.21.0",
+    "leaflet-measure": "https://github.com/CityOfPhiladelphia/leaflet-measure#c91eedea328e02a50b7849ef6e2b3adab3a55e49"
   },
   "devDependencies": {
     "css-loader": "^0.28.11",
