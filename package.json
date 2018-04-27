@@ -8,16 +8,16 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "npx webpack",
-    "dev": "webpack-dev-server"
+    "build": "cross-env NODE_ENV=production npx webpack",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server"
   },
   "dependencies": {
     "@cityofphiladelphia/mapboard": "2.0.0-5",
     "accounting": "^0.4.1",
-    "moment": "^2.21.0",
-    "leaflet-measure": "https://github.com/CityOfPhiladelphia/leaflet-measure#c91eedea328e02a50b7849ef6e2b3adab3a55e49"
+    "moment": "^2.21.0"
   },
   "devDependencies": {
+    "cross-env": "^5.1.4",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
     "style-loader": "^0.20.3",

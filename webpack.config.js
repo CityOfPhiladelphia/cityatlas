@@ -22,7 +22,6 @@ module.exports = {
     filename: '[name].js',
     publicPath: '/',
   },
-  devtool: isDevelopment ? 'inline-source-map' : 'source-map',
   module: {
     rules: [
       {
@@ -41,8 +40,7 @@ module.exports = {
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
   ],
-  // mode: process.env.NODE_ENV,
-  // mode: 'development',
+  mode: env,
   optimization: {
     splitChunks: {
       cacheGroups: {
