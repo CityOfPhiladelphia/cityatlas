@@ -40,7 +40,8 @@ module.exports = {
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
   ],
-  mode: env,
+  // mode: env,
+  mode: 'development',
   optimization: {
     splitChunks: {
       cacheGroups: {
