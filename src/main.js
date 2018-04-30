@@ -14,8 +14,8 @@ import moment from 'moment';
 // styles
 // TODO move all styles here (that have a npm package)
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-easybutton/src/easy-button.css';
 import 'leaflet-measure/dist/leaflet-measure.css';
+import 'leaflet-easybutton/src/easy-button.css';
 
 // turn off console logging in production
 // TODO come up with better way of doing this with webpack + env vars
