@@ -11,7 +11,7 @@ module.exports = {
     app: './src/main.js',
   },
   resolve: {
-    mainFields: ["module", "main", "browser"],
+    mainFields: ['module', 'main', 'browser'],
   },
   devtool: isDevelopment ? 'inline-source-map' : 'source-map',
   devServer: {
