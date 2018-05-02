@@ -9,14 +9,25 @@
 
 
 import mapboard from '@cityofphiladelphia/mapboard';
+// import * as accounting from 'accounting';
 import accounting from 'accounting';
+// console.log('accounting:', accounting);
 import moment from 'moment';
 
 // styles
 // TODO move all styles here (that have a npm package)
-import 'leaflet/dist/leaflet.css';
 import 'leaflet-measure/dist/leaflet-measure.css';
+// import * as csstest from 'leaflet-measure';
+// console.log('csstest:', csstest);
+
+import 'leaflet/dist/leaflet.css';
+// console.log('leaflettest:', leaflettest);
+
 import 'leaflet-easybutton/src/easy-button.css';
+// import * as easybuttontest from 'leaflet-easybutton';
+// console.log('easybuttontest:', easybuttontest);
+
+
 
 // turn off console logging in production
 // TODO come up with better way of doing this with webpack + env vars
