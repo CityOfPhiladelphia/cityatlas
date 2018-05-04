@@ -1,33 +1,21 @@
 /*
-   _____   __  .__
-  /  _  \_/  |_|  | _____    ______
- /  /_\  \   __\  | \__  \  /  ___/
-/    |    \  | |  |__/ __ \_\___ \
-\____|__  /__| |____(____  /____  >
-        \/               \/     \/
+_________ .__  __            _____   __  .__
+\_   ___ \|__|/  |_ ___.__. /  _  \_/  |_|  | _____    ______
+/    \  \/|  \   __<   |  |/  /_\  \   __\  | \__  \  /  ___/
+\     \___|  ||  |  \___  /    |    \  | |  |__/ __ \_\___ \
+ \______  /__||__|  / ____\____|__  /__| |____(____  /____  >
+        \/          \/            \/               \/     \/
 */
 
-
 import mapboard from '@cityofphiladelphia/mapboard';
-// import * as accounting from 'accounting';
 import accounting from 'accounting';
-// console.log('accounting:', accounting);
 import moment from 'moment';
 
 // styles
 // TODO move all styles here (that have a npm package)
 import 'leaflet-measure/dist/leaflet-measure.css';
-// import * as csstest from 'leaflet-measure';
-// console.log('csstest:', csstest);
-
 import 'leaflet/dist/leaflet.css';
-// console.log('leaflettest:', leaflettest);
-
 import 'leaflet-easybutton/src/easy-button.css';
-// import * as easybuttontest from 'leaflet-easybutton';
-// console.log('easybuttontest:', easybuttontest);
-
-
 
 // turn off console logging in production
 // TODO come up with better way of doing this with webpack + env vars
@@ -35,50 +23,47 @@ if (location.hostname !== 'localhost') {
   console.log = console.info = console.debug = console.error = function () {};
 }
 
-var GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033';
-// var BASE_CONFIG_URL = '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js';
-// var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/e45803b240e14717fb452805fa90c134870eb14b/config.js';
-var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/11f9644110fa1d6ff8a198f206d17631c8981947/config.js';
-
-var ZONING_CODE_MAP = {
-  'RSD-1': 'Residential Single Family Detached-1',
-  'RSD-2': 'Residential Single Family Detached-2',
-  'RSD-3': 'Residential Single Family Detached-3',
-  'RSA-1': 'Residential Single Family Attached-1',
-  'RSA-2': 'Residential Single Family Attached-2',
-  'RSA-3': 'Residential Single Family Attached-3',
-  'RSA-4': 'Residential Single Family Attached-4',
-  'RSA-5': 'Residential Single Family Attached-5',
-  'RTA-1': 'Residential Two-Family Attached-1',
-  'RM-1': 'Residential Multi-Family-1',
-  'RM-2': 'Residential Multi-Family-2',
-  'RM-3': 'Residential Multi-Family-3',
-  'RM-4': 'Residential Multi-Family-4',
-  'RMX-1': 'Residential Mixed-Use-1',
-  'RMX-2': 'Residential Mixed-Use-2',
-  'RMX-3': 'Residential (Center City) Mixed-Use-3',
-  'CA-1': 'Auto-Oriented Commercial-1',
-  'CA-2': 'Auto-Oriented Commercial-2',
-  'CMX-1': 'Neighborhood Commercial Mixed-Use-1',
-  'CMX-2': 'Neighborhood Commercial Mixed-Use-2',
-  'CMX-2.5': 'Neighborhood Commercial Mixed-Use-2.5',
-  'CMX-3': 'Community Commercial Mixed-Use',
-  'CMX-4': 'Center City Commercial Mixed-Use',
-  'CMX-5': 'Center City Core Commercial Mixed-Use',
-  'I-1': 'Light Industrial',
-  'I-2': 'Medium Industrial',
-  'I-3': 'Heavy Industrial',
-  'IP': 'Port Industrial',
-  'ICMX': 'Industrial Commercial Mixed-Use',
-  'IRMX': 'Industrial Residential Mixed-Use',
-  'SPENT': 'Commercial Entertainment (Casinos)',
-  'SPAIR': 'Airport',
-  'SPINS': 'Institutional Development',
-  'SPSTA': 'Stadium',
-  'SPPOA': 'Recreation',
-  'SP-PO-A': 'Recreation',
-  'SPPOP': 'Recreation',
-};
+var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/11f9644110fa1d6ff8a198f206d17631c8981947/config.js',
+    GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033',
+    ZONING_CODE_MAP = {
+      'RSD-1': 'Residential Single Family Detached-1',
+      'RSD-2': 'Residential Single Family Detached-2',
+      'RSD-3': 'Residential Single Family Detached-3',
+      'RSA-1': 'Residential Single Family Attached-1',
+      'RSA-2': 'Residential Single Family Attached-2',
+      'RSA-3': 'Residential Single Family Attached-3',
+      'RSA-4': 'Residential Single Family Attached-4',
+      'RSA-5': 'Residential Single Family Attached-5',
+      'RTA-1': 'Residential Two-Family Attached-1',
+      'RM-1': 'Residential Multi-Family-1',
+      'RM-2': 'Residential Multi-Family-2',
+      'RM-3': 'Residential Multi-Family-3',
+      'RM-4': 'Residential Multi-Family-4',
+      'RMX-1': 'Residential Mixed-Use-1',
+      'RMX-2': 'Residential Mixed-Use-2',
+      'RMX-3': 'Residential (Center City) Mixed-Use-3',
+      'CA-1': 'Auto-Oriented Commercial-1',
+      'CA-2': 'Auto-Oriented Commercial-2',
+      'CMX-1': 'Neighborhood Commercial Mixed-Use-1',
+      'CMX-2': 'Neighborhood Commercial Mixed-Use-2',
+      'CMX-2.5': 'Neighborhood Commercial Mixed-Use-2.5',
+      'CMX-3': 'Community Commercial Mixed-Use',
+      'CMX-4': 'Center City Commercial Mixed-Use',
+      'CMX-5': 'Center City Core Commercial Mixed-Use',
+      'I-1': 'Light Industrial',
+      'I-2': 'Medium Industrial',
+      'I-3': 'Heavy Industrial',
+      'IP': 'Port Industrial',
+      'ICMX': 'Industrial Commercial Mixed-Use',
+      'IRMX': 'Industrial Residential Mixed-Use',
+      'SPENT': 'Commercial Entertainment (Casinos)',
+      'SPAIR': 'Airport',
+      'SPINS': 'Institutional Development',
+      'SPSTA': 'Stadium',
+      'SPPOA': 'Recreation',
+      'SP-PO-A': 'Recreation',
+      'SPPOP': 'Recreation',
+    };
 
 function cleanDorAttribute(attr) {
   // console.log('cleanDorAttribute is running with attr', attr);
@@ -181,6 +166,7 @@ mapboard({
     left: 0,
     right: 0,
   },
+  gatekeeperKey: GATEKEEPER_KEY,
   map: {
     // possibly should move to base config
     defaultBasemap: 'pwd',
