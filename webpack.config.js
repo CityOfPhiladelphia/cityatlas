@@ -41,21 +41,20 @@ module.exports = {
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
   ],
   mode: env,
-  // mode: 'development',
   optimization: {
     splitChunks: {
       cacheGroups: {
-        mapboard: {
-          test: /mapboard/,
-          chunks: 'initial',
-          name: 'mapboard',
-          priority: 5,
-        },
         vendor: {
           test: /node_modules/,
           chunks: 'initial',
           name: 'vendor',
           enforce: true,
+          priority: 5,
+        },
+        mapboard: {
+          test: /mapboard/,
+          chunks: 'initial',
+          name: 'mapboard',
           priority: 10,
         },
       },
