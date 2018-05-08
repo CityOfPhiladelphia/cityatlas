@@ -8,8 +8,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "npx webpack",
-    "dev": "webpack-dev-server"
+    "build": "cross-env NODE_ENV=production npx webpack",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server"
   },
   "dependencies": {
     "@cityofphiladelphia/mapboard": "2.0.0-15",
