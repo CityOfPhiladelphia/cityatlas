@@ -2,13 +2,13 @@
 # yarn lockfile v1
 
 
-"@cityofphiladelphia/mapboard@2.0.0-15":
-  version "2.0.0-15"
-  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/mapboard/-/mapboard-2.0.0-15.tgz#0f3223f9617bbe58245b8e93757cd61fdb114048"
+"@cityofphiladelphia/mapboard@2.0.0-16":
+  version "2.0.0-16"
+  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/mapboard/-/mapboard-2.0.0-16.tgz#b8dee851bbb0c269a65384da337526a72e0e3323"
   dependencies:
     "@turf/turf" "^5.1.6"
     axios "^0.18.0"
-    blueimp-md5-es6 "https://github.com/gunins/JavaScript-MD5"
+    blueimp-md5 "^2.10.0"
     debounce "^1.1.0"
     esri-leaflet "^2.1.4"
     jquery "^3.2.1"
@@ -2108,9 +2108,9 @@ bluebird@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
-"blueimp-md5-es6@git+https://github.com/gunins/JavaScript-MD5.git":
-  version "2.7.4"
-  resolved "git+https://github.com/gunins/JavaScript-MD5.git#ebb11e44460856ee3af2be3d59ec4f043b0aacd1"
+blueimp-md5@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/blueimp-md5/-/blueimp-md5-2.10.0.tgz#02f0843921f90dca14f5b8920a38593201d6964d"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
