@@ -4,8 +4,6 @@ const webpack = require('webpack');
 const env = process.env.NODE_ENV;
 const isDevelopment = env === 'development';
 
-console.log('NODE_ENV:', env, 'process.env.NODE_ENV:', process.env.NODE_ENV);
-
 module.exports = {
   entry: {
     app: './src/main.js',
@@ -28,7 +26,6 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        // exclude: /node_modules/,
         use: 'babel-loader',
       },
       {
