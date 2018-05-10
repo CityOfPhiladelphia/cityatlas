@@ -1,59 +1,69 @@
 /*
-   _____   __  .__
-  /  _  \_/  |_|  | _____    ______
- /  /_\  \   __\  | \__  \  /  ___/
-/    |    \  | |  |__/ __ \_\___ \
-\____|__  /__| |____(____  /____  >
-        \/               \/     \/
+_________ .__  __            _____   __  .__
+\_   ___ \|__|/  |_ ___.__. /  _  \_/  |_|  | _____    ______
+/    \  \/|  \   __<   |  |/  /_\  \   __\  | \__  \  /  ___/
+\     \___|  ||  |  \___  /    |    \  | |  |__/ __ \_\___ \
+ \______  /__||__|  / ____\____|__  /__| |____(____  /____  >
+        \/          \/            \/               \/     \/
 */
+
+import mapboard from '@cityofphiladelphia/mapboard';
+import accounting from 'accounting';
+import moment from 'moment';
+
+// styles
+// TODO move all styles here (that have a npm package)
+import 'leaflet-measure/dist/leaflet-measure.css';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-easybutton/src/easy-button.css';
 
 // turn off console logging in production
 // TODO come up with better way of doing this with webpack + env vars
-console.log = console.info = console.debug = console.error = function () {};
+if (location.hostname !== 'localhost') {
+  console.log = console.info = console.debug = console.error = function () {};
+}
 
-var GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033';
-// var BASE_CONFIG_URL = '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js';
-// var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/e45803b240e14717fb452805fa90c134870eb14b/config.js';
-var BASE_CONFIG_URL = 'https://cdn.rawgit.com/Alexander-M-Waldman/mapboard-base-config/e446a4ddbef74c22281c42d4d0dc5d34f7ba1abd/config.js';
-
-var ZONING_CODE_MAP = {
-  'RSD-1': 'Residential Single Family Detached-1',
-  'RSD-2': 'Residential Single Family Detached-2',
-  'RSD-3': 'Residential Single Family Detached-3',
-  'RSA-1': 'Residential Single Family Attached-1',
-  'RSA-2': 'Residential Single Family Attached-2',
-  'RSA-3': 'Residential Single Family Attached-3',
-  'RSA-4': 'Residential Single Family Attached-4',
-  'RSA-5': 'Residential Single Family Attached-5',
-  'RTA-1': 'Residential Two-Family Attached-1',
-  'RM-1': 'Residential Multi-Family-1',
-  'RM-2': 'Residential Multi-Family-2',
-  'RM-3': 'Residential Multi-Family-3',
-  'RM-4': 'Residential Multi-Family-4',
-  'RMX-1': 'Residential Mixed-Use-1',
-  'RMX-2': 'Residential Mixed-Use-2',
-  'RMX-3': 'Residential (Center City) Mixed-Use-3',
-  'CA-1': 'Auto-Oriented Commercial-1',
-  'CA-2': 'Auto-Oriented Commercial-2',
-  'CMX-1': 'Neighborhood Commercial Mixed-Use-1',
-  'CMX-2': 'Neighborhood Commercial Mixed-Use-2',
-  'CMX-2.5': 'Neighborhood Commercial Mixed-Use-2.5',
-  'CMX-3': 'Community Commercial Mixed-Use',
-  'CMX-4': 'Center City Commercial Mixed-Use',
-  'CMX-5': 'Center City Core Commercial Mixed-Use',
-  'I-1': 'Light Industrial',
-  'I-2': 'Medium Industrial',
-  'I-3': 'Heavy Industrial',
-  'IP': 'Port Industrial',
-  'ICMX': 'Industrial Commercial Mixed-Use',
-  'IRMX': 'Industrial Residential Mixed-Use',
-  'SPENT': 'Commercial Entertainment (Casinos)',
-  'SPAIR': 'Airport',
-  'SPINS': 'Institutional Development',
-  'SPSTA': 'Stadium',
-  'SPPOA': 'Recreation',
-  'SPPOP': 'Recreation',
-};
+var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/11f9644110fa1d6ff8a198f206d17631c8981947/config.js',
+    GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033',
+    ZONING_CODE_MAP = {
+      'RSD-1': 'Residential Single Family Detached-1',
+      'RSD-2': 'Residential Single Family Detached-2',
+      'RSD-3': 'Residential Single Family Detached-3',
+      'RSA-1': 'Residential Single Family Attached-1',
+      'RSA-2': 'Residential Single Family Attached-2',
+      'RSA-3': 'Residential Single Family Attached-3',
+      'RSA-4': 'Residential Single Family Attached-4',
+      'RSA-5': 'Residential Single Family Attached-5',
+      'RTA-1': 'Residential Two-Family Attached-1',
+      'RM-1': 'Residential Multi-Family-1',
+      'RM-2': 'Residential Multi-Family-2',
+      'RM-3': 'Residential Multi-Family-3',
+      'RM-4': 'Residential Multi-Family-4',
+      'RMX-1': 'Residential Mixed-Use-1',
+      'RMX-2': 'Residential Mixed-Use-2',
+      'RMX-3': 'Residential (Center City) Mixed-Use-3',
+      'CA-1': 'Auto-Oriented Commercial-1',
+      'CA-2': 'Auto-Oriented Commercial-2',
+      'CMX-1': 'Neighborhood Commercial Mixed-Use-1',
+      'CMX-2': 'Neighborhood Commercial Mixed-Use-2',
+      'CMX-2.5': 'Neighborhood Commercial Mixed-Use-2.5',
+      'CMX-3': 'Community Commercial Mixed-Use',
+      'CMX-4': 'Center City Commercial Mixed-Use',
+      'CMX-5': 'Center City Core Commercial Mixed-Use',
+      'I-1': 'Light Industrial',
+      'I-2': 'Medium Industrial',
+      'I-3': 'Heavy Industrial',
+      'IP': 'Port Industrial',
+      'ICMX': 'Industrial Commercial Mixed-Use',
+      'IRMX': 'Industrial Residential Mixed-Use',
+      'SPENT': 'Commercial Entertainment (Casinos)',
+      'SPAIR': 'Airport',
+      'SPINS': 'Institutional Development',
+      'SPSTA': 'Stadium',
+      'SPPOA': 'Recreation',
+      'SP-PO-A': 'Recreation',
+      'SPPOP': 'Recreation',
+    };
 
 function cleanDorAttribute(attr) {
   // console.log('cleanDorAttribute is running with attr', attr);
@@ -77,8 +87,7 @@ function cleanDorAttribute(attr) {
 
 // TODO put this in base config transforms
 function concatDorAddress(parcel, includeUnit) {
-  console.log('concatDorAddress is running with parcel:', parcel, 'includeUnit:', includeUnit);
-  includeUnit = typeof includeUnit !== 'undefined' ? includeUnit: true;
+  includeUnit = !!includeUnit;
   var STREET_FIELDS = ['STDIR', 'STNAM', 'STDES', 'STDESSUF'];
   var props = parcel.properties;
 
@@ -139,7 +148,8 @@ function getVacancyText(state) {
 // configure accounting.js
 accounting.settings.currency.precision = 0;
 
-Mapboard.default({
+mapboard({
+// Mapboard.default({
   // DEV
   // defaultAddress: '1234 MARKET ST',
   router: {
@@ -156,6 +166,7 @@ Mapboard.default({
     left: 0,
     right: 0,
   },
+  gatekeeperKey: GATEKEEPER_KEY,
   map: {
     // possibly should move to base config
     defaultBasemap: 'pwd',
@@ -444,32 +455,43 @@ Mapboard.default({
             //          + "select * from total where overlap_area >= 0.01"
             var mapreg = feature.properties.MAPREG,
                 stmt = "\
-                  WITH all_zoning AS \
-                    ( \
-                      SELECT * \
-                      FROM   phl.zoning_overlays \
-                    ), \
-                  parcel AS \
-                    ( \
-                      SELECT * \
-                      FROM   phl.dor_parcel \
-                      WHERE  dor_parcel.mapreg = '" + mapreg + "' \
-                    ), \
-                  zp AS \
-                    ( \
-                      SELECT all_zoning.* \
-                      FROM all_zoning, parcel \
-                      WHERE st_intersects(parcel.the_geom, all_zoning.the_geom) \
-                    ), \
-                  total AS \
-                    ( \
-                      SELECT zp.*, st_area(St_intersection(zp.the_geom, parcel.the_geom)) / st_area(parcel.the_geom) AS overlap_area \
-                      FROM   zp, parcel \
-                    ) \
-                  SELECT * \
-                  FROM total \
-                  WHERE overlap_area >= 0.01 \
-                ";
+                WITH all_zoning AS \
+                  ( \
+                    SELECT * \
+                    FROM   phl.zoning_overlays \
+                  ), \
+                parcel AS \
+                  ( \
+                    SELECT * \
+                    FROM   phl.dor_parcel \
+                    WHERE  dor_parcel.mapreg = '" + mapreg + "' \
+                  ), \
+                zp AS \
+                  ( \
+                    SELECT all_zoning.* \
+                    FROM all_zoning, parcel \
+                    WHERE st_intersects(parcel.the_geom, all_zoning.the_geom) \
+                  ), \
+                total AS \
+                  ( \
+                    SELECT zp.*, st_area(St_intersection(zp.the_geom, parcel.the_geom)) / st_area(parcel.the_geom) AS overlap_area \
+                    FROM   zp, parcel \
+                  ) \
+                SELECT cartodb_id, \
+                      code_section, \
+                      code_section_link, \
+                      objectid, \
+                      overlap_area, \
+                      overlay_name, \
+                      overlay_symbol, \
+                      pending, \
+                      pendingbill, \
+                      pendingbillurl, \
+                      sunset_date, \
+                      type \
+                FROM total \
+                WHERE overlap_area >= 0.01 \
+              ";
             return stmt;
           }
         }
@@ -597,6 +619,7 @@ Mapboard.default({
       url: 'http://ase.phila.gov/arcgis/rest/services/GSG/GIS311_365DAYS/MapServer/0',
       options: {
         geometryServerUrl: 'http://ase.phila.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
+        distances: 800,
         calculateDistance: true,
       },
     },
@@ -609,6 +632,7 @@ Mapboard.default({
         dateMinType: 'year',
         dateField: 'requested_datetime',
         params: {},
+        distances: 250,
       }
     },
     crimeIncidents: {
@@ -620,6 +644,7 @@ Mapboard.default({
         dateMinType: 'year',
         dateField: 'dispatch_date',
         params: {},
+        distances: 250,
       }
     },
     nearbyZoningAppeals: {
@@ -630,8 +655,18 @@ Mapboard.default({
         dateMinNum: 1,
         dateMinType: 'year',
         dateField: 'decisiondate',
-        params: {}
+        params: {},
+        distances: 250,
       }
+    },
+    vacantIndicatorsPoints: {
+      type: 'esri-nearby',
+      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
+      options: {
+        geometryServerUrl: 'http://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
+        distances: 800,
+        calculateDistance: true,
+      },
     },
     vacantLand: {
       type: 'esri',
@@ -703,7 +738,7 @@ Mapboard.default({
             // loop over parts (whether it's simple or multipart)
             parts.forEach(function (coordPairs) {
               coordPairs.forEach(function (coordPair) {
-                console.log('coordPair', coordPair);
+                // console.log('coordPair', coordPair);
 
                 // if the polygon has a hole, it has another level of coord
                 // pairs, presumably one for the outer coords and another for
@@ -750,7 +785,7 @@ Mapboard.default({
           }
 
           // construct geometry
-          var bounds = L.latLngBounds([
+          var bounds = Leaflet.latLngBounds([
             [yMin, xMin],
             [yMax, xMax]
           ]);
@@ -761,14 +796,6 @@ Mapboard.default({
       success: function(data) {
         return data;
       }
-    },
-    vacantIndicatorsPoints: {
-      type: 'esri-nearby',
-      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
-      options: {
-        geometryServerUrl: 'http://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
-        calculateDistance: true,
-      },
     },
   },
   imageOverlayGroups: {
@@ -808,7 +835,7 @@ Mapboard.default({
           'height': '12px',
           'font-size': '10px',
         },
-        'Transparcels': {
+        'Trans Parcels': {
           'border-color': 'rgb(0, 168, 132)',
           'border-style': 'solid',
           'border-weight': '1px',
@@ -865,7 +892,7 @@ Mapboard.default({
     popoutAble: true,
   },
   pictometry: {
-    enabled: true
+    enabled: true,
   },
   // reusable transforms for topic data. see `topics` section for usage.
   transforms: {
@@ -874,16 +901,16 @@ Mapboard.default({
       globals: ['accounting'],
       // this is the function that gets called to perform the transform
       transform: function(value, globals) {
-        var accounting = globals.accounting;
+        // var accounting = globals.accounting;
         return accounting.formatMoney(value);
       }
     },
     date: {
       globals: ['moment'],
       transform: function(value, globals) {
-        var moment = globals.moment;
+        // var moment = globals.moment;
         return moment(value).format('MM/DD/YYYY');
-      }
+      },
     },
     phoneNumber: {
       transform: function(value) {
@@ -941,7 +968,17 @@ Mapboard.default({
       transform: function (value) {
         return value && value + ' sq ft';
       },
-    }
+    },
+    nowrap: {
+      transform: function (value) {
+        return '<span style="white-space: nowrap;">' + value + '</span>';
+      },
+    },
+    bold: {
+      transform: function (value) {
+        return '<strong>' + value + '</strong>';
+      },
+    },
   },
   greeting:{
     initialMessage: '\
@@ -1185,7 +1222,7 @@ Mapboard.default({
       },
     },
     {
-      key: 'condominiums',
+      key: 'condos',
       icon: 'building',
       label: 'Condominiums',
       dataSources: ['condoList'],
@@ -1320,7 +1357,7 @@ Mapboard.default({
               return item.properties.MAPREG;
             },
             getAddress: function(item) {
-              const address = concatDorAddress(item);
+              var address = concatDorAddress(item);
               return address;
             },
             // components for the content pane. this essentially a topic body.
@@ -1682,7 +1719,7 @@ Mapboard.default({
               // return state.dorParcels.data;
               return state.parcels.dor.data;
             }
-          }
+          },
         }, // end dor parcel tab group comp
         {
           type: 'callout',
@@ -1732,16 +1769,16 @@ Mapboard.default({
         'liInspections',
         'liViolations',
         'liBusinessLicenses',
-        'zoningDocs',
+        'zoningDocs'
       ],
       components: [
         {
           type: 'callout',
           slots: {
             text: '\
-              Licenses, inspections, permits, and property maintenance \
-              violations at your search address. Source: Department of \
-              Licenses & Inspections\
+              Licenses, inspections, permits, property maintenance \
+              violations, and zoning permit documents at your search address. \
+              Source: Department of Licenses & Inspections\
             '
           }
         },
@@ -1831,6 +1868,24 @@ Mapboard.default({
                 ]
               },
               {
+                label: 'Permit Number',
+                value: function(state, item){
+                  return item.permit_number
+                }
+              },
+              // {
+              //   label: 'Type',
+              //   value: function(state, item){
+              //     return item.doc_type
+              //   }
+              // },
+              {
+                label: '# Pages',
+                value: function(state, item){
+                  return item.num_pages
+                }
+              },
+              {
                 label: 'ID',
                 value: function (state, item) {
                   console.log('zoning doc', item);
@@ -1851,38 +1906,6 @@ Mapboard.default({
                 }
               },
               // {
-              //   label: 'ID',
-              //   value: function(state, item){
-              //     return "<a target='_blank' href='//www.phila.gov/zoningarchive/Preview.aspx?address="
-              //             + item.address
-              //             + "&&docType="
-              //             + item.doc_type
-              //             + "&numofPages="
-              //             + item.num_pages
-              //             + "&docID="
-              //             + item.app_doc_id
-              //             + "&app="
-              //             + item.app_id
-              //             +"'>"
-              //             // + item.app_id + '-'
-              //             + item.doc_id + ' '
-              //             + "<i class='fa fa-external-link'></i></a>"
-              //     // return item.appid + '-' + item.docid
-              //   }
-              // },
-              {
-                label: 'Type',
-                value: function(state, item){
-                  return item.doc_type
-                }
-              },
-              {
-                label: '# Pages',
-                value: function(state, item){
-                  return item.num_pages
-                }
-              },
-              // {
               //   label: 'Link',
               //   value: function(state, item){
               //     // return "<a href='//www.washingtonpost.com/'>View Scan</a>"
@@ -1893,15 +1916,15 @@ Mapboard.default({
             sort: {
               // this should return the val to sort on
               getValue: function(item) {
-                return item.scandate;
+                return item.scan_date;
               },
               // asc or desc
               order: 'desc'
             },
           },
           slots: {
-            title: 'Archived Documents',
-            subtitle: 'aka "Zoning Archive"',
+            title: 'Zoning Permit Documents',
+            subtitle: 'formerly "Zoning Archive"',
             items: function(state) {
               if (state.sources['zoningDocs'].data) {
                 if (state.sources['zoningDocs'].data.rows) {
@@ -2211,77 +2234,7 @@ Mapboard.default({
             },
           },
         }
-        // {
-        //   type: 'horizontal-table',
-        //   options: {
-        //     topicKey: 'permits',
-        //     id: 'liPermitsAdditional',
-        //     defaultIncrement: 25,
-        //     fields: [
-        //       {
-        //         label: 'Date',
-        //         value: function(state, item){
-        //           return item.attributes.PERMITISSUEDATE
-        //         },
-        //         nullValue: 'no date available',
-        //         transforms: [
-        //           'date'
-        //         ]
-        //       },
-        //       {
-        //         label: 'ID',
-        //         value: function(state, item){
-        //           return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.attributes.PERMITNUMBER+"&key="+item.attributes.ADDRESSKEY+"&address="+item.attributes.ADDRESS+"'>"+item.attributes.PERMITNUMBER+" <i class='fa fa-external-link'></i></a>"
-        //         }
-        //       },
-        //       {
-        //         label: 'Building Area',
-        //         value: function(state, item){
-        //           return item.attributes.BLDGAREA
-        //         },
-        //         nullValue: 'no area available',
-        //         transforms: [
-        //           'thousandsPlace'
-        //         ]
-        //       },
-        //       {
-        //         label: 'Declared Value',
-        //         value: function(state, item){
-        //           return item.attributes.DECLAREDVALUE
-        //         },
-        //         nullValue: 'no value available',
-        //         transforms: [
-        //           'currency'
-        //         ]
-        //       },
-        //     ],
-        //     sort: {
-        //       // this should return the val to sort on
-        //       getValue: function(item) {
-        //         return item.attributes.PERMITISSUEDATE;
-        //       },
-        //       // asc or desc
-        //       order: 'desc'
-        //     },
-        //   },
-        //   slots: {
-        //     title: 'Building Area and Value',
-        //     items: function(state) {
-        //       var data = state.sources['liPermitsAdditional'].data;
-        //       if (data === null) {
-        //         return;
-        //       }
-        //       var rows = data.map(function(row){
-        //         var itemRow = row;
-        //         // var itemRow = Object.assign({}, row);
-        //         //itemRow.DISTANCE = 'TODO';
-        //         return itemRow;
-        //       });
-        //       // console.log('rows', rows);
-        //       return rows;
-        //     },
-        //   },
-        // }
+
       ],
       basemap: 'pwd',
       dynamicMapLayers: [
@@ -2297,6 +2250,8 @@ Mapboard.default({
       dataSources: [
         'zoningOverlay',
         'zoningBase',
+        // 'zoningAppeals',
+        // 'rco',
       ],
       components: [
         {
@@ -2427,9 +2382,9 @@ Mapboard.default({
                 },
                 slots: {
                   title: 'Base District',
-                  data: function(state) {
-                    return state.sources.zoningBase.data.rows;
-                  },
+                  // data: function(state) {
+                  //   return state.sources.zoningBase.data.rows;
+                  // },
                   // value: function(state) {
                   //   return state.sources.zoningBase.data.rows;
                   // },
@@ -2675,17 +2630,30 @@ Mapboard.default({
             id: '311',
             sort: {
               select: true,
-              getValue: function(item, method) {
+              sortFields: [
+                'distance',
+                'date',
+              ],
+              getValue: function(item, sortField) {
                 var val;
 
-                if (method === 'date' || !method) {
+                if (sortField === 'date' || !sortField) {
                   val = item.properties.REQUESTED_DATETIME;
-                } else if (method === 'distance') {
+                } else if (sortField === 'distance') {
                   val = item._distance;
                 }
 
                 return val;
-              }
+              },
+              order: function(sortField) {
+                var val;
+                if (sortField === 'date') {
+                  val = 'desc';
+                } else {
+                  val = 'asc';
+                }
+                return val;
+              },
             },
             filters: [
               {
@@ -2787,6 +2755,7 @@ Mapboard.default({
           },
           slots: {
             title: 'Nearby Service Requests',
+            data: '311',
             items: function(state) {
               var data = state.sources['311'].data;
               var rows = data.map(function(row){
@@ -2797,23 +2766,6 @@ Mapboard.default({
               });
               return rows;
             },
-            // filterText() {
-            //   return 'from the last';
-            // },
-            // filterValues: {
-            //   value1: {
-            //     text: '30 days',
-            //     value: '30'
-            //   },
-            //   value2: {
-            //     text: '90 days',
-            //     value: '90'
-            //   },
-            //   value3: {
-            //     text: 'year',
-            //     value: '365'
-            //   }
-            // },
           }
         }
       ]
@@ -2968,7 +2920,8 @@ Mapboard.default({
       key: 'nearby',
       icon: 'map-marker',
       label: 'Nearby',
-      dataSources: ['311Carto', 'crimeIncidents', 'nearbyZoningAppeals', 'vacantIndicatorsPoints'],
+      dataSources: ['311Carto', 'crimeIncidents', 'nearbyZoningAppeals'],
+      // dataSources: ['311Carto', 'crimeIncidents', 'nearbyZoningAppeals', 'vacantIndicatorsPoints'],
       // dataSources: ['vacantLand', 'vacantBuilding', '311Carto', 'crimeIncidents', 'nearbyZoningAppeals'],
       basemap: 'pwd',
       // featureLayers: [
@@ -3028,7 +2981,7 @@ Mapboard.default({
         //   }
         // },
         {
-          type: 'table-group',
+          type: 'horizontal-table-group',
           options: {
             filters: [
               {
@@ -3058,17 +3011,16 @@ Mapboard.default({
               },
             ],
             // components for the content pane.
-            components: [
+            tables: [
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: '311',
                   sort: {
                     select: true,
                     sortFields: [
+                      'distance',
                       'date',
-                      'distance'
                     ],
                     getValue: function(item, sortField) {
                       var val;
@@ -3196,13 +3148,12 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'crimeIncidents',
                   sort: {
                     select: true,
                     sortFields: [
+                      'distance',
                       'date',
-                      'distance'
                     ],
                     getValue: function(item, sortField) {
                       var val;
@@ -3319,13 +3270,12 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'nearbyZoningAppeals',
                   sort: {
                     select: true,
                     sortFields: [
+                      'distance',
                       'date',
-                      'distance'
                     ],
                     getValue: function(item, sortField) {
                       var val;
@@ -3419,13 +3369,12 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'vacantIndicatorsPoints',
                   sort: {
                     select: true,
                     sortFields: [
+                      'distance',
                       'type',
-                      'distance'
                     ],
                     getValue: function(item, sortField) {
                       var val;
@@ -3523,5 +3472,5 @@ Mapboard.default({
         }
       ]
     },
-  ],
+  ], // end topics
 });
