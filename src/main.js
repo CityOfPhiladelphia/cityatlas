@@ -413,14 +413,17 @@ mapboard({
                     ( \
                       SELECT zp.objectid, \
                       zp.long_code, \
+                      zp.pending, \
+                      zp.pendingbill, \
+                      zp.pendingbillurl, \
                       St_area(St_intersection(zp.the_geom, parcel.the_geom)) / St_area(parcel.the_geom) AS overlap_area \
                       FROM zp, parcel \
                     ), \
                   total AS \
                     ( \
-                      SELECT long_code, sum(overlap_area) as sum_overlap_area \
+                      SELECT long_code, pending, pendingbill, pendingbillurl, sum(overlap_area) as sum_overlap_area \
                       FROM combine \
-                      GROUP BY long_code \
+                      GROUP BY long_code, pending, pendingbill, pendingbillurl \
                     ) \
                   SELECT * \
                   FROM total \
@@ -2310,23 +2313,23 @@ mapboard({
             },
             // components for the content pane. this essentially a topic body.
             components: [
-              {
-                type: 'badge-custom',
-                options: {
-                  titleBackground: '#58c04d',
-                  components: [
+              // {
+              //   type: 'badge-custom',
+              //   options: {
+              //     titleBackground: '#58c04d',
+              //     components: [
                     {
                       type: 'horizontal-table',
                       options: {
                         topicKey: 'zoning',
-                        shouldShowHeaders: false,
+                        // shouldShowFilters: false,
                         id: 'baseZoning',
                         // defaultIncrement: 10,
                         // showAllRowsOnFirstClick: true,
                         // showOnlyIfData: true,
                         fields: [
                           {
-                            label: 'code',
+                            label: 'Code',
                             value: function(state, item) {
                               return item.long_code;
                             },
@@ -2336,10 +2339,33 @@ mapboard({
                             ]
                           },
                           {
-                            label: 'definition',
+                            label: 'Definition',
                             value: function(state, item) {
                               return ZONING_CODE_MAP[item.long_code];
                             },
+                          },
+                          {
+                            label: 'Pending',
+                            value: function(state, item){
+                              console.log('pending item:', item)
+                              return item.pending
+                            }
+                          },
+                          {
+                            label: "Pending Bill",
+                            value: function(state, item){
+                              return item.pendingbill
+                            }
+                          },
+                          {
+                            label: 'Pending Bill URL',
+                            value: function(state, item){
+                              if (item.pendingbillurl !== 'N/A') {
+                                return "<a target='_blank' href='"+item.pendingbillurl+"'>"+item.pendingbillurl+" <i class='fa fa-external-link'></i></a>"
+                              } else {
+                                return item.pendingbillurl
+                              }
+                            }
                           },
                         ], // end fields
                         // sort: {
@@ -2352,7 +2378,7 @@ mapboard({
                         // }
                       },
                       slots: {
-                        // title: 'Base Zoning',
+                        title: 'Base Zoning',
                         items: function(state, item) {
                           // console.log('state.sources:', state.sources['zoningBase'].data.rows);
                           var id = item.properties.OBJECTID,
@@ -2378,22 +2404,22 @@ mapboard({
                       }, // end slots
                     }, // end table
 
-                  ],
-                },
-                slots: {
-                  title: 'Base District',
-                  // data: function(state) {
-                  //   return state.sources.zoningBase.data.rows;
-                  // },
-                  // value: function(state) {
-                  //   return state.sources.zoningBase.data.rows;
-                  // },
-                  // description: function(state) {
-                  //   var code = state.sources.zoningBase.data.rows;
-                  //   return ZONING_CODE_MAP[code];
-                  // },
-                },
-              }, // end of badge-custom
+              //     ],
+              //   },
+              //   slots: {
+              //     title: 'Base District',
+              //     // data: function(state) {
+              //     //   return state.sources.zoningBase.data.rows;
+              //     // },
+              //     // value: function(state) {
+              //     //   return state.sources.zoningBase.data.rows;
+              //     // },
+              //     // description: function(state) {
+              //     //   var code = state.sources.zoningBase.data.rows;
+              //     //   return ZONING_CODE_MAP[code];
+              //     // },
+              //   },
+              // }, // end of badge-custom
               {
                 type: 'horizontal-table',
                 options: {
@@ -2411,6 +2437,28 @@ mapboard({
                       label: 'Code Section',
                       value: function(state, item){
                         return "<a target='_blank' href='"+item.code_section_link+"'>"+item.code_section+" <i class='fa fa-external-link'></i></a>"
+                      }
+                    },
+                    {
+                      label: 'Pending',
+                      value: function(state, item){
+                        return item.pending
+                      }
+                    },
+                    {
+                      label: "Pending Bill",
+                      value: function(state, item){
+                        return item.pendingbill
+                      }
+                    },
+                    {
+                      label: 'Pending Bill URL',
+                      value: function(state, item){
+                        if (item.pendingbillurl !== 'N/A') {
+                          return "<a target='_blank' href='"+item.pendingbillurl+"'>"+item.pendingbillurl+" <i class='fa fa-external-link'></i></a>"
+                        } else {
+                          return item.pendingbillurl
+                        }
                       }
                     },
                   ],
