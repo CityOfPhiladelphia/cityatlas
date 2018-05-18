@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@cityofphiladelphia/mapboard@2.0.0-19":
-  version "2.0.0-19"
-  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/mapboard/-/mapboard-2.0.0-19.tgz#17c093e6852f841a3ca72d684d43dfff764da23f"
+"@cityofphiladelphia/mapboard@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/mapboard/-/mapboard-2.0.1.tgz#f4f3b6c1f6c217e4330a48586c0299184d8866b3"
   dependencies:
     "@turf/turf" "^5.1.6"
     axios "^0.18.0"
