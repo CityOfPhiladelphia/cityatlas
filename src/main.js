@@ -811,9 +811,9 @@ mapboard({
     }
   },
   legendControls: {
-    water: {
+    stormwater: {
       options: {
-        topics: ['water'],
+        topics: ['stormwater'],
         showWithBaseMapOnly: false
       },
       data: {
