@@ -2404,18 +2404,6 @@ mapboard({
                     return data.rows || [];
                   },
                 },
-
-
-                  // items: function(state) {
-                  //   var data = state.sources['zoningOverlay'].data.rows
-                  //   var rows = data.map(function(row){
-                  //     var itemRow = row;
-                  //     // var itemRow = Object.assign({}, row);
-                  //     //itemRow.DISTANCE = 'TODO';
-                  //     return itemRow;
-                  //   });
-                  //   return rows;
-                  // },
               },
               {
                 type: 'horizontal-table',
