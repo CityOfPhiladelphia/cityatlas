@@ -159,6 +159,9 @@ mapboard({
   geolocation: {
     enabled: false
   },
+  addressAutocomplete: {
+    enabled: true
+  },
   rootStyle: {
     position: 'absolute',
     bottom: 0,
