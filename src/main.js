@@ -1,62 +1,70 @@
 /*
-   _____   __  .__
-  /  _  \_/  |_|  | _____    ______
- /  /_\  \   __\  | \__  \  /  ___/
-/    |    \  | |  |__/ __ \_\___ \
-\____|__  /__| |____(____  /____  >
-        \/               \/     \/
+_________ .__  __            _____   __  .__
+\_   ___ \|__|/  |_ ___.__. /  _  \_/  |_|  | _____    ______
+/    \  \/|  \   __<   |  |/  /_\  \   __\  | \__  \  /  ___/
+\     \___|  ||  |  \___  /    |    \  | |  |__/ __ \_\___ \
+ \______  /__||__|  / ____\____|__  /__| |____(____  /____  >
+        \/          \/            \/               \/     \/
 */
+
+import mapboard from '@cityofphiladelphia/mapboard';
+import accounting from 'accounting';
+import moment from 'moment';
+
+// styles
+// TODO move all styles here (that have a npm package)
+import 'leaflet-measure/dist/leaflet-measure.css';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-easybutton/src/easy-button.css';
 
 // turn off console logging in production
 // TODO come up with better way of doing this with webpack + env vars
-if (location.hostname !== 'localhost') {
+const { hostname='' } = location;
+if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
   console.log = console.info = console.debug = console.error = function () {};
 }
 
-var GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033';
-// var BASE_CONFIG_URL = '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js';
-var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/e45803b240e14717fb452805fa90c134870eb14b/config.js';
-// var BASE_CONFIG_URL = 'https://cdn.rawgit.com/Alexander-M-Waldman/mapboard-base-config/e446a4ddbef74c22281c42d4d0dc5d34f7ba1abd/config.js';
-
-var ZONING_CODE_MAP = {
-  'RSD-1': 'Residential Single Family Detached-1',
-  'RSD-2': 'Residential Single Family Detached-2',
-  'RSD-3': 'Residential Single Family Detached-3',
-  'RSA-1': 'Residential Single Family Attached-1',
-  'RSA-2': 'Residential Single Family Attached-2',
-  'RSA-3': 'Residential Single Family Attached-3',
-  'RSA-4': 'Residential Single Family Attached-4',
-  'RSA-5': 'Residential Single Family Attached-5',
-  'RTA-1': 'Residential Two-Family Attached-1',
-  'RM-1': 'Residential Multi-Family-1',
-  'RM-2': 'Residential Multi-Family-2',
-  'RM-3': 'Residential Multi-Family-3',
-  'RM-4': 'Residential Multi-Family-4',
-  'RMX-1': 'Residential Mixed-Use-1',
-  'RMX-2': 'Residential Mixed-Use-2',
-  'RMX-3': 'Residential (Center City) Mixed-Use-3',
-  'CA-1': 'Auto-Oriented Commercial-1',
-  'CA-2': 'Auto-Oriented Commercial-2',
-  'CMX-1': 'Neighborhood Commercial Mixed-Use-1',
-  'CMX-2': 'Neighborhood Commercial Mixed-Use-2',
-  'CMX-2.5': 'Neighborhood Commercial Mixed-Use-2.5',
-  'CMX-3': 'Community Commercial Mixed-Use',
-  'CMX-4': 'Center City Commercial Mixed-Use',
-  'CMX-5': 'Center City Core Commercial Mixed-Use',
-  'I-1': 'Light Industrial',
-  'I-2': 'Medium Industrial',
-  'I-3': 'Heavy Industrial',
-  'IP': 'Port Industrial',
-  'ICMX': 'Industrial Commercial Mixed-Use',
-  'IRMX': 'Industrial Residential Mixed-Use',
-  'SPENT': 'Commercial Entertainment (Casinos)',
-  'SPAIR': 'Airport',
-  'SPINS': 'Institutional Development',
-  'SPSTA': 'Stadium',
-  'SPPOA': 'Recreation',
-  'SP-PO-A': 'Recreation',
-  'SPPOP': 'Recreation',
-};
+var BASE_CONFIG_URL = 'https://cdn.rawgit.com/rbrtmrtn/mapboard-base-config/11f9644110fa1d6ff8a198f206d17631c8981947/config.js',
+    GATEKEEPER_KEY = '6c5f564b450f91deca224249a6a36033',
+    ZONING_CODE_MAP = {
+      'RSD-1': 'Residential Single Family Detached-1',
+      'RSD-2': 'Residential Single Family Detached-2',
+      'RSD-3': 'Residential Single Family Detached-3',
+      'RSA-1': 'Residential Single Family Attached-1',
+      'RSA-2': 'Residential Single Family Attached-2',
+      'RSA-3': 'Residential Single Family Attached-3',
+      'RSA-4': 'Residential Single Family Attached-4',
+      'RSA-5': 'Residential Single Family Attached-5',
+      'RTA-1': 'Residential Two-Family Attached-1',
+      'RM-1': 'Residential Multi-Family-1',
+      'RM-2': 'Residential Multi-Family-2',
+      'RM-3': 'Residential Multi-Family-3',
+      'RM-4': 'Residential Multi-Family-4',
+      'RMX-1': 'Residential Mixed-Use-1',
+      'RMX-2': 'Residential Mixed-Use-2',
+      'RMX-3': 'Residential (Center City) Mixed-Use-3',
+      'CA-1': 'Auto-Oriented Commercial-1',
+      'CA-2': 'Auto-Oriented Commercial-2',
+      'CMX-1': 'Neighborhood Commercial Mixed-Use-1',
+      'CMX-2': 'Neighborhood Commercial Mixed-Use-2',
+      'CMX-2.5': 'Neighborhood Commercial Mixed-Use-2.5',
+      'CMX-3': 'Community Commercial Mixed-Use',
+      'CMX-4': 'Center City Commercial Mixed-Use',
+      'CMX-5': 'Center City Core Commercial Mixed-Use',
+      'I-1': 'Light Industrial',
+      'I-2': 'Medium Industrial',
+      'I-3': 'Heavy Industrial',
+      'IP': 'Port Industrial',
+      'ICMX': 'Industrial Commercial Mixed-Use',
+      'IRMX': 'Industrial Residential Mixed-Use',
+      'SPENT': 'Commercial Entertainment (Casinos)',
+      'SPAIR': 'Airport',
+      'SPINS': 'Institutional Development',
+      'SPSTA': 'Stadium',
+      'SPPOA': 'Recreation',
+      'SP-PO-A': 'Recreation',
+      'SPPOP': 'Recreation',
+    };
 
 function cleanDorAttribute(attr) {
   // console.log('cleanDorAttribute is running with attr', attr);
@@ -141,13 +149,17 @@ function getVacancyText(state) {
 // configure accounting.js
 accounting.settings.currency.precision = 0;
 
-Mapboard.default({
+mapboard({
+// Mapboard.default({
   // DEV
   // defaultAddress: '1234 MARKET ST',
   router: {
     enabled: true
   },
   geolocation: {
+    enabled: false
+  },
+  addressAutocomplete: {
     enabled: false
   },
   rootStyle: {
@@ -158,6 +170,7 @@ Mapboard.default({
     left: 0,
     right: 0,
   },
+  gatekeeperKey: GATEKEEPER_KEY,
   map: {
     // possibly should move to base config
     defaultBasemap: 'pwd',
@@ -404,14 +417,17 @@ Mapboard.default({
                     ( \
                       SELECT zp.objectid, \
                       zp.long_code, \
+                      zp.pending, \
+                      zp.pendingbill, \
+                      zp.pendingbillurl, \
                       St_area(St_intersection(zp.the_geom, parcel.the_geom)) / St_area(parcel.the_geom) AS overlap_area \
                       FROM zp, parcel \
                     ), \
                   total AS \
                     ( \
-                      SELECT long_code, sum(overlap_area) as sum_overlap_area \
+                      SELECT long_code, pending, pendingbill, pendingbillurl, sum(overlap_area) as sum_overlap_area \
                       FROM combine \
-                      GROUP BY long_code \
+                      GROUP BY long_code, pending, pendingbill, pendingbillurl \
                     ) \
                   SELECT * \
                   FROM total \
@@ -563,7 +579,7 @@ Mapboard.default({
                 where += " AND ADDRESS_LOW_SUFFIX = '" + geocode.address_low_suffix + "'";
               }
               // this is hardcoded right now to handle DOR address suffixes that are actually fractions
-              if (geocode.address_low_frac = '1/2') {
+              if (geocode.address_low_frac === '1/2') {
                 where += " AND ADDRESS_LOW_SUFFIX = '2'" //+ geocode.address_low_frac + "'";
               }
               if (geocode.street_postdir != '') {
@@ -610,7 +626,7 @@ Mapboard.default({
       url: 'http://ase.phila.gov/arcgis/rest/services/GSG/GIS311_365DAYS/MapServer/0',
       options: {
         geometryServerUrl: 'http://ase.phila.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
-        distances: 500,
+        distances: 800,
         calculateDistance: true,
       },
     },
@@ -623,6 +639,7 @@ Mapboard.default({
         dateMinType: 'year',
         dateField: 'requested_datetime',
         params: {},
+        distances: 250,
       }
     },
     crimeIncidents: {
@@ -634,6 +651,7 @@ Mapboard.default({
         dateMinType: 'year',
         dateField: 'dispatch_date',
         params: {},
+        distances: 250,
       }
     },
     nearbyZoningAppeals: {
@@ -644,8 +662,18 @@ Mapboard.default({
         dateMinNum: 1,
         dateMinType: 'year',
         dateField: 'decisiondate',
-        params: {}
+        params: {},
+        distances: 250,
       }
+    },
+    vacantIndicatorsPoints: {
+      type: 'esri-nearby',
+      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
+      options: {
+        geometryServerUrl: 'http://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
+        distances: 800,
+        calculateDistance: true,
+      },
     },
     vacantLand: {
       type: 'esri',
@@ -717,7 +745,7 @@ Mapboard.default({
             // loop over parts (whether it's simple or multipart)
             parts.forEach(function (coordPairs) {
               coordPairs.forEach(function (coordPair) {
-                console.log('coordPair', coordPair);
+                // console.log('coordPair', coordPair);
 
                 // if the polygon has a hole, it has another level of coord
                 // pairs, presumably one for the outer coords and another for
@@ -776,14 +804,6 @@ Mapboard.default({
         return data;
       }
     },
-    vacantIndicatorsPoints: {
-      type: 'esri-nearby',
-      url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0',
-      options: {
-        geometryServerUrl: 'http://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
-        calculateDistance: true,
-      },
-    },
   },
   imageOverlayGroups: {
     regmaps: {
@@ -794,9 +814,9 @@ Mapboard.default({
     }
   },
   legendControls: {
-    water: {
+    stormwater: {
       options: {
-        topics: ['water'],
+        topics: ['stormwater'],
         showWithBaseMapOnly: false
       },
       data: {
@@ -1903,7 +1923,7 @@ Mapboard.default({
             sort: {
               // this should return the val to sort on
               getValue: function(item) {
-                return item.scandate;
+                return item.scan_date;
               },
               // asc or desc
               order: 'desc'
@@ -2237,8 +2257,8 @@ Mapboard.default({
       dataSources: [
         'zoningOverlay',
         'zoningBase',
-        // 'zoningAppeals',
-        // 'rco',
+        'zoningAppeals',
+        'rco',
       ],
       components: [
         {
@@ -2306,6 +2326,7 @@ Mapboard.default({
                       type: 'horizontal-table',
                       options: {
                         topicKey: 'zoning',
+                        shouldShowFilters: false,
                         shouldShowHeaders: false,
                         id: 'baseZoning',
                         // defaultIncrement: 10,
@@ -2313,9 +2334,9 @@ Mapboard.default({
                         // showOnlyIfData: true,
                         fields: [
                           {
-                            label: 'code',
-                            value: function(state, item) {
-                              return item.long_code;
+                            label: 'Code',
+                            value: function (state, item) {
+                              return item;
                             },
                             transforms: [
                               'nowrap',
@@ -2323,62 +2344,35 @@ Mapboard.default({
                             ]
                           },
                           {
-                            label: 'definition',
-                            value: function(state, item) {
-                              return ZONING_CODE_MAP[item.long_code];
+                            label: 'Description',
+                            value: function (state, item) {
+                              return ZONING_CODE_MAP[item];
                             },
                           },
                         ], // end fields
-                        // sort: {
-                        //   // this should return the val to sort on
-                        //   getValue: function(item) {
-                        //     return item.long_code;
-                        //   },
-                        //   // asc or desc
-                        //   order: 'asc'
-                        // }
                       },
                       slots: {
                         // title: 'Base Zoning',
-                        items: function(state, item) {
+                        items(state, item) {
                           // console.log('state.sources:', state.sources['zoningBase'].data.rows);
-                          var id = item.properties.OBJECTID,
-                              target = state.sources.zoningBase.targets[id] || {},
-                              data = target.data || {};
-                          // console.log('zoningbase target:', target);
-                          return data.rows || [];
-                          // if (target) {
-                          //   return target.data;
-                          // } else {
-                          //   return [];
-                          // }
+                          const id = item.properties.OBJECTID;
+                          const target = state.sources.zoningBase.targets[id] || {};
+                          const { data={} } = target;
+                          const { rows=[] } = data;
+
+                          // get unique zoning codes
+                          const longCodes = rows.map(row => row.long_code);
+                          const longCodesUniqueSet = new Set(longCodes);
+                          const longCodesUnique = Array.from(longCodesUniqueSet);
+
+                          return longCodesUnique;
                         },
-
-
-                          // var data = state.sources['zoningBase'].data.rows;
-                          // var rows = data.map(function(row){
-                          //   var itemRow = row;
-                          //   return itemRow;
-                          // });
-                          // return rows;
-                        // },
                       }, // end slots
                     }, // end table
-
                   ],
                 },
                 slots: {
                   title: 'Base District',
-                  // data: function(state) {
-                  //   return state.sources.zoningBase.data.rows;
-                  // },
-                  // value: function(state) {
-                  //   return state.sources.zoningBase.data.rows;
-                  // },
-                  // description: function(state) {
-                  //   var code = state.sources.zoningBase.data.rows;
-                  //   return ZONING_CODE_MAP[code];
-                  // },
                 },
               }, // end of badge-custom
               {
@@ -2390,13 +2384,13 @@ Mapboard.default({
                   fields: [
                     {
                       label: 'Name',
-                      value: function(state, item){
+                      value: function (state, item) {
                         return item.overlay_name
                       }
                     },
                     {
                       label: 'Code Section',
-                      value: function(state, item){
+                      value: function (state, item) {
                         return "<a target='_blank' href='"+item.code_section_link+"'>"+item.code_section+" <i class='fa fa-external-link'></i></a>"
                       }
                     },
@@ -2413,19 +2407,78 @@ Mapboard.default({
                     return data.rows || [];
                   },
                 },
-
-
-                  // items: function(state) {
-                  //   var data = state.sources['zoningOverlay'].data.rows
-                  //   var rows = data.map(function(row){
-                  //     var itemRow = row;
-                  //     // var itemRow = Object.assign({}, row);
-                  //     //itemRow.DISTANCE = 'TODO';
-                  //     return itemRow;
-                  //   });
-                  //   return rows;
-                  // },
               },
+              {
+                type: 'horizontal-table',
+                options: {
+                  topicKey: 'zoning',
+                  // shouldShowFilters: false,
+                  id: 'baseZoning',
+                  // defaultIncrement: 10,
+                  // showAllRowsOnFirstClick: true,
+                  // showOnlyIfData: true,
+                  fields: [
+                    {
+                      label: 'Bill Type',
+                      value: function (state, item) {
+                        return item.billType;
+                      },
+                    },
+                    {
+                      label: 'Current Zoning',
+                      value: function(state, item) {
+                        return item.currentZoning;
+                      },
+                    },
+                    {
+                      label: 'Pending Bill',
+                      value: function (state, item) {
+                        return `<a target="_blank" href="${item.pendingbillurl}">${item.pendingbill} <i class="fa fa-external-link"></i></a>`;
+                      }
+                    },
+                  ], // end fields
+                },
+                slots: {
+                  title: 'Pending Bills',
+                  items: function(state, item) {
+                    // console.log('state.sources:', state.sources['zoningBase'].data.rows);
+                    var id = item.properties.OBJECTID,
+                        target = state.sources.zoningBase.targets[id] || {},
+                        data = target.data || {};
+
+                    // include only rows where pending is true
+                    const { rows=[] } = data;
+                    const rowsFiltered = rows.filter(row => row.pending === 'Yes');
+
+                    // give each pending zoning bill a type of "zoning"
+                    const rowsFilteredWithType = rowsFiltered.map((row) => {
+                      row.billType = 'Base District';
+                      row.currentZoning = row.long_code;
+                      return row;
+                    });
+
+                    let overlayRowsFilteredWithType = [];
+
+                    // append pending overlays
+                    if (state.sources.zoningOverlay.targets[id]) {
+                      const overlayRows = state.sources.zoningOverlay.targets[id].data.rows;
+                      const overlayRowsFiltered = overlayRows.filter(row => row.pending === 'Yes');
+                      overlayRowsFilteredWithType = overlayRowsFiltered.map((row) => {
+                        row.billType = 'Overlay';
+                        row.currentZoning = row.overlay_name;
+                        return row;
+                      });
+                    } else {
+                      overlayRowsFilteredWithType = [];
+                    }
+
+                    // combine pending zoning and overlays
+                    const zoningAndOverlays = rowsFilteredWithType.concat(overlayRowsFilteredWithType);
+
+                    return zoningAndOverlays;
+                  },
+                }, // end slots
+              }, // end table
             ], // end of tab-group components
           },
           slots: {
@@ -2621,12 +2674,16 @@ Mapboard.default({
                 'distance',
                 'date',
               ],
+<<<<<<< HEAD:main.js
               getValue: function(item, method) {
+=======
+              getValue: function(item, sortField) {
+>>>>>>> develop:src/main.js
                 var val;
 
-                if (method === 'date' || !method) {
+                if (sortField === 'date' || !sortField) {
                   val = item.properties.REQUESTED_DATETIME;
-                } else if (method === 'distance') {
+                } else if (sortField === 'distance') {
                   val = item._distance;
                 }
                 return val;
@@ -2639,7 +2696,16 @@ Mapboard.default({
                   val = 'asc';
                 }
                 return val;
-              }
+              },
+              order: function(sortField) {
+                var val;
+                if (sortField === 'date') {
+                  val = 'desc';
+                } else {
+                  val = 'asc';
+                }
+                return val;
+              },
             },
             filters: [
               {
@@ -2741,6 +2807,7 @@ Mapboard.default({
           },
           slots: {
             title: 'Nearby Service Requests',
+            data: '311',
             items: function(state) {
               var data = state.sources['311'].data;
               var rows = data.map(function(row){
@@ -2751,23 +2818,6 @@ Mapboard.default({
               });
               return rows;
             },
-            // filterText() {
-            //   return 'from the last';
-            // },
-            // filterValues: {
-            //   value1: {
-            //     text: '30 days',
-            //     value: '30'
-            //   },
-            //   value2: {
-            //     text: '90 days',
-            //     value: '90'
-            //   },
-            //   value3: {
-            //     text: 'year',
-            //     value: '365'
-            //   }
-            // },
           }
         }
       ]
@@ -2983,7 +3033,7 @@ Mapboard.default({
         //   }
         // },
         {
-          type: 'table-group',
+          type: 'horizontal-table-group',
           options: {
             filters: [
               {
@@ -3013,11 +3063,10 @@ Mapboard.default({
               },
             ],
             // components for the content pane.
-            components: [
+            tables: [
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: '311',
                   sort: {
                     select: true,
@@ -3085,18 +3134,18 @@ Mapboard.default({
                     style: {
                       radius: 6,
                       fillColor: '#ff3f3f',
-                    	color: '#ff0000',
-                    	weight: 1,
-                    	opacity: 1,
-                    	fillOpacity: 1.0
+                      color: '#ff0000',
+                      weight: 1,
+                      opacity: 1,
+                      fillOpacity: 1.0
                     },
                     hoverStyle: {
                       radius: 6,
                       fillColor: 'yellow',
-                    	color: '#ff0000',
-                    	weight: 1,
-                    	opacity: 1,
-                    	fillOpacity: 1.0
+                      color: '#ff0000',
+                      weight: 1,
+                      opacity: 1,
+                      fillOpacity: 1.0
                     }
                   },
                   fields: [
@@ -3151,7 +3200,6 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'crimeIncidents',
                   sort: {
                     select: true,
@@ -3212,18 +3260,18 @@ Mapboard.default({
                     style: {
                       radius: 6,
                       fillColor: '#6674df',
-                    	color: '#6674df',
-                    	weight: 1,
-                    	opacity: 1,
-                    	fillOpacity: 1.0
+                      color: '#6674df',
+                      weight: 1,
+                      opacity: 1,
+                      fillOpacity: 1.0
                     },
                     hoverStyle: {
                       radius: 6,
                       fillColor: 'yellow',
-                    	color: '#6674df',
-                    	weight: 1,
-                    	opacity: 1,
-                    	fillOpacity: 1.0
+                      color: '#6674df',
+                      weight: 1,
+                      opacity: 1,
+                      fillOpacity: 1.0
                     }
                   },
                   fields: [
@@ -3274,7 +3322,6 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'nearbyZoningAppeals',
                   sort: {
                     select: true,
@@ -3312,18 +3359,18 @@ Mapboard.default({
                     style: {
                       radius: 6,
                       fillColor: '#009900',
-                    	color: '#009900',
-                    	weight: 1,
-                    	opacity: 1,
-                    	fillOpacity: 1.0
+                      color: '#009900',
+                      weight: 1,
+                      opacity: 1,
+                      fillOpacity: 1.0
                     },
                     hoverStyle: {
                       radius: 6,
                       fillColor: 'yellow',
-                    	color: '#009900',
-                    	weight: 1,
-                    	opacity: 1,
-                    	fillOpacity: 1.0
+                      color: '#009900',
+                      weight: 1,
+                      opacity: 1,
+                      fillOpacity: 1.0
                     }
                   },
                   fields: [
@@ -3374,13 +3421,12 @@ Mapboard.default({
               {
                 type: 'horizontal-table',
                 options: {
-                  topicKey: 'nearby',
                   id: 'vacantIndicatorsPoints',
                   sort: {
                     select: true,
                     sortFields: [
+                      'distance',
                       'type',
-                      'distance'
                     ],
                     getValue: function(item, sortField) {
                       var val;
@@ -3404,18 +3450,18 @@ Mapboard.default({
                     style: {
                       radius: 6,
                       fillColor: '#9400c6',
-                    	color: '#9400c6',
-                    	weight: 1,
-                    	opacity: 1,
-                    	fillOpacity: 1.0
+                      color: '#9400c6',
+                      weight: 1,
+                      opacity: 1,
+                      fillOpacity: 1.0
                     },
                     hoverStyle: {
                       radius: 6,
                       fillColor: 'yellow',
-                    	color: '#009900',
-                    	weight: 1,
-                    	opacity: 1,
-                    	fillOpacity: 1.0
+                      color: '#009900',
+                      weight: 1,
+                      opacity: 1,
+                      fillOpacity: 1.0
                     }
                   },
                   fields: [
