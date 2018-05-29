@@ -2674,11 +2674,7 @@ mapboard({
                 'distance',
                 'date',
               ],
-<<<<<<< HEAD:main.js
-              getValue: function(item, method) {
-=======
               getValue: function(item, sortField) {
->>>>>>> develop:src/main.js
                 var val;
 
                 if (sortField === 'date' || !sortField) {
