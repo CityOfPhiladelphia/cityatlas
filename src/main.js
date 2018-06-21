@@ -2682,7 +2682,15 @@ mapboard({
                 } else if (sortField === 'distance') {
                   val = item._distance;
                 }
-
+                return val;
+              },
+              order: function(sortField) {
+                var val;
+                if (sortField === 'date') {
+                  val = 'desc';
+                } else {
+                  val = 'asc';
+                }
                 return val;
               },
               order: function(sortField) {
