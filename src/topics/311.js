@@ -2,7 +2,7 @@ export default {
   key: '311',
   icon: 'phone',
   label: '311',
-  dataSources: ['311'],
+  dataSources: ['threeOneOne'],
   basemap: 'pwd',
   identifyFeature: 'address-marker',
   parcels: 'pwd',
@@ -157,9 +157,9 @@ export default {
       },
       slots: {
         title: 'Nearby Service Requests',
-        data: '311',
+        data: 'threeOneOne',
         items: function(state) {
-          var data = state.sources['311'].data;
+          var data = state.sources['threeOneOne'].data;
           var rows = data.map(function(row){
             var itemRow = row;
             // var itemRow = Object.assign({}, row);

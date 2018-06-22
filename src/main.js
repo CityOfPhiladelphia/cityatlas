@@ -15,24 +15,47 @@ import mapboard from '@cityofphiladelphia/mapboard';
 
 // General Config Modules
 import helpers from './util/helpers';
-import map from './config/map';
-import dataSources from './config/dataSources';
-import parcels from './config/parcels';
-import legendControls from './config/legendControls';
-import transforms from './config/transforms';
-import imageOverlayGroups from './config/imageOverlayGroups';
-import greeting from './config/greeting';
+import map from './general/map';
+import parcels from './general/parcels';
+import legendControls from './general/legendControls';
+import transforms from './general/transforms';
+import imageOverlayGroups from './general/imageOverlayGroups';
+import greeting from './general/greeting';
 
+// data sources
+import threeOneOne from './data-sources/311';
+import threeOneOneCarto from './data-sources/311-carto';
+import condoList from './data-sources/condo-list';
+import crimeIncidents from './data-sources/crime-incidents';
+import dorCondoList from './data-sources/dor-condo-list';
+import dorDocuments from './data-sources/dor-documents';
+import liBusinessLicenses from './data-sources/li-business-licenses';
+import liInspections from './data-sources/li-inspections';
+import liPermits from './data-sources/li-permits';
+import liPermitsAdditional from './data-sources/li-permits-additional';
+import liViolations from './data-sources/li-violations';
+import nearbyZoningAppeals from './data-sources/nearby-zoning-appeals';
+import opa from './data-sources/opa';
+import rco from './data-sources/rco';
+import regmaps from './data-sources/regmaps';
+import stormwater from './data-sources/stormwater';
+import vacantBuilding from './data-sources/vacant-building';
+import vacantIndicatorsPoints from './data-sources/vacant-indicator-points';
+import vacantLand from './data-sources/vacant-land';
+import zoningAppeals from './data-sources/zoning-appeals';
+import zoningBase from './data-sources/zoning-base';
+import zoningDocs from './data-sources/zoning-docs';
+import zoningOverlay from './data-sources/zoning-overlay';
 
 // Topics
-import property from './config/topics/property';
-import condos from './config/topics/condos';
-import deeds from './config/topics/deeds';
-import li from './config/topics/li';
-import zoning from './config/topics/zoning';
-import threeOneOne from './config/topics/311';
-import stormwater from './config/topics/stormwater';
-import nearby from './config/topics/nearby';
+import property from './topics/property';
+import condos from './topics/condos';
+import deeds from './topics/deeds';
+import li from './topics/li';
+import zoning from './topics/zoning';
+import threeOneOneTopic from './topics/311';
+import stormwaterTopic from './topics/stormwater';
+import nearby from './topics/nearby';
 
 
 // styles
@@ -77,7 +100,6 @@ mapboard({
   map,
   baseConfig: BASE_CONFIG_URL,
   parcels,
-  dataSources,
   imageOverlayGroups,
   legendControls,
   cyclomedia: {
@@ -90,14 +112,39 @@ mapboard({
   },
   transforms,
   greeting,
+  dataSources: {
+    threeOneOne,
+    threeOneOneCarto,
+    condoList,
+    crimeIncidents,
+    dorCondoList,
+    dorDocuments,
+    liBusinessLicenses,
+    liInspections,
+    liPermits,
+    liPermitsAdditional,
+    liViolations,
+    nearbyZoningAppeals,
+    opa,
+    rco,
+    regmaps,
+    stormwater,
+    vacantBuilding,
+    vacantIndicatorsPoints,
+    vacantLand,
+    zoningAppeals,
+    zoningBase,
+    zoningDocs,
+    zoningOverlay,
+  },
   topics: [
     property,
     condos,
     deeds,
     li,
     zoning,
-    threeOneOne,
-    stormwater,
+    threeOneOneTopic,
+    stormwaterTopic,
     nearby,
   ],
 });
