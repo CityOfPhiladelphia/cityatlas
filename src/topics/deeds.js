@@ -346,7 +346,7 @@ export default {
                 {
                   label: 'ID',
                   value: function (state, item) {
-                    return "<a target='_blank' href='//pdx-app01/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.R_NUM+"'>"+item.attributes.R_NUM+"<i class='fa fa-external-link'></i></a>"
+                    return "<a target='_blank' href='http://pdx-app01.city.phila.local/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.R_NUM+"'>"+item.attributes.R_NUM+"<i class='fa fa-external-link'></i></a>"
                   },
                 },
                 {
