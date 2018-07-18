@@ -71,7 +71,7 @@ export default {
 
         return where;
       },
-      outFields: "R_NUM, DISPLAY_DATE, DOCUMENT_TYPE, GRANTORS, GRANTEES",
+      outFields: "R_NUM, DISPLAY_DATE, DOCUMENT_TYPE, GRANTORS, GRANTEES, DISCREPANCY",
       returnDistinctValues: 'true',
       returnGeometry: 'false',
       f: 'json'
