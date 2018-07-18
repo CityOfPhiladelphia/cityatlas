@@ -1,3 +1,5 @@
+import helpers from '../util/helpers';
+
 export default {
   key: 'deeds',
   icon: 'book',
@@ -63,7 +65,7 @@ export default {
           return item.properties.MAPREG;
         },
         getAddress: function(item) {
-          var address = concatDorAddress(item);
+          var address = helpers.concatDorAddress(item);
           return address;
         },
         // components for the content pane. this essentially a topic body.
@@ -101,7 +103,7 @@ export default {
                 {
                   label: 'Parcel Address',
                   value: function(state, item) {
-                    return concatDorAddress(item);
+                    return helpers.concatDorAddress(item);
                   },
                 },
                 {
@@ -376,6 +378,12 @@ export default {
                   label: 'Grantee',
                   value: function (state, item) {
                     return item.attributes.GRANTEES;
+                  },
+                },
+                {
+                  label: 'Discrepancy',
+                  value: function (state, item) {
+                    return item.attributes.DISCREPANCY;
                   },
                 },
               ], // end fields
