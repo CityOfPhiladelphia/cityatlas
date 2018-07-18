@@ -380,6 +380,12 @@ export default {
                     return item.attributes.GRANTEES;
                   },
                 },
+                {
+                  label: 'Discrepancy',
+                  value: function (state, item) {
+                    return item.attributes.DISCREPANCY;
+                  },
+                },
               ], // end fields
               sort: {
                 // this should return the val to sort on
