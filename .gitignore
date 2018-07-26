@@ -2,4 +2,3 @@ node_modules
 yarn-error.log
 public/*.js
 public/*.js.map
-yarn.lock
