@@ -79,6 +79,7 @@ accounting.settings.currency.precision = 0;
 mapboard({
   // DEV
   // defaultAddress: '1234 MARKET ST',
+  addressInputLocation: 'map',
   router: {
     enabled: true
   },
