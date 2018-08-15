@@ -1,5 +1,5 @@
 export default {
-  GATEKEEPER_KEY: '82fe014b6575b8c38b44235580bc8b11',
+  GATEKEEPER_KEY: '6c5f564b450f91deca224249a6a36033',
   ZONING_CODE_MAP: {
     'RSD-1': 'Residential Single Family Detached-1',
     'RSD-2': 'Residential Single Family Detached-2',

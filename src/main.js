@@ -79,16 +79,16 @@ accounting.settings.currency.precision = 0;
 mapboard({
   // DEV
   // defaultAddress: '1234 MARKET ST',
-  addressInputLocation: 'map',
   router: {
     enabled: true
   },
   geolocation: {
     enabled: false
   },
-  addressAutocomplete: {
-    enabled: false
+  addressInput: {
+    autocompleteEnabled: false
   },
+  addressInputLocation: 'map',
   rootStyle: {
     position: 'absolute',
     bottom: 0,
