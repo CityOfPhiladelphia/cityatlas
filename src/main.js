@@ -79,6 +79,10 @@ accounting.settings.currency.precision = 0;
 mapboard({
   // DEV
   // defaultAddress: '1234 MARKET ST',
+  panels: [
+    'topics',
+    'map'
+  ],
   router: {
     enabled: true
   },
@@ -86,9 +90,13 @@ mapboard({
     enabled: false
   },
   addressInput: {
-    autocompleteEnabled: false
+    width: 415,
+    position: 'right',
+    autocompleteEnabled: false,
+    autocompleteMax: 15,
+    placeholder: 'Search the map',
   },
-  addressInputLocation: 'map',
+  // addressInputLocation: 'map',
   rootStyle: {
     position: 'absolute',
     bottom: 0,
@@ -147,5 +155,13 @@ mapboard({
     threeOneOneTopic,
     stormwaterTopic,
     nearby,
+  ],
+  components: [
+    {
+      type: 'topic-set',
+      options: {
+        defaultTopic: 'property'
+      }
+    },
   ],
 });
