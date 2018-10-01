@@ -56,6 +56,7 @@ import zoning from './topics/zoning';
 import threeOneOneTopic from './topics/311';
 import stormwaterTopic from './topics/stormwater';
 import nearby from './topics/nearby';
+import districts from './topics/districts';
 
 
 // styles
@@ -147,5 +148,6 @@ mapboard({
     threeOneOneTopic,
     stormwaterTopic,
     nearby,
+    districts
   ],
 });
