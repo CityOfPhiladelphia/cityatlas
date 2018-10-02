@@ -166,7 +166,5 @@ mapboard({
         defaultTopic: 'property'
       }
     },
-
->>>>>>> feature-streets
   ],
 });
