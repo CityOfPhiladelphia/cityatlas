@@ -57,7 +57,7 @@ import threeOneOneTopic from './topics/311';
 import stormwaterTopic from './topics/stormwater';
 import nearby from './topics/nearby';
 import districts from './topics/districts';
-
+import streets from './topics/streets';
 
 // styles
 // TODO move all styles here (that have a npm package)
@@ -156,7 +156,8 @@ mapboard({
     threeOneOneTopic,
     stormwaterTopic,
     nearby,
-    districts
+    streets,
+    districts,
   ],
   components: [
     {
@@ -165,5 +166,7 @@ mapboard({
         defaultTopic: 'property'
       }
     },
+
+>>>>>>> feature-streets
   ],
 });
