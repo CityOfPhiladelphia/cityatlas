@@ -56,7 +56,7 @@ import zoning from './topics/zoning';
 import threeOneOneTopic from './topics/311';
 import stormwaterTopic from './topics/stormwater';
 import nearby from './topics/nearby';
-
+import streets from './topics/streets';
 
 // styles
 // TODO move all styles here (that have a npm package)
@@ -147,5 +147,6 @@ mapboard({
     threeOneOneTopic,
     stormwaterTopic,
     nearby,
+    streets
   ],
 });
