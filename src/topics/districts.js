@@ -8,6 +8,7 @@ export default {
     {
       type: 'vertical-table',
       slots: {
+        title: "Districts",
         fields: [
           {
             label: 'Planning',
@@ -46,9 +47,43 @@ export default {
         ],
       },
       options: {
+      }
+    },
 
+
+    {
+      type: 'vertical-table',
+      slots: {
+        title: "Public Safety",
+        fields: [
+          {
+            label: 'Police District',
+            value: function(state) {
+              return state.geocode.data.properties.police_district;
+            }
+          },
+          {
+            label: 'Police Public Service Area',
+            value: function(state) {
+              return state.geocode.data.properties.police_service_area;
+            }
+          },
+          {
+            label: 'Police Division',
+            value: function(state) {
+              return state.geocode.data.properties.political_division;
+            }
+          },
+        ],
+      },
+      options: {
       }
     }
+
+
+
+
+
   ],
   basemap: 'pwd',
   identifyFeature: 'address-marker',
