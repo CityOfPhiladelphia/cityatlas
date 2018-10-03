@@ -1,3 +1,5 @@
+import transforms from '../general/transforms';
+
 export default {
   key: 'streets',
   icon: 'road',
@@ -5,10 +7,10 @@ export default {
   // REVIEW can these be calculated from vue deps?
   dataSources: ['opa'],
   components: [
-
     {
       type: 'vertical-table',
       slots: {
+        title: "Streets",
         fields: [
           {
             label: 'Highway District',
@@ -46,6 +48,27 @@ export default {
               return state.geocode.data.properties.traffic_pm_district;
             }
           },
+        ],
+      },
+      options: {}
+    },
+    {
+      type: 'vertical-table',
+      slots: {
+        title: "Trash and Recycling",
+        fields: [
+          {
+            label: 'Trash and Recycling Day',
+            value: function(state) {
+              return transforms.dayofweek.transform(state.geocode.data.properties.rubbish_recycle_day);
+            }
+          },
+          {
+            label: 'Leaf COllection Day',
+            value: function(state) {
+              return state.geocode.data.properties.leaf_collection_area;
+            }
+          },
           {
             label: 'Sanitation Area',
             value: function(state) {
@@ -60,9 +83,7 @@ export default {
           },
         ],
       },
-      options: {}
     }
-
   ],
   basemap: 'pwd',
   identifyFeature: 'address-marker',
