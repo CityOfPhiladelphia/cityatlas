@@ -20,7 +20,7 @@ export default {
   key: 'safety',
   icon: 'star',
   label: 'Public Safety',
-  dataSources: ['childWelfare','policePSA', 'policeDistr', 'fireStation', 'streetClosures','crimeIncidents'],
+  dataSources: ['policePSA', 'policeDistr', 'fireStation', 'crimeIncidents'],
 
   components: [
     {

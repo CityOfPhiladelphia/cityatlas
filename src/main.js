@@ -32,7 +32,7 @@ import divisions from './data-sources/divisions';
 import dorCondoList from './data-sources/dor-condo-list';
 import dorDocuments from './data-sources/dor-documents';
 import elections from './data-sources/elections';
-import fireStations from './data-sources/fire-station';
+import fireStation from './data-sources/fire-station';
 import liBusinessLicenses from './data-sources/li-business-licenses';
 import liInspections from './data-sources/li-inspections';
 import liPermits from './data-sources/li-permits';
@@ -144,7 +144,7 @@ mapboard({
     dorCondoList,
     dorDocuments,
     elections,
-    fireStations,
+    fireStation,
     liBusinessLicenses,
     liInspections,
     liPermits,
