@@ -25,10 +25,14 @@ import greeting from './general/greeting';
 // data sources
 import threeOneOne from './data-sources/311';
 import threeOneOneCarto from './data-sources/311-carto';
+import charterSchools from './data-sources/charter-schools';
 import condoList from './data-sources/condo-list';
 import crimeIncidents from './data-sources/crime-incidents';
+import divisions from './data-sources/divisions';
 import dorCondoList from './data-sources/dor-condo-list';
 import dorDocuments from './data-sources/dor-documents';
+import elections from './data-sources/elections';
+import fireStations from './data-sources/fire-station';
 import liBusinessLicenses from './data-sources/li-business-licenses';
 import liInspections from './data-sources/li-inspections';
 import liPermits from './data-sources/li-permits';
@@ -36,8 +40,12 @@ import liPermitsAdditional from './data-sources/li-permits-additional';
 import liViolations from './data-sources/li-violations';
 import nearbyZoningAppeals from './data-sources/nearby-zoning-appeals';
 import opa from './data-sources/opa';
+import policeDistr from './data-sources/police-distr';
+import policePSA from './data-sources/police-psa';
 import rco from './data-sources/rco';
 import regmaps from './data-sources/regmaps';
+import sanitationCenters from './data-sources/sanitation-centers';
+import streetClosures from './data-sources/street-closures';
 import stormwater from './data-sources/stormwater';
 import vacantBuilding from './data-sources/vacant-building';
 import vacantIndicatorsPoints from './data-sources/vacant-indicator-points';
@@ -57,7 +65,11 @@ import threeOneOneTopic from './topics/311';
 import stormwaterTopic from './topics/stormwater';
 import nearby from './topics/nearby';
 import districts from './topics/districts';
+import safety from './topics/public-safety';
+import schools from './topics/schools';
 import streets from './topics/streets';
+import trash from './topics/trash';
+import voting from './topics/voting';
 
 // styles
 // TODO move all styles here (that have a npm package)
@@ -125,10 +137,14 @@ mapboard({
   dataSources: {
     threeOneOne,
     threeOneOneCarto,
+    charterSchools,
     condoList,
     crimeIncidents,
+    divisions,
     dorCondoList,
     dorDocuments,
+    elections,
+    fireStations,
     liBusinessLicenses,
     liInspections,
     liPermits,
@@ -136,8 +152,12 @@ mapboard({
     liViolations,
     nearbyZoningAppeals,
     opa,
+    policeDistr,
+    policePSA,
     rco,
     regmaps,
+    sanitationCenters,
+    streetClosures,
     stormwater,
     vacantBuilding,
     vacantIndicatorsPoints,
@@ -156,6 +176,10 @@ mapboard({
     threeOneOneTopic,
     stormwaterTopic,
     nearby,
+    safety,
+    schools,
+    trash,
+    voting,
     streets,
     districts,
   ],
