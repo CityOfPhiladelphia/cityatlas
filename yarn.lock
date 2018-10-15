@@ -2,13 +2,13 @@
 # yarn lockfile v1
 
 
-"@cityofphiladelphia/mapboard@https://github.com/CityOfPhiladelphia/mapboard#2c0c19d3b273bfd181baa1036e720acb3a105b21":
-  version "3.0.6"
-  resolved "https://github.com/CityOfPhiladelphia/mapboard#2c0c19d3b273bfd181baa1036e720acb3a105b21"
+"@cityofphiladelphia/mapboard@3.0.7":
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/mapboard/-/mapboard-3.0.7.tgz#0bfdb7a1dfa09a6795d2879e22bc146d7643eaee"
   dependencies:
-    "@cityofphiladelphia/phila-vue-comps" "https://github.com/CityOfPhiladelphia/phila-vue-comps#66bfc8fdfdaa9fc0286ce452ce35ed9165dc4362"
-    "@cityofphiladelphia/phila-vue-datafetch" "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#19393150f37cbc17663fa339c8bf49cb459776f3"
-    "@cityofphiladelphia/phila-vue-mapping" "https://github.com/CityOfPhiladelphia/phila-vue-mapping#de595996e4047048021610cad6d1d7178c890a27"
+    "@cityofphiladelphia/phila-vue-comps" "1.0.8"
+    "@cityofphiladelphia/phila-vue-datafetch" "0.0.11"
+    "@cityofphiladelphia/phila-vue-mapping" "1.0.6"
     "@fortawesome/fontawesome-pro" "^5.4.0"
     "@fortawesome/fontawesome-svg-core" "^1.2.5"
     "@fortawesome/vue-fontawesome" "^0.1.1"
@@ -32,9 +32,9 @@
     vue "^2.5.16"
     vuex "^3.0.1"
 
-"@cityofphiladelphia/phila-vue-comps@https://github.com/CityOfPhiladelphia/phila-vue-comps#66bfc8fdfdaa9fc0286ce452ce35ed9165dc4362":
-  version "1.0.7"
-  resolved "https://github.com/CityOfPhiladelphia/phila-vue-comps#66bfc8fdfdaa9fc0286ce452ce35ed9165dc4362"
+"@cityofphiladelphia/phila-vue-comps@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/phila-vue-comps/-/phila-vue-comps-1.0.8.tgz#c8f045b6d987d1d6c8c2179cbe4bc1db87c76593"
   dependencies:
     axios "^0.18.0"
     escape-html "^1.0.3"
@@ -48,9 +48,9 @@
     vue "^2.5.16"
     vuex "^3.0.1"
 
-"@cityofphiladelphia/phila-vue-datafetch@https://github.com/CityOfPhiladelphia/phila-vue-datafetch#19393150f37cbc17663fa339c8bf49cb459776f3":
-  version "0.0.10"
-  resolved "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#19393150f37cbc17663fa339c8bf49cb459776f3"
+"@cityofphiladelphia/phila-vue-datafetch@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/phila-vue-datafetch/-/phila-vue-datafetch-0.0.11.tgz#b1039ac6c214de4db035e440cbbc7cb126b6b9b3"
   dependencies:
     "@turf/turf" "^5.1.6"
     axios "^0.18.0"
@@ -64,9 +64,9 @@
     vue "^2.5.16"
     vuex "^3.0.1"
 
-"@cityofphiladelphia/phila-vue-mapping@https://github.com/CityOfPhiladelphia/phila-vue-mapping#de595996e4047048021610cad6d1d7178c890a27":
-  version "1.0.5"
-  resolved "https://github.com/CityOfPhiladelphia/phila-vue-mapping#de595996e4047048021610cad6d1d7178c890a27"
+"@cityofphiladelphia/phila-vue-mapping@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/phila-vue-mapping/-/phila-vue-mapping-1.0.6.tgz#d4fcfe66c068de61a8f4a2baf2b38e7bd857f8d2"
   dependencies:
     "@turf/turf" "^5.1.6"
     L-esri-WebMap "https://github.com/CityOfPhiladelphia/L.esri.WebMap#5849bfa6248a886d8675eeff98fa9dff4949f12a"
@@ -5036,6 +5036,15 @@ leaflet-easybutton@^2.2.2:
   dependencies:
     leaflet "^1.0.1"
 
+"leaflet-measure@git+https://github.com/CityOfPhiladelphia/leaflet-measure.git#b70886af342f19597dc2937d79d64bad6bab07c6":
+  version "4.0.0"
+  resolved "git+https://github.com/CityOfPhiladelphia/leaflet-measure.git#b70886af342f19597dc2937d79d64bad6bab07c6"
+  dependencies:
+    "@turf/area" "^5.1.5"
+    "@turf/length" "^5.1.5"
+    leaflet "^1.3.1"
+    lodash "^4.17.5"
+
 "leaflet-measure@https://github.com/CityOfPhiladelphia/leaflet-measure#b70886af342f19597dc2937d79d64bad6bab07c6":
   version "4.0.0"
   resolved "https://github.com/CityOfPhiladelphia/leaflet-measure#b70886af342f19597dc2937d79d64bad6bab07c6"
@@ -5066,6 +5075,12 @@ leaflet-shape-markers@^1.0.4:
   resolved "https://registry.yarnpkg.com/leaflet-shape-markers/-/leaflet-shape-markers-1.0.6.tgz#d54056a4e533828120107a71a237b1efc1a07649"
   dependencies:
     leaflet "^1.0.0"
+
+"leaflet-vector-icon@git+https://github.com/CityOfPhiladelphia/leaflet-vector-icon.git#1836076bc5ede54ae2618f1e5f6d9df10769a001":
+  version "1.0.0"
+  resolved "git+https://github.com/CityOfPhiladelphia/leaflet-vector-icon.git#1836076bc5ede54ae2618f1e5f6d9df10769a001"
+  dependencies:
+    "@fortawesome/fontawesome-pro" "^5.4.0"
 
 "leaflet-vector-icon@https://github.com/CityOfPhiladelphia/leaflet-vector-icon#1836076bc5ede54ae2618f1e5f6d9df10769a001":
   version "1.0.0"
