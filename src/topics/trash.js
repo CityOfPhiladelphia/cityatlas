@@ -11,7 +11,7 @@ const getNearest = function(state, field, distName) {
 
 export default {
   key: 'trashDay',
-  icon: 'trash-o',
+  icon: 'trash',
   label: 'Trash & Recycling',
 
   components: [

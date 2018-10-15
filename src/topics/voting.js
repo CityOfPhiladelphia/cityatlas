@@ -83,7 +83,13 @@ export default {
     lat: 'lat',
     lng: 'lng',
     key: 'display_address',
-    color: '#42f459'
+    color: '#42f459',
+    icon: {
+      prefix: 'fas',
+      icon: 'check',
+      shadow: true,
+      size: 50,
+    }
   },
   basemap: 'pwd',
   identifyFeature: 'address-marker',

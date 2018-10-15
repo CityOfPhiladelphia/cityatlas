@@ -16,9 +16,9 @@ import mapboard from '@cityofphiladelphia/mapboard';
 // General Config Modules
 import helpers from './util/helpers';
 import map from './general/map';
+import transforms from './general/transforms';
 import parcels from './general/parcels';
 import legendControls from './general/legendControls';
-import transforms from './general/transforms';
 import imageOverlayGroups from './general/imageOverlayGroups';
 import greeting from './general/greeting';
 
@@ -73,9 +73,9 @@ import voting from './topics/voting';
 
 // styles
 // TODO move all styles here (that have a npm package)
-import 'leaflet-measure/dist/leaflet-measure.css';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-easybutton/src/easy-button.css';
+import 'leaflet-measure/dist/leaflet-measure.css';
 
 // turn off console logging in production
 // TODO come up with better way of doing this with webpack + env vars
@@ -109,12 +109,9 @@ mapboard({
     autocompleteMax: 15,
     placeholder: 'Search the map',
   },
-  // addressInputLocation: 'map',
   rootStyle: {
     position: 'absolute',
     bottom: 0,
-    // top: '78px',
-    top: '118px',
     left: 0,
     right: 0,
   },
@@ -125,12 +122,12 @@ mapboard({
   imageOverlayGroups,
   legendControls,
   cyclomedia: {
-    enabled: true,
+    enabled: false,
     measurementAllowed: true,
     popoutAble: true,
   },
   pictometry: {
-    enabled: true,
+    enabled: false,
   },
   transforms,
   greeting,
