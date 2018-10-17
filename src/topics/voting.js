@@ -32,21 +32,21 @@ export default {
             value: function(state) {
                    function nth(n){return n + ([,'st','nd','rd'][n%100>>3^1&&n%10]||'th')};
                    return "<b>"+ nth(state.geocode.data.properties.council_district_2016) + " Council District\
-                   <br>Ward " + state.sources.elections.data.features[0].attributes.ward +
-                   ", Division " + state.sources.elections.data.features[0].attributes.division + "</b><br>" +
-                   titleCase(state.sources.elections.data.features[0].attributes.location) + "<br>" +
-                   titleCase(state.sources.elections.data.features[0].attributes.display_address) + "<br>\
+                   <br>Ward " + state.sources.elections.data.ward +
+                   ", Division " + state.sources.elections.data.division + "</b><br>" +
+                   titleCase(state.sources.elections.data.location) + "<br>" +
+                   titleCase(state.sources.elections.data.display_address) + "<br>\
                    All locations are open on Election Day <br>from 7am to 8pm.";
                   },
           },
           {
             label: 'Accessibility',
             value: function(state) {
-              const answer = state.sources.elections.data.features[0].attributes.building == "F" ? 'Building Fully Accessible' :
-                             state.sources.elections.data.features[0].attributes.building == "B" ? 'Building Substantially Accessible' :
-                             state.sources.elections.data.features[0].attributes.building == "M" ? 'Building Accessibilty Modified' :
-                             state.sources.elections.data.features[0].attributes.building == "R" ? 'Building Accessible With Ramp' :
-                             state.sources.elections.data.features[0].attributes.building == "N" ? 'Building Not Accessible' :
+              const answer = state.sources.elections.data.building == "F" ? 'Building Fully Accessible' :
+                             state.sources.elections.data.building == "B" ? 'Building Substantially Accessible' :
+                             state.sources.elections.data.building == "M" ? 'Building Accessibilty Modified' :
+                             state.sources.elections.data.building == "R" ? 'Building Accessible With Ramp' :
+                             state.sources.elections.data.building == "N" ? 'Building Not Accessible' :
                             'Information not available';
               return '<a href="//www.philadelphiavotes.com/en/voters/polling-place-accessibility"\
                       target="_blank">'+answer+'</a>';
@@ -55,9 +55,9 @@ export default {
           {
             label: 'Parking',
             value: function(state) {
-              const parking = state.sources.elections.data.features[0].attributes.parking == "N" ? 'No Parking' :
-                              state.sources.elections.data.features[0].attributes.parking == "G" ? 'General Parking' :
-                              state.sources.elections.data.features[0].attributes.parking == "L" ? 'Lo' :
+              const parking = state.sources.elections.data.parking == "N" ? 'No Parking' :
+                              state.sources.elections.data.parking == "G" ? 'General Parking' :
+                              state.sources.elections.data.parking == "L" ? 'Lo' :
                               'Information not available';
               return parking;
             },
@@ -79,7 +79,7 @@ export default {
     }
   },
   marker: {
-    path: ['elections', 'data', 'features', '0', 'attributes'],
+    path: ['elections', 'data'],
     lat: 'lat',
     lng: 'lng',
     key: 'display_address',
