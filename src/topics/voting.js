@@ -57,7 +57,7 @@ export default {
             value: function(state) {
               const parking = state.sources.elections.data.parking == "N" ? 'No Parking' :
                               state.sources.elections.data.parking == "G" ? 'General Parking' :
-                              state.sources.elections.data.parking == "L" ? 'Lo' :
+                              state.sources.elections.data.parking == "L" ? 'Loading Zone' :
                               'Information not available';
               return parking;
             },
