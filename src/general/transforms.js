@@ -14,6 +14,13 @@ export default {
       return value ? 'Yes' : 'No';
     }
   },
+  thousandsPlace: {
+    transform: function(value) {
+      var number = String(value).match(/\d+/)[0].replace(/(.)(?=(\d{3})+$)/g,'$1,');
+      var label = String(value).replace(/[0-9]/g, '') || '';
+      return number + ' ' + label;
+    }
+  },
   currency: {
     // a list of global objects this transform depends on
     globals: ['accounting'],

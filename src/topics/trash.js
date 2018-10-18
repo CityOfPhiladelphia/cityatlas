@@ -13,13 +13,35 @@ export default {
   key: 'trashDay',
   icon: 'trash',
   label: 'Trash & Recycling',
-
+  dataSources: [
+    'sanitationCenters',
+  ],
   components: [
-
+    // {
+    //   type: 'ExternalLink',
+    //   options: {
+    //     data: function(state) {
+    //       return state.geocode.data.properties.opa_account_num;
+    //     },
+    //     href: function(state) {
+    //       var id = state.geocode.data.properties.opa_account_num;
+    //       return '//property.phila.gov/?p=' + id;
+    //     }
+    //   }
+    // },
     {
       type: 'badge',
       options: {
         titleBackground: '#58c04d',
+        // externalLink: {
+        //   data: function(state) {
+        //     return 'the opa number is ' + state.geocode.data.properties.opa_account_num + ' got it?';
+        //   },
+        //   href: function(state) {
+        //     var id = state.geocode.data.properties.opa_account_num;
+        //     return '//property.phila.gov/?p=' + id;
+        //   }
+        // }
       },
       slots: {
         title: 'Your Trash Day Is',
@@ -34,7 +56,7 @@ export default {
         nullValue: 'None',
         externalLink: {
           action: function() {
-            return 'Report missed trash collection, illegal dumping, or other issues.';
+            return 'Report missed trash collection, illegal dumping, or other issues';
           },
           href: function(state) {
             return '//www.philadelphiastreets.com/helpful-links/request-a-service';
