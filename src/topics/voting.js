@@ -1,3 +1,7 @@
+import transforms from '../general/transforms';
+const phone = transforms.phoneNumber.transform;
+
+
 const titleCase = function(str) {
   str = str.toLowerCase().split(' ').map(function(word) {
     return (word.charAt(0).toUpperCase() + word.slice(1));
@@ -64,7 +68,51 @@ export default {
           },
         ]
       },
-    }
+    },
+    {
+      type: 'vertical-table',
+      options: {
+        nullValue: 'None',
+        externalLink: {
+          action: function() {
+            return 'See all citywide, state, and federal representatives';
+          },
+          href: function(state) {
+            return '//www.philadelphiavotes.com/index.php?option=com_voterapp&tmpl=component#elected-officials';
+          }
+        }
+      },
+
+      slots: {
+        title: 'Elected Representatives',
+        fields: [
+          {
+            label: 'District Council Member',
+            value: function(state) {
+              const council = state.sources.electedOfficials.data.rows.filter( function(item) {return item.office_label == "City Council";});
+              return council[0].first_name +" " +council[0].last_name;
+            },
+          },
+          {
+            label: 'City Hall Office',
+            value: function(state) {
+              const council = state.sources.electedOfficials.data.rows.filter( function(item) {return item.office_label == "City Council";});
+              return council[0].main_contact_address_2 + '<br>' +
+                     phone(council[0].main_contact_phone_1) + ", " + phone(council[0].main_contact_phone_2) + '<br>\
+                      F: '+ phone(council[0].main_contact_fax) + ' <br>\
+                      <b><a>' + council[0].email + '</a></b>';
+            },
+          },
+          {
+            label: 'Current Term',
+            value: function(state) {
+              const council = state.sources.electedOfficials.data.rows.filter( function(item) {return item.office_label == "City Council";});
+              return council[0].next_election - 4 + ' - ' + council[0].next_election
+            },
+          },
+        ]
+      },
+    }, // end table
   ],
   zoomToShape: ['geojson', 'marker'],
   geojson: {
