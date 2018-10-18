@@ -13,7 +13,9 @@ export default {
   key: 'trashDay',
   icon: 'trash',
   label: 'Trash & Recycling',
-
+  dataSources: [
+    'sanitationCenters',
+  ],
   components: [
     // {
     //   type: 'ExternalLink',
@@ -31,15 +33,15 @@ export default {
       type: 'badge',
       options: {
         titleBackground: '#58c04d',
-        externalLink: {
-          data: function(state) {
-            return 'the opa number is ' + state.geocode.data.properties.opa_account_num + ' got it?';
-          },
-          href: function(state) {
-            var id = state.geocode.data.properties.opa_account_num;
-            return '//property.phila.gov/?p=' + id;
-          }
-        }
+        // externalLink: {
+        //   data: function(state) {
+        //     return 'the opa number is ' + state.geocode.data.properties.opa_account_num + ' got it?';
+        //   },
+        //   href: function(state) {
+        //     var id = state.geocode.data.properties.opa_account_num;
+        //     return '//property.phila.gov/?p=' + id;
+        //   }
+        // }
       },
       slots: {
         title: 'Your Trash Day Is',
