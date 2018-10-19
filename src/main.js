@@ -25,6 +25,7 @@ import greeting from './general/greeting';
 // data sources
 import threeOneOne from './data-sources/311';
 import threeOneOneCarto from './data-sources/311-carto';
+import assessmentHist from './data-sources/assessment-history';
 import charterSchools from './data-sources/charter-schools';
 import condoList from './data-sources/condo-list';
 import crimeIncidents from './data-sources/crime-incidents';
@@ -135,6 +136,7 @@ mapboard({
   dataSources: {
     threeOneOne,
     threeOneOneCarto,
+    assessmentHist,
     charterSchools,
     condoList,
     crimeIncidents,
