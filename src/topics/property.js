@@ -27,75 +27,20 @@ export default {
       slots: {
         fields: [
           {
-            label: 'OPA Account #',
-            value: function(state) {
-              return state.geocode.data.properties.opa_account_num;
-            }
-          },
-          {
-            label: 'OPA Address',
-            value: function(state) {
-              return state.geocode.data.properties.opa_address;
-            }
-          },
-          {
             label: 'Owners',
             value: function(state) {
               var owners = state.geocode.data.properties.opa_owners;
               var ownersJoined = owners.join(', ');
-              return ownersJoined;
+              return titleCase(ownersJoined);
             }
           },
           {
-            label: 'Assessed Value',// + new Date().getFullYear(),
+            label: 'Mailing Address',
             value: function(state) {
-              var data = state.sources.opa.data;
-              // return data.market_value;
-              var result;
-              if (data) {
-                result = data.market_value;
-              } else {
-                result = 'no data';
-              }
-              return result;
-            },
-            transforms: [
-              'currency'
-            ]
-          },
-          {
-            label: 'Sale Date',
-            value: function(state) {
-              var data = state.sources.opa.data;
-              // return data.sale_date;
-              var result;
-              if (data) {
-                result = data.sale_date;
-              } else {
-                result = 'no data';
-              }
-              return result;
-            },
-            transforms: [
-              'date'
-            ]
-          },
-          {
-            label: 'Sale Price',
-            value: function(state) {
-              var data = state.sources.opa.data;
-              // return data.sale_price;
-              var result;
-              if (data) {
-                result = data.sale_price;
-              } else {
-                result = 'no data';
-              }
-              return result;
-            },
-            transforms: [
-              'currency'
-            ]
+              return '<br>'+ titleCase(state.sources.opa.data.mailing_street) +
+                     '<br>'+ titleCase(state.sources.opa.data.mailing_city_state) +
+                     '<br>'+ state.sources.opa.data.mailing_zip;
+            }
           },
         ],
       },
@@ -111,74 +56,6 @@ export default {
           }
         }
       }
-    },
-    {
-      type: 'horizontal-table',
-      options: {
-        id: 'valueHist',
-        fields: [
-          {
-            label: 'Year',
-            value: function(state, item){
-              return item.year
-            }
-          },
-          {
-            label: 'Market Value',
-            value: function(state, item){
-              return item.market_value
-            },
-            transforms: ['currency'],
-          },
-          {
-            label: 'Taxable Land',
-            value: function(state, item){
-              return item.taxable_land
-            },
-            transforms: ['currency'],
-          },
-          {
-            label: 'Taxable Improvement',
-            value: function(state, item){
-              return item.taxable_building
-            },
-            transforms: ['currency'],
-          },
-          {
-            label: 'Exempt Land',
-            value: function(state, item){
-              return item.exempt_land
-            },
-            transforms: ['currency'],
-          },
-          {
-            label: 'Exempt Improvement',
-            value: function(state, item){
-              return item.exempt_building
-            },
-            transforms: ['currency']
-          },
-        ],
-        sort: {
-          // this should return the val to sort on
-          getValue: function(item) {
-            return item.year;
-          },
-          // asc or desc
-          order: 'desc'
-        },
-      },
-      slots: {
-        title: 'Valuation History',
-        items: function(state) {
-          var data = state.sources['assessmentHist'].data.rows;
-          var rows = data.map(function(row){
-            var itemRow = row;
-            return itemRow;
-          });
-          return rows;
-        },
-      },
     },
     {
       type: 'vertical-table',
@@ -207,11 +84,80 @@ export default {
       },
     },
     {
+      type: 'horizontal-table',
+      options: {
+        id: 'valueHist',
+        fields: [
+          {
+            label: 'Year',
+            value: function(state, item){
+              return item.year
+            }
+          },
+          {
+            label: 'Market Value',
+            value: function(state, item){
+              return item.market_value || "$0"
+            },
+            transforms: ['currency'],
+          },
+          {
+            label: 'Taxable Land',
+            value: function(state, item){
+              return item.taxable_land || "$0"
+            },
+            transforms: ['currency'],
+          },
+          {
+            label: 'Taxable Improvement',
+            value: function(state, item){
+              return item.taxable_building || "$0"
+            },
+            transforms: ['currency'],
+          },
+          {
+            label: 'Exempt Land',
+            value: function(state, item){
+              return item.exempt_land || "$0"
+            },
+            transforms: ['currency'],
+          },
+          {
+            label: 'Exempt Improvement',
+            value: function(state, item){
+              return item.exempt_building || "$0"
+            },
+            transforms: ['currency']
+          },
+        ],
+        sort: {
+          // this should return the val to sort on
+          getValue: function(item) {
+            return item.year;
+          },
+          // asc or desc
+          order: 'desc'
+        },
+      },
+      slots: {
+        title: 'Valuation History',
+        items: function(state) {
+          var data = state.sources['assessmentHist'].data.rows;
+          var rows = data.map(function(row){
+            var itemRow = row;
+            return itemRow;
+          });
+          return rows;
+        },
+      },
+    },
+    {
       type: 'vertical-table',
       options: {
         nullValue: 'None',
       },
       slots: {
+        title: 'Property Characteristics',
         fields: [
           {
             label: 'OPA Account #',
@@ -267,7 +213,6 @@ export default {
               'squareFeet',
             ]
           },
-
           {
             label: 'Improvement Area',
             value: function(state) {
@@ -281,7 +226,28 @@ export default {
           },
         ],
       },
-    }, //end taxable_land
+    }, // end table
+    {
+      type: 'callout',
+      slots: {
+        text: '\
+          Corrections or questions about this information?\
+          <br><a href="//opa.phila.gov/opa.apps/Help/CitizenMain.aspx?sch=Ctrl2&s=1&url=search&id=3172000144"\
+          target="_blank">Submit an Official Inquiry</a>\
+        ',
+      },
+    },
+    {
+      type: 'callout',
+      slots: {
+        title: "Access the Raw Data",
+        text: '\
+          You can download property assessment data in bulk.\
+          <br><a href="//www.opendataphilly.org/dataset/opa-property-assessments"\
+          target="_blank">Download the Data</a> from Open Philly\
+        ',
+      },
+    },
   ],
   basemap: 'pwd',
   identifyFeature: 'address-marker',
