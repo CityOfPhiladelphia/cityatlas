@@ -100,7 +100,7 @@ export default {
               return council[0].main_contact_address_2 + '<br>' +
                      phone(council[0].main_contact_phone_1) + ", " + phone(council[0].main_contact_phone_2) + '<br>\
                       F: '+ phone(council[0].main_contact_fax) + ' <br>\
-                      <b><a>' + council[0].email + '</a></b>';
+                      <b><a href=mailto:"' + council[0].email + '">' + council[0].email + '</a></b>';
             },
           },
           {

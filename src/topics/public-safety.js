@@ -36,7 +36,8 @@ export default {
             value: function(state) {
               let mail = 'police.co_'+state.geocode.data.properties.police_district+'@phila.gov'
               function nth(n){return n + ([,'st','nd','rd'][n%100>>3^1&&n%10]||'th')};
-              return ('<a href="" target="_blank"><b>'
+              return ('<a href="//www.phillypolice.com/districts/'+ nth(state.geocode.data.properties.police_district)
+                      + '/index.html" target="_blank"><b>'
                       + nth(state.geocode.data.properties.police_district)
                       +' District </b></a><br>'
                       +'PSA '+ state.geocode.data.properties.police_service_area

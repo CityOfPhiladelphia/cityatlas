@@ -76,7 +76,7 @@ export default {
               All locations are open Mon. through Sat. \
               between 8 a.m. and 8 p.m. Except on \
               City holidays.<br>\
-              <a href="//www.philadelphiastreets.com/binrequest/">Get a recycling bin. </a>\
+              <a href="//www.philadelphiastreets.com/binrequest/" target="_blank">Get a recycling bin. </a>\
               `);
             },
           },
