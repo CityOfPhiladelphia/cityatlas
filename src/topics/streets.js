@@ -55,20 +55,8 @@ export default {
     {
       type: 'vertical-table',
       slots: {
-        title: "Trash and Recycling",
+        title: "Sanitation",
         fields: [
-          {
-            label: 'Trash and Recycling Day',
-            value: function(state) {
-              return transforms.dayofweek.transform(state.geocode.data.properties.rubbish_recycle_day);
-            }
-          },
-          {
-            label: 'Leaf COllection Day',
-            value: function(state) {
-              return state.geocode.data.properties.leaf_collection_area;
-            }
-          },
           {
             label: 'Sanitation Area',
             value: function(state) {
