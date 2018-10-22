@@ -37,8 +37,14 @@ export default {
           {
             label: 'Mailing Address',
             value: function(state) {
-              return '<br>'+ titleCase(state.sources.opa.data.mailing_street) +
-                     '<br>'+ titleCase(state.sources.opa.data.mailing_city_state) +
+              let opa = state.sources.opa.data
+              const mailing = [];
+              opa.mailing_address_1.length > 0 ? mailing.push(titleCase(opa.mailing_address_1) +'<br>'):null;
+              opa.mailing_address_2.length > 0 ? mailing.push(titleCase(opa.mailing_address_2) +'<br>'):null;
+              console.log(mailing);
+              return mailing.join('') +
+                     titleCase(state.sources.opa.data.mailing_street) +
+                     '<br>'+ titleCase(state.sources.opa.data.mailing_city_state).replace(/\w$/, c => c.toUpperCase()); +
                      '<br>'+ state.sources.opa.data.mailing_zip;
             }
           },
