@@ -42,10 +42,11 @@ export default {
               opa.mailing_address_1.length > 0 ? mailing.push(titleCase(opa.mailing_address_1) +'<br>'):null;
               opa.mailing_address_2.length > 0 ? mailing.push(titleCase(opa.mailing_address_2) +'<br>'):null;
               console.log(mailing);
-              return mailing.join('') +
-                     titleCase(state.sources.opa.data.mailing_street) +
-                     '<br>'+ titleCase(state.sources.opa.data.mailing_city_state).replace(/\w$/, c => c.toUpperCase()); +
-                     '<br>'+ state.sources.opa.data.mailing_zip;
+              return opa.mailing_street.length > 0 ?
+                     mailing.join('') + titleCase(opa.mailing_street) +
+                     '<br>'+ titleCase(opa.mailing_city_state).replace(/\w$/, c => c.toUpperCase()) +
+                     '<br>'+ opa.mailing_zip : titleCase(opa.location) +
+                     '<br> Philadelphia, PA '+ [opa.zip_code.slice(0, 5), "-", opa.zip_code.slice(5)].join('');
             }
           },
         ],
@@ -239,7 +240,7 @@ export default {
         text: '\
           Corrections or questions about this information?\
           <br><a href="//opa.phila.gov/opa.apps/Help/CitizenMain.aspx?sch=Ctrl2&s=1&url=search&id=3172000144"\
-          target="_blank">Submit an Official Inquiry</a>\
+          target="_blank">Submit an Official Inquiry</a> to the Office of Property Assessment\
         ',
       },
     },
@@ -250,7 +251,7 @@ export default {
         text: '\
           You can download property assessment data in bulk.\
           <br><a href="//www.opendataphilly.org/dataset/opa-property-assessments"\
-          target="_blank">Download the Data</a> from Open Philly\
+          target="_blank">Download the Data</a> from Open Data Philly\
         ',
       },
     },
