@@ -65,7 +65,7 @@ export default {
         externalLink: {
           forceShow: true,
           action: function() {
-            return 'Find after-school programs from Pre-K to high school.';
+            return 'Find after-school programs from pre-K to high school.';
           },
 
           href: function(state) {

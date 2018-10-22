@@ -48,7 +48,7 @@ export default {
             value: function(state) {
               const answer = state.sources.elections.data.building == "F" ? 'Building Fully Accessible' :
                              state.sources.elections.data.building == "B" ? 'Building Substantially Accessible' :
-                             state.sources.elections.data.building == "M" ? 'Building Accessibilty Modified' :
+                             state.sources.elections.data.building == "M" ? 'Building Accessibility Modified' :
                              state.sources.elections.data.building == "R" ? 'Building Accessible With Ramp' :
                              state.sources.elections.data.building == "N" ? 'Building Not Accessible' :
                             'Information not available';
