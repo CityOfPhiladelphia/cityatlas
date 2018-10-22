@@ -119,8 +119,8 @@ export default {
     path: ['divisions', 'data'],
     key: 'id',
     style: {
-      fillColor: '#42f459',
-      color: '#42f459',
+      fillColor: '#9e9ac8',
+      color: '#9e9ac8',
       weight: 2,
       opacity: 1,
       fillOpacity: 0.3
@@ -131,12 +131,12 @@ export default {
     lat: 'lat',
     lng: 'lng',
     key: 'display_address',
-    color: '#42f459',
+    color: '#54278f',
     icon: {
       prefix: 'fas',
-      icon: 'check',
+      icon: 'landmark',
       shadow: true,
-      size: 50,
+      size: 35,
     }
   },
   basemap: 'pwd',
