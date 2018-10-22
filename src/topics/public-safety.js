@@ -32,7 +32,7 @@ export default {
         // title: 'Public Safety',
         fields: [
           {
-            label: 'Police Jurisdiction',
+            label: 'Public Safety Area',
             value: function(state) {
               let mail = 'police.co_'+state.geocode.data.properties.police_district+'@phila.gov'
               function nth(n){return n + ([,'st','nd','rd'][n%100>>3^1&&n%10]||'th')};
