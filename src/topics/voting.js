@@ -139,7 +139,7 @@ export default {
     icon: {
       prefix: 'fas',
       icon: 'landmark',
-      shadow: true,
+      shadow: false,
       size: 35,
     }
   },
