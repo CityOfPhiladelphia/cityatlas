@@ -42,6 +42,7 @@ import liPermitsAdditional from './data-sources/li-permits-additional';
 import liViolations from './data-sources/li-violations';
 import nearbyZoningAppeals from './data-sources/nearby-zoning-appeals';
 import opa from './data-sources/opa';
+import pollingPlaces from './data-sources/polling-places';
 import policeDistr from './data-sources/police-distr';
 import policePSA from './data-sources/police-psa';
 import rco from './data-sources/rco';
@@ -155,6 +156,7 @@ mapboard({
     opa,
     policeDistr,
     policePSA,
+    pollingPlaces,
     rco,
     regmaps,
     sanitationCenters,
