@@ -125,12 +125,12 @@ mapboard({
   imageOverlayGroups,
   legendControls,
   cyclomedia: {
-    enabled: true,
+    enabled: false,
     measurementAllowed: true,
     popoutAble: true,
   },
   pictometry: {
-    enabled: true,
+    enabled: false,
   },
   transforms,
   greeting,

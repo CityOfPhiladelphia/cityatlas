@@ -5,7 +5,7 @@ export default {
   options: {
     params: {
       q: function(feature){
-        console.log(feature.properties.election_precinct);
+        // console.log(feature.properties.election_precinct);
         return "WITH split AS (SELECT * FROM splits WHERE precinct = '"+feature.properties.election_precinct+"') SELECT eo.* FROM elected_officials eo, \
                 split s WHERE eo.office = 'city_council' AND eo.district = s.city_district \
                            OR eo.office = 'state_house' AND eo.district = s.state_house \
