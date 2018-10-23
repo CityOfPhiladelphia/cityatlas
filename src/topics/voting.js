@@ -13,7 +13,7 @@ export default {
   key: 'voting',
   icon: 'gavel',
   label: 'Voting',
-  dataSources: ['divisions', 'elections'],
+  dataSources: ['divisions', 'elections', 'electedOfficials'],
   components: [
     {
       type: 'vertical-table',
@@ -114,9 +114,11 @@ export default {
       },
     }, // end table
   ],
-  zoomToShape: ['geojson', 'marker'],
-  geojson: {
-    path: ['divisions', 'data'],
+  zoomToShape: ['geojsonForTopic', 'markersForTopic'],
+  geojsonForTopic: {
+    data: function(state) {
+      return state.sources.divisions.data
+    },
     key: 'id',
     style: {
       fillColor: '#42f459',
@@ -126,8 +128,10 @@ export default {
       fillOpacity: 0.3
     }
   },
-  marker: {
-    path: ['elections', 'data'],
+  markersForTopic: {
+    data: function(state) {
+      return state.sources.elections.data
+    },
     lat: 'lat',
     lng: 'lng',
     key: 'display_address',

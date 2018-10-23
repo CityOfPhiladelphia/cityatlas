@@ -5,7 +5,7 @@ export default {
  options: {
    params: {
      where: function(feature, state) {
-       console.log('seg.js feature:', feature, 'state:', state);
+       // console.log('seg.js feature:', feature, 'state:', state);
        let where = "SEG_ID = " + feature.properties.seg_id
        return where;
      },
@@ -18,7 +18,7 @@ export default {
    },
 
    success: function(data) {
-     console.log('seg.js success, data:', data);
+     // console.log('seg.js success, data:', data);
      return data.features;
    }
  }
