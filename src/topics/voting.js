@@ -34,23 +34,25 @@ export default {
           {
             label: 'Location',
             value: function(state) {
+              const pollingData = state.sources.pollingPlaces.data;
                    function nth(n){return n + ([,'st','nd','rd'][n%100>>3^1&&n%10]||'th')};
                    return "<b>"+ nth(state.geocode.data.properties.council_district_2016) + " Council District\
-                   <br>Ward " + state.sources.pollingPlaces.data[0].attributes.WARD +
-                   ", Division " + state.sources.pollingPlaces.data[0].attributes.DIVISION + "</b><br>" +
-                   titleCase(state.sources.pollingPlaces.data[0].attributes.PLACENAME) + "<br>" +
-                   titleCase(state.sources.pollingPlaces.data[0].attributes.STREET_ADDRESS) + "<br>\
+                   <br>Ward " + pollingData.WARD +
+                   ", Division " + pollingData.DIVISION + "</b><br>" +
+                   titleCase(pollingData.PLACENAME) + "<br>" +
+                   titleCase(pollingData.STREET_ADDRESS) + "<br>\
                    All locations are open on Election Day <br>from 7am to 8pm.";
                   },
           },
           {
             label: 'Accessibility',
             value: function(state) {
-              const answer = state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "F" ? 'Building Fully Accessible' :
-                             state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "B" ? 'Building Substantially Accessible' :
-                             state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "M" ? 'Building Accessibility Modified' :
-                             state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "R" ? 'Building Accessible With Ramp' :
-                             state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "N" ? 'Building Not Accessible' :
+              const pollingData = state.sources.pollingPlaces.data;
+              const answer = pollingData.ACCESSIBILITY_CODE== "F" ? 'Building Fully Accessible' :
+                             pollingData.ACCESSIBILITY_CODE== "B" ? 'Building Substantially Accessible' :
+                             pollingData.ACCESSIBILITY_CODE== "M" ? 'Building Accessibility Modified' :
+                             pollingData.ACCESSIBILITY_CODE== "R" ? 'Building Accessible With Ramp' :
+                             pollingData.ACCESSIBILITY_CODE== "N" ? 'Building Not Accessible' :
                             'Information not available';
               return '<a href="//www.philadelphiavotes.com/en/voters/polling-place-accessibility"\
                       target="_blank">'+answer+'</a>';
@@ -59,9 +61,10 @@ export default {
           {
             label: 'Parking',
             value: function(state) {
-              const parking = state.sources.pollingPlaces.data[0].attributes.PARKING_CODE == "N" ? 'No Parking' :
-                              state.sources.pollingPlaces.data[0].attributes.PARKING_CODE == "G" ? 'General Parking' :
-                              state.sources.pollingPlaces.data[0].attributes.PARKING_CODE == "L" ? 'Loading Zone' :
+              const pollingData = state.sources.pollingPlaces.data;
+              const parking = pollingData.PARKING_CODE == "N" ? 'No Parking' :
+                              pollingData.PARKING_CODE == "G" ? 'General Parking' :
+                              pollingData.PARKING_CODE == "L" ? 'Loading Zone' :
                               'Information not available';
               return parking;
             },
@@ -130,7 +133,7 @@ export default {
   },
   markersForTopic: {
     data: function(state) {
-      return state.sources.pollingPlaces.data[0]
+      return state.sources.pollingPlaces.data
     },
     lat: 'LAT',
     lng: 'LON',

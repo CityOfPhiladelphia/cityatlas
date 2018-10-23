@@ -16,7 +16,7 @@ id: 'pollingPlaces',
    },
    success: function(data) {
      console.log('seg.js success, data:', data);
-     return data.features;
+     return data.features[0].attributes;
    }
  }
 }
