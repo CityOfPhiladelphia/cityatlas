@@ -13,7 +13,7 @@ export default {
   key: 'voting',
   icon: 'gavel',
   label: 'Voting',
-  dataSources: ['divisions', 'elections', 'electedOfficials'],
+  dataSources: ['divisions', 'pollingPlaces', 'electedOfficials'],
   components: [
     {
       type: 'vertical-table',
@@ -36,21 +36,21 @@ export default {
             value: function(state) {
                    function nth(n){return n + ([,'st','nd','rd'][n%100>>3^1&&n%10]||'th')};
                    return "<b>"+ nth(state.geocode.data.properties.council_district_2016) + " Council District\
-                   <br>Ward " + state.sources.elections.data.ward +
-                   ", Division " + state.sources.elections.data.division + "</b><br>" +
-                   titleCase(state.sources.elections.data.location) + "<br>" +
-                   titleCase(state.sources.elections.data.display_address) + "<br>\
+                   <br>Ward " + state.sources.pollingPlaces.data[0].attributes.WARD +
+                   ", Division " + state.sources.pollingPlaces.data[0].attributes.DIVISION + "</b><br>" +
+                   titleCase(state.sources.pollingPlaces.data[0].attributes.PLACENAME) + "<br>" +
+                   titleCase(state.sources.pollingPlaces.data[0].attributes.STREET_ADDRESS) + "<br>\
                    All locations are open on Election Day <br>from 7am to 8pm.";
                   },
           },
           {
             label: 'Accessibility',
             value: function(state) {
-              const answer = state.sources.elections.data.building == "F" ? 'Building Fully Accessible' :
-                             state.sources.elections.data.building == "B" ? 'Building Substantially Accessible' :
-                             state.sources.elections.data.building == "M" ? 'Building Accessibility Modified' :
-                             state.sources.elections.data.building == "R" ? 'Building Accessible With Ramp' :
-                             state.sources.elections.data.building == "N" ? 'Building Not Accessible' :
+              const answer = state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "F" ? 'Building Fully Accessible' :
+                             state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "B" ? 'Building Substantially Accessible' :
+                             state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "M" ? 'Building Accessibility Modified' :
+                             state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "R" ? 'Building Accessible With Ramp' :
+                             state.sources.pollingPlaces.data[0].attributes.ACCESSIBILITY_CODE== "N" ? 'Building Not Accessible' :
                             'Information not available';
               return '<a href="//www.philadelphiavotes.com/en/voters/polling-place-accessibility"\
                       target="_blank">'+answer+'</a>';
@@ -59,9 +59,9 @@ export default {
           {
             label: 'Parking',
             value: function(state) {
-              const parking = state.sources.elections.data.parking == "N" ? 'No Parking' :
-                              state.sources.elections.data.parking == "G" ? 'General Parking' :
-                              state.sources.elections.data.parking == "L" ? 'Loading Zone' :
+              const parking = state.sources.pollingPlaces.data[0].attributes.PARKING_CODE == "N" ? 'No Parking' :
+                              state.sources.pollingPlaces.data[0].attributes.PARKING_CODE == "G" ? 'General Parking' :
+                              state.sources.pollingPlaces.data[0].attributes.PARKING_CODE == "L" ? 'Loading Zone' :
                               'Information not available';
               return parking;
             },
@@ -130,11 +130,11 @@ export default {
   },
   markersForTopic: {
     data: function(state) {
-      return state.sources.elections.data
+      return state.sources.pollingPlaces.data[0]
     },
-    lat: 'lat',
-    lng: 'lng',
-    key: 'display_address',
+    lat: 'LAT',
+    lng: 'LON',
+    key: 'STREET_ADDRESS',
     color: '#54278f',
     icon: {
       prefix: 'fas',

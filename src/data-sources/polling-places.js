@@ -20,17 +20,3 @@ id: 'pollingPlaces',
    }
  }
 }
-
-// export default {
-//   id: 'pollingPlaces',
-//   url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/POLLING_PLACES/FeatureServer/0',
-//   type: 'esri',
-//   options: {
-//     relationship: 'where',
-//     where: function(feature) {
-//       return "PRECINCT = '" + feature.properties.election_precinct + "'";
-//     }
-//
-// };
-//
-//
