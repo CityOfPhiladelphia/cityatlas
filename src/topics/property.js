@@ -66,6 +66,82 @@ export default {
     },
     {
       type: 'vertical-table',
+      options: {
+        nullValue: 'None',
+      },
+      slots: {
+        title: 'Property Characteristics',
+        fields: [
+          {
+            label: 'OPA Account #',
+            value: function(state) {
+              return state.geocode.data.properties.opa_account_num;
+            }
+          },
+          {
+            label: 'Homestead Exemption',
+            value: function(state) {
+              if (state.sources.opa.data.homestead_exemption > 0) {
+                return state.sources.opa.data.homestead_exemption
+              } else {
+                return "No"
+              }
+            },
+          },
+          {
+            label: 'Description',
+            value: function(state) {
+              return titleCase(state.sources.opa.data.building_code_description);
+            },
+          },
+          {
+            label: 'Condition',
+            value: function(state) {
+              const exterior = state.sources.opa.data.exterior_condition
+              const condition =  exterior  == 0 ? 'Not Applicable' :
+              exterior  == 2 ? 'Newer Construction / Rehabbed' :
+              exterior  == 3 ? 'Above Average' :
+              exterior  == 4 ? 'Average' :
+              exterior  == 5 ? 'Below Average' :
+              exterior  == 6 ? 'Vacant' :
+              exterior  == 7 ? 'Sealed / Structurally Compromised, Open to the Weather' :
+              'Not available';
+              return condition;
+            },
+          },
+          {
+            label: 'Beginning Point',
+            value: function(state) {
+              return titleCase(state.sources.opa.data.beginning_point);
+            },
+          },
+          {
+            label: 'Land Area',
+            value: function(state) {
+              return state.sources.opa.data.total_area;
+            },
+            transforms: [
+              'integer',
+              'prettyNumber',
+              'squareFeet',
+            ]
+          },
+          {
+            label: 'Improvement Area',
+            value: function(state) {
+              return state.sources.opa.data.total_livable_area;
+            },
+            transforms: [
+              'integer',
+              'prettyNumber',
+              'squareFeet',
+            ]
+          },
+        ],
+      },
+    }, // end table
+    {
+      type: 'vertical-table',
       slots: {
         title: 'Sales Details',
         fields: [
@@ -159,86 +235,10 @@ export default {
       },
     },
     {
-      type: 'vertical-table',
-      options: {
-        nullValue: 'None',
-      },
-      slots: {
-        title: 'Property Characteristics',
-        fields: [
-          {
-            label: 'OPA Account #',
-            value: function(state) {
-              return state.geocode.data.properties.opa_account_num;
-            }
-          },
-          {
-            label: 'Homestead Exemption',
-            value: function(state) {
-              if (state.sources.opa.data.homestead_exemption > 0) {
-                return state.sources.opa.data.homestead_exemption
-              } else {
-                return "No"
-              }
-            },
-          },
-          {
-            label: 'Description',
-            value: function(state) {
-              return titleCase(state.sources.opa.data.building_code_description);
-            },
-          },
-          {
-            label: 'Condition',
-            value: function(state) {
-              const exterior = state.sources.opa.data.exterior_condition
-              const condition =  exterior  == 0 ? 'Not Applicable' :
-                                 exterior  == 2 ? 'Newer Construction / Rehabbed' :
-                                 exterior  == 3 ? 'Above Average' :
-                                 exterior  == 4 ? 'Average' :
-                                 exterior  == 5 ? 'Below Average' :
-                                 exterior  == 6 ? 'Vacant' :
-                                 exterior  == 7 ? 'Sealed / Structurally Compromised, Open to the Weather' :
-                                'Not available';
-              return condition;
-            },
-          },
-          {
-            label: 'Beginning Point',
-            value: function(state) {
-              return titleCase(state.sources.opa.data.beginning_point);
-            },
-          },
-          {
-            label: 'Land Area',
-            value: function(state) {
-              return state.sources.opa.data.total_area;
-            },
-            transforms: [
-              'integer',
-              'prettyNumber',
-              'squareFeet',
-            ]
-          },
-          {
-            label: 'Improvement Area',
-            value: function(state) {
-              return state.sources.opa.data.total_livable_area;
-            },
-            transforms: [
-              'integer',
-              'prettyNumber',
-              'squareFeet',
-            ]
-          },
-        ],
-      },
-    }, // end table
-    {
       type: 'callout',
       slots: {
         text: '\
-          Corrections or questions about this information?\
+          Corrections to or questions about this property? \
           <br><a href="//opa.phila.gov/opa.apps/Help/CitizenMain.aspx?sch=Ctrl2&s=1&url=search&id=3172000144"\
           target="_blank">Submit an Official Inquiry</a> to the Office of Property Assessment\
         ',
@@ -249,9 +249,9 @@ export default {
       slots: {
         title: "Access the Raw Data",
         text: '\
-          You can download property assessment data in bulk.\
-          <br><a href="//www.opendataphilly.org/dataset/opa-property-assessments"\
-          target="_blank">Download the Data</a> from Open Data Philly\
+          You can download the property assessment dataset in bulk, and get more information about this data at\
+          <br><a href="//metadata.phila.gov/#home/datasetdetails/5543865f20583086178c4ee5/"\
+          target="_blank">metadata.phila.gov</a> \
         ',
       },
     },
