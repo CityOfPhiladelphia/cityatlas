@@ -70,6 +70,14 @@ export default {
       return value && value + ' ft';
     },
   },
+  getNearest: {
+    transform: function(state, field, distName) {
+      let min = Math.min.apply(null, state.sources[field].data.map(function(item) {return item[distName];}));
+      let result  = state.sources[field].data.filter(function(item){return item[distName] == min;} );
+      let nearest = result? result[0] : null;
+      return nearest
+    }
+  },
   integer: {
     transform: function (value) {
       return !isNaN(value) && parseInt(value);
@@ -79,6 +87,11 @@ export default {
     transform: function (value) {
       return '<span style="white-space: nowrap;">' + value + '</span>';
     },
+  },
+  nth: {
+     transform: function(n) {
+       return n + ([,'st','nd','rd'][n%100>>3^1&&n%10]||'th')
+     }
   },
   phoneNumber: {
     transform: function (value) {
@@ -114,6 +127,14 @@ export default {
     transform: function (value) {
       return value && value + ' sq ft';
     },
+  },
+  titleCase: {
+    transform: function(str) {
+      str = str.toLowerCase().split(' ').map(function(word) {
+        return (word.charAt(0).toUpperCase() + word.slice(1));
+      });
+      return str.join(' ');
+    }
   },
   urlFormatter: {
     transform: function(txt) {

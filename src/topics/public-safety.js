@@ -1,20 +1,9 @@
 import transforms from '../general/transforms';
 import moment from 'moment';
 
-const getNearest = function(state, field, distName) {
-
-  let min = Math.min.apply(null, state.sources[field].data.map(function(item) {return item[distName];}));
-  let result  = state.sources[field].data.filter(function(item){return item[distName] == min;} );
-  let nearest = result? result[0] : null;
-  return nearest
-};
-
-const titleCase = function(str) {
-  str = str.toLowerCase().split(' ').map(function(word) {
-    return (word.charAt(0).toUpperCase() + word.slice(1));
-  });
-  return str.join(' ');
-};
+const getNearest = transforms.getNearest.transform;
+const titleCase = transforms.titleCase.transform;
+const nth = transforms.nth.transform;
 
 export default {
   key: 'safety',
@@ -35,7 +24,6 @@ export default {
             label: 'Public Safety Area',
             value: function(state) {
               let mail = 'police.co_'+state.geocode.data.properties.police_district+'@phila.gov'
-              function nth(n){return n + ([,'st','nd','rd'][n%100>>3^1&&n%10]||'th')};
               return ('<a href="//www.phillypolice.com/districts/'+ nth(state.geocode.data.properties.police_district)
                       + '/index.html" target="_blank"><b>'
                       + nth(state.geocode.data.properties.police_district)
