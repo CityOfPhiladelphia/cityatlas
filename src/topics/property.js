@@ -250,7 +250,7 @@ export default {
         title: "Access the Raw Data",
         text: '\
           You can download the property assessment dataset in bulk, and get more information about this data at\
-          <br><a href="//metadata.phila.gov/#home/datasetdetails/5543865f20583086178c4ee5/"\
+          <a href="//metadata.phila.gov/#home/datasetdetails/5543865f20583086178c4ee5/"\
           target="_blank">metadata.phila.gov</a> \
         ',
       },
