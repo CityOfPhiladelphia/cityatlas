@@ -1,4 +1,5 @@
 import transforms from '../general/transforms';
+import moment from 'moment';
 const phone = transforms.phoneNumber.transform;
 
 const titleCase = function(str) {
@@ -16,7 +17,29 @@ export default {
   icon: 'gavel',
   label: 'Voting',
   dataSources: ['divisions', 'pollingPlaces', 'electedOfficials'],
+  dataSources: ['divisions', 'pollingPlaces', 'electedOfficials', 'nextElectionAPI'],
   components: [
+    {
+      type: 'badge',
+      options: {
+        titleBackground: '#C8C6C6',
+        externalLink: {
+          data: 'Preview ballot',
+          // action: function(state){return 'Preview ballot'},
+          href: function(state) {
+            // var address = state.geocode.data.properties.street_address;
+            // var addressEncoded = encodeURIComponent(address);
+            return '//www.philadelphiavotes.com/index.php?option=com_voterapp&tmpl=component#ballots';
+          },
+        },
+      },
+      slots: {
+        title: 'Next Eligible Election Is',
+        value: function(state) {
+          return moment(state.sources.nextElectionAPI.data.election_date).format('dddd, LL');
+        },
+      }, // end slots
+    }, // end of badge
     {
       type: 'callout',
       slots: {
