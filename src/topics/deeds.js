@@ -332,7 +332,7 @@ export default {
               text: 'The list of documents \
                 shown below may not be a complete history of title to this \
                 parcel. The list is based solely on documents recorded from\
-                1974 forward where those documents contained street addresses\
+                December 1999 forward where those documents contained street addresses\
                 in the original recorded document.\
                 <br> <br> \
                Discrepancies are indicated for deed documents from May, 2018 \
