@@ -21,7 +21,7 @@ export default {
         // title: 'Public Safety',
         fields: [
           {
-            label: 'Public Safety Area',
+            label: 'Police Jurisdiction',
             value: function(state) {
               let mail = 'police.co_'+state.geocode.data.properties.police_district+'@phila.gov'
               return ('<a href="//www.phillypolice.com/districts/'+ nth(state.geocode.data.properties.police_district)
