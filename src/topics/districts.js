@@ -2,6 +2,7 @@ export default {
   key: 'districts',
   icon: 'clone',
   label: 'Districts',
+  dataSources: ['opa'],
   // REVIEW can these be calculated from vue deps?
   components: [
 
@@ -49,8 +50,6 @@ export default {
       options: {
       }
     },
-
-
     {
       type: 'vertical-table',
       slots: {
@@ -78,12 +77,52 @@ export default {
       },
       options: {
       }
-    }
-
-
-
-
-
+    },
+    {
+      type: 'vertical-table',
+      slots: {
+        title: "Streets",
+        fields: [
+          {
+            label: 'Highway District',
+            value: function(state) {
+              return state.geocode.data.properties.highway_district;
+            }
+          },
+          {
+            label: 'Highway Section',
+            value: function(state) {
+              return state.geocode.data.properties.highway_section;
+            }
+          },
+          {
+            label: 'Highway Subsection',
+            value: function(state) {
+              return state.geocode.data.properties.highway_subsection;
+            }
+          },
+          {
+            label: 'Street Light Routes',
+            value: function(state) {
+              return state.geocode.data.properties.street_light_route;
+            }
+          },
+          {
+            label: 'Traffic District',
+            value: function(state) {
+              return state.geocode.data.properties.traffic_district;
+            }
+          },
+          {
+            label: 'Traffic PM District',
+            value: function(state) {
+              return state.geocode.data.properties.traffic_pm_district;
+            }
+          },
+        ],
+      },
+      options: {}
+    },
   ],
   basemap: 'pwd',
   identifyFeature: 'address-marker',
