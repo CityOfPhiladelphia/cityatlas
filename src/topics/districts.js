@@ -7,6 +7,17 @@ export default {
   components: [
 
     {
+      type: 'callout',
+      slots: {
+        text: '\
+          Districts related to police, L+I, city planning, streets, \
+          census, and commerce for this address. Sources: Department \
+          of Streets, Licenses and Inspections, Planning and Development,\
+          & Philadelphia Police Dept.\
+        ',
+      }
+    },
+    {
       type: 'vertical-table',
       slots: {
         title: "Districts",
@@ -123,6 +134,15 @@ export default {
       },
       options: {}
     },
+    {
+      type: 'external-link',
+      options:{
+        data: 'See more districts in OpenMaps',
+        href: function() {
+          return '//openmaps.phila.gov/';
+        }
+      }
+    }
   ],
   basemap: 'pwd',
   identifyFeature: 'address-marker',
