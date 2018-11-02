@@ -6,5 +6,6 @@ export default {
     params: {
       // q: function(feature){ return "select * from li_business_licenses where street_address = '" + feature.properties.street_address + "'"},// + "' or addresskey = '" + feature.properties.li_address_key.toString() + "'",
       q: function(feature){ return "select * from li_business_licenses where eclipse_addressobjectid = '" + feature.properties.eclipse_location_id + "'"},
+    }
   }
 }
