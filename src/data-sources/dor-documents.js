@@ -57,7 +57,7 @@ export default {
           }
 
           where += ") or MATCHED_REGMAP = '" + state.parcels.dor.data[0].properties.BASEREG + "'";
-          where += " or REG_MAP_ID = '" + state.parcels.dor.data[0].properties.BASEREG + "'";
+          // where += " or REG_MAP_ID = '" + state.parcels.dor.data[0].properties.BASEREG + "'";
           // where += ") OR (STREET_ADDRESS='" + parcelBaseAddress + "'";
           // if (unitNum) {
           //   where +="AND UNIT_NUM = '" + unitNum + "'";
@@ -73,7 +73,7 @@ export default {
 
         return where;
       },
-      outFields: "DOCUMENT_ID, DISPLAY_DATE, DOCUMENT_TYPE, GRANTORS, GRANTEES, DISCREPANCY",
+      outFields: "R_NUM, DISPLAY_DATE, DOCUMENT_TYPE, GRANTORS, GRANTEES, DISCREPANCY",
       returnDistinctValues: 'true',
       returnGeometry: 'false',
       f: 'json'

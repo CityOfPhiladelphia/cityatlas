@@ -14,9 +14,10 @@ module.exports = {
   devtool: isDevelopment ? 'inline-source-map' : 'source-map',
   devServer: {
     contentBase: './public',
-    host: process.env.WEBPACK_DEV_HOST,
-    // host: 'localhost',
-    port: process.env.WEBPACK_DEV_PORT
+    // host: process.env.WEBPACK_DEV_HOST,
+    host: 'localhost',
+    // port: process.env.WEBPACK_DEV_PORT
+    port: 8088
   },
   output: {
     path: path.resolve(__dirname, 'public'),
