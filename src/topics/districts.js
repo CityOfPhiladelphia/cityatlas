@@ -10,7 +10,7 @@ export default {
       type: 'callout',
       slots: {
         text: '\
-          Districts related to police, L+I, city planning, streets, \
+          Districts related to police, L&I, city planning, streets, \
           census, and commerce for this address. Sources: Department \
           of Streets, Licenses and Inspections, Planning and Development,\
           & Philadelphia Police Dept.\
