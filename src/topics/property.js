@@ -31,10 +31,18 @@ export default {
             }
           },
           {
+            label: 'OPA Address',
+            value: function(state) {
+              return titleCase(state.geocode.data.properties.street_address) +
+                     '<br>Philadelphia, PA ' + state.geocode.data.properties.zip_code;
+            }
+          },
+          {
             label: 'Mailing Address',
             value: function(state) {
               let opa = state.sources.opa.data
               const mailing = [];
+              opa.mailing_care_of.length > 0 ? mailing.push(titleCase(opa.mailing_care_of) +'<br>'):null;
               opa.mailing_address_1.length > 0 ? mailing.push(titleCase(opa.mailing_address_1) +'<br>'):null;
               opa.mailing_address_2.length > 0 ? mailing.push(titleCase(opa.mailing_address_2) +'<br>'):null;
               console.log(mailing);
@@ -138,6 +146,7 @@ export default {
     }, // end table
     {
       type: 'vertical-table',
+      options: {},
       slots: {
         title: 'Sales Details',
         fields: [

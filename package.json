@@ -12,7 +12,11 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@cityofphiladelphia/mapboard": "3.0.14",
+=======
+    "@cityofphiladelphia/mapboard": "3.0.15",
+>>>>>>> develop
     "accounting": "^0.4.1",
     "axios": "^0.18.0",
     "moment": "^2.21.0",
