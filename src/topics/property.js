@@ -146,6 +146,7 @@ export default {
     }, // end table
     {
       type: 'vertical-table',
+      options: {},
       slots: {
         title: 'Sales Details',
         fields: [
