@@ -7,6 +7,9 @@ _________ .__  __            _____   __  .__
         \/          \/            \/               \/     \/
 */
 
+import * as Sentry from '@sentry/browser';
+Sentry.init({ dsn: 'https://de720599f539470782c0178091dcf6bf@sentry.io/1330846' });
+
 import accounting from 'accounting';
 import axios from 'axios';
 import moment from 'moment';
