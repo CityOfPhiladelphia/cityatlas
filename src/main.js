@@ -7,6 +7,7 @@ _________ .__  __            _____   __  .__
         \/          \/            \/               \/     \/
 */
 
+
 import * as Sentry from '@sentry/browser';
 Sentry.init({ dsn: 'https://bbd37729e48142faaefba93ff32e3c14@sentry.io/1331835' });
 
