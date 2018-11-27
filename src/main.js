@@ -15,7 +15,6 @@ import axios from 'axios';
 import moment from 'moment';
 import mapboard from '@cityofphiladelphia/mapboard';
 
-
 // General Config Modules
 import helpers from './util/helpers';
 import map from './general/map';
