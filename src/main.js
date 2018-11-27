@@ -7,6 +7,9 @@ _________ .__  __            _____   __  .__
         \/          \/            \/               \/     \/
 */
 
+import * as Sentry from '@sentry/browser';
+Sentry.init({ dsn: 'https://de720599f539470782c0178091dcf6bf@sentry.io/1330846' });
+
 import accounting from 'accounting';
 import axios from 'axios';
 import moment from 'moment';
@@ -74,7 +77,7 @@ if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
   console.log = console.info = console.debug = console.error = function () {};
 }
 
-var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/ajrothwell/mapboard-base-config@74cf4692237e16757681f6860b936efd734c27d8/config.js';
+var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/ajrothwell/mapboard-base-config@d18a86feb27b7e7c4496ed422ce30b5d80e64c1b/config.js';
 
 // configure accounting.js
 accounting.settings.currency.precision = 0;
@@ -159,6 +162,14 @@ mapboard({
     stormwaterTopic,
     nearby,
     districts,
+  ],
+  components: [
+    {
+      type: 'topic-set',
+      options: {
+        defaultTopic: 'property'
+      }
+    },
   ],
   components: [
     {

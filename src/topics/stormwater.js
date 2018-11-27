@@ -18,6 +18,7 @@ export default {
     },
     {
       type: 'vertical-table',
+      options: {},
       slots: {
         title: 'Parcel',
         fields: [

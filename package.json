@@ -13,12 +13,14 @@
   },
   "dependencies": {
     "@cityofphiladelphia/mapboard": "3.0.15",
+    "@sentry/browser": "4.3.4",
     "accounting": "^0.4.1",
     "axios": "^0.18.0",
     "moment": "^2.21.0",
     "phila-standards": "^1.0.2"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-pro": "^5.5.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
