@@ -3,4 +3,3 @@ yarn-error.log
 public/*.js
 public/*.js.map
 .npmrc
-sentry_init.js
