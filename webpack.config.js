@@ -4,9 +4,11 @@ const webpack = require('webpack');
 const env = process.env.NODE_ENV;
 const isDevelopment = env === 'development';
 
+const Visualizer = require('webpack-visualizer-plugin');
+
 module.exports = {
   entry: {
-    app: './src/main.js',
+    app: ['./public/index.html', './public/styles.css', './src/main.js'],
   },
   resolve: {
     mainFields: ['module', 'main', 'browser'],
@@ -20,7 +22,7 @@ module.exports = {
     // port: 8088
   },
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     publicPath: '/',
   },
@@ -28,7 +30,16 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: 'babel-loader',
+        exclude: /(node_modules|bower_components)/,
+        use: [
+          {
+            loader: 'babel-loader'
+          }
+        ]
+      },
+      {
+        test: /\.html/,
+        loader: 'file-loader?name=[name].[ext]',
       },
       {
         test: /\.css$/,
@@ -45,6 +56,7 @@ module.exports = {
   },
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
+    new Visualizer({ filename: './statistics.html' })
   ],
   mode: env,
   optimization: {

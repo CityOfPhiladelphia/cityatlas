@@ -7,8 +7,20 @@ _________ .__  __            _____   __  .__
         \/          \/            \/               \/     \/
 */
 
-import * as Sentry from '@sentry/browser';
-Sentry.init({ dsn: 'https://bbd37729e48142faaefba93ff32e3c14@sentry.io/1331835' });
+// import * as Sentry from '@sentry/browser';
+// Sentry.init({ dsn: 'https://bbd37729e48142faaefba93ff32e3c14@sentry.io/1331835' });
+
+// Font Awesome Icons
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faHome } from '@fortawesome/pro-solid-svg-icons/faHome';
+import { faBook } from '@fortawesome/pro-solid-svg-icons/faBook';
+import { faWrench } from '@fortawesome/pro-solid-svg-icons/faWrench';
+import { faUniversity } from '@fortawesome/pro-solid-svg-icons/faUniversity';
+import { faGavel } from '@fortawesome/pro-solid-svg-icons/faGavel';
+import { faMapMarkerAlt } from '@fortawesome/pro-solid-svg-icons/faMapMarkerAlt';
+import { faLandmark } from '@fortawesome/pro-solid-svg-icons/faLandmark';
+import { faBuilding } from '@fortawesome/pro-solid-svg-icons/faBuilding';
+library.add(faHome, faBook, faWrench, faUniversity, faGavel, faMapMarkerAlt, faLandmark, faBuilding);
 
 import accounting from 'accounting';
 import axios from 'axios';
@@ -91,11 +103,25 @@ mapboard({
   router: {
     enabled: true
   },
+  defaultAddressTextPlaceholder: {
+    // text: "Search Address or 9-digit OPA Property Number",
+    wideStyle: {
+      'max-width': '100%',
+      'font-size': '24px',
+      'line-height': '28px'
+    },
+    narrowStyle: {
+      'max-width': '100%',
+      'font-size': '20px',
+      'line-height': '24px'
+    }
+  },
   geolocation: {
     enabled: false
   },
   addressInput: {
     width: 415,
+    mapWidth: 300,
     position: 'right',
     autocompleteEnabled: false,
     autocompleteMax: 15,
@@ -170,12 +196,12 @@ mapboard({
       }
     },
   ],
-  components: [
-    {
-      type: 'topic-set',
-      options: {
-        defaultTopic: 'property'
-      }
-    },
-  ],
+  // components: [
+  //   {
+  //     type: 'topic-set',
+  //     options: {
+  //       defaultTopic: 'property'
+  //     }
+  //   },
+  // ],
 });
