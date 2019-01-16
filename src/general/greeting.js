@@ -1,5 +1,5 @@
 export default {
-  initialMessage: '\
+  message: '\
     <h2>CityAtlas connects you with information about any address in the city.</h2>\
     <p>Here are some things you can do with CityAtlas:</p>\
     <div class="callout">\
