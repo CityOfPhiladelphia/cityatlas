@@ -32,7 +32,7 @@ export default {
 //   type: 'esri-nearby',
 //   url: '//services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/LaneClosure_Master/FeatureServer/0/query',
 //   options: {
-//     geometryServerUrl: '//gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/',
+//     geometryServerUrl: '//gis-utils.databridge.phila.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
 //     calculateDistance: true,
 //     distances: 1320,
 //   },
