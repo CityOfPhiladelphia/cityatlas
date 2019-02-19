@@ -30,7 +30,7 @@ import accounting from 'accounting';
 import axios from 'axios';
 import moment from 'moment';
 // import mapboard from '@cityofphiladelphia/mapboard';
-import mapboard from '@cityofphiladelphia/mapboard/src/main.js';
+import mapboard from '@philly/mapboard/src/main.js';
 
 // General Config Modules
 import helpers from './util/helpers';
