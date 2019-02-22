@@ -571,9 +571,9 @@
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
 
-"@philly/mapboard@^3.0.23":
-  version "3.0.23"
-  resolved "https://registry.yarnpkg.com/@philly/mapboard/-/mapboard-3.0.23.tgz#cfb551681d96af8bbf00c98e7459230866d5f7ec"
+"@philly/mapboard@^3.0.24":
+  version "3.0.24"
+  resolved "https://registry.yarnpkg.com/@philly/mapboard/-/mapboard-3.0.24.tgz#19e0d8b4d1a5daa87422eab9f9dd55c8b2290142"
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-solid-svg-icons" "^5.7.2"
