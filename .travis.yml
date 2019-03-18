@@ -23,3 +23,11 @@ deploy:
       branch: develop
     local_dir: dist
     skip_cleanup: true
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: 'cityatlas-cleanup'
+    on:
+      branch: cleanup
+    local_dir: dist
+    skip_cleanup: true
