@@ -28,8 +28,7 @@ library.add(faDotCircle, faHome, faBook, faWrench, faUniversity, faGavel, faMapM
 
 import accounting from 'accounting';
 import axios from 'axios';
-import moment from 'moment';
-// import mapboard from '@cityofphiladelphia/mapboard';
+
 import mapboard from '@philly/mapboard/src/main.js';
 
 // General Config Modules
