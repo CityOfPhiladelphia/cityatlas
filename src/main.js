@@ -27,8 +27,6 @@ import { faClone } from '@fortawesome/free-solid-svg-icons/faClone';
 library.add(faDotCircle, faHome, faBook, faWrench, faUniversity, faGavel, faMapMarkerAlt, faLandmark, faBuilding, faPhone, faTint, faClone);
 
 import accounting from 'accounting';
-import axios from 'axios';
-
 import mapboard from '@philly/mapboard/src/main.js';
 
 // General Config Modules
@@ -79,14 +77,7 @@ import stormwaterTopic from './topics/stormwater';
 import nearby from './topics/nearby';
 import districts from './topics/districts';
 
-// styles
-// TODO move all styles here (that have a npm package)
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-easybutton/src/easy-button.css';
-import 'leaflet-measure/dist/leaflet-measure.css';
-
 // turn off console logging in production
-// TODO come up with better way of doing this with webpack + env vars
 const { hostname='' } = location;
 if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
   console.log = console.info = console.debug = console.error = function () {};
@@ -98,7 +89,6 @@ var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/ajrothwell/mapboard-base-conf
 accounting.settings.currency.precision = 0;
 
 mapboard({
-  // DEV
   // defaultAddress: '1234 MARKET ST',
   panels: [
     'topics',
@@ -201,12 +191,4 @@ mapboard({
       }
     },
   ],
-  // components: [
-  //   {
-  //     type: 'topic-set',
-  //     options: {
-  //       defaultTopic: 'property'
-  //     }
-  //   },
-  // ],
 });
