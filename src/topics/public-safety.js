@@ -1,5 +1,4 @@
 import transforms from '../general/transforms';
-import moment from 'moment';
 
 const getNearest = transforms.getNearest.transform;
 const titleCase = transforms.titleCase.transform;

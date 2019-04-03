@@ -10,25 +10,30 @@ _________ .__  __            _____   __  .__
 // import * as Sentry from '@sentry/browser';
 // Sentry.init({ dsn: 'https://bbd37729e48142faaefba93ff32e3c14@sentry.io/1331835' });
 
+// turn off console logging in production
+const { hostname='' } = location;
+if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
+  console.log = console.info = console.debug = console.error = function () {};
+}
+
 // Font Awesome Icons
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faHome } from '@fortawesome/pro-solid-svg-icons/faHome';
-import { faBook } from '@fortawesome/pro-solid-svg-icons/faBook';
-import { faWrench } from '@fortawesome/pro-solid-svg-icons/faWrench';
-import { faUniversity } from '@fortawesome/pro-solid-svg-icons/faUniversity';
-import { faGavel } from '@fortawesome/pro-solid-svg-icons/faGavel';
-import { faMapMarkerAlt } from '@fortawesome/pro-solid-svg-icons/faMapMarkerAlt';
-import { faLandmark } from '@fortawesome/pro-solid-svg-icons/faLandmark';
-import { faBuilding } from '@fortawesome/pro-solid-svg-icons/faBuilding';
-import { faPhone } from '@fortawesome/pro-solid-svg-icons/faPhone';
-import { faTint } from '@fortawesome/pro-solid-svg-icons/faTint';
-import { faClone } from '@fortawesome/pro-solid-svg-icons/faClone';
-library.add(faHome, faBook, faWrench, faUniversity, faGavel, faMapMarkerAlt, faLandmark, faBuilding, faPhone, faTint, faClone);
+import { faDotCircle } from '@fortawesome/free-regular-svg-icons/faDotCircle';
+import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
+import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
+import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
+import { faUniversity } from '@fortawesome/free-solid-svg-icons/faUniversity';
+import { faGavel } from '@fortawesome/free-solid-svg-icons/faGavel';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons/faMapMarkerAlt';
+import { faLandmark } from '@fortawesome/free-solid-svg-icons/faLandmark';
+import { faBuilding } from '@fortawesome/free-solid-svg-icons/faBuilding';
+import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
+import { faTint } from '@fortawesome/free-solid-svg-icons/faTint';
+import { faClone } from '@fortawesome/free-solid-svg-icons/faClone';
+library.add(faDotCircle, faHome, faBook, faWrench, faUniversity, faGavel, faMapMarkerAlt, faLandmark, faBuilding, faPhone, faTint, faClone);
 
 import accounting from 'accounting';
-import axios from 'axios';
-import moment from 'moment';
-import mapboard from '@cityofphiladelphia/mapboard';
+import mapboard from '@philly/mapboard/src/main.js';
 
 // General Config Modules
 import helpers from './util/helpers';
@@ -78,26 +83,22 @@ import stormwaterTopic from './topics/stormwater';
 import nearby from './topics/nearby';
 import districts from './topics/districts';
 
-// styles
-// TODO move all styles here (that have a npm package)
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-easybutton/src/easy-button.css';
-import 'leaflet-measure/dist/leaflet-measure.css';
-
-// turn off console logging in production
-// TODO come up with better way of doing this with webpack + env vars
-const { hostname='' } = location;
-if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
-  console.log = console.info = console.debug = console.error = function () {};
-}
-
-var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/ajrothwell/mapboard-base-config@d18a86feb27b7e7c4496ed422ce30b5d80e64c1b/config.js';
+var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@d3ad38f050cf55b4ab0dc2ff68e6f18025690246/config.js';
 
 // configure accounting.js
 accounting.settings.currency.precision = 0;
 
+let pictApiKey, pictSecretKey;
+const host = window.location.hostname;
+if (host === 'cityatlas-dev.phila.gov') {
+  pictApiKey = process.env.VUE_APP_DEV_PICTOMETRY_API_KEY;
+  pictSecretKey = process.env.VUE_APP_DEV_PICTOMETRY_SECRET_KEY;
+} else {
+  pictApiKey = process.env.VUE_APP_PICTOMETRY_API_KEY;
+  pictSecretKey = process.env.VUE_APP_PICTOMETRY_SECRET_KEY;
+}
+
 mapboard({
-  // DEV
   // defaultAddress: '1234 MARKET ST',
   panels: [
     'topics',
@@ -120,7 +121,8 @@ mapboard({
     }
   },
   geolocation: {
-    enabled: false
+    enabled: false,
+    icon: ['far', 'dot-circle']
   },
   addressInput: {
     width: 415,
@@ -146,9 +148,16 @@ mapboard({
     enabled: true,
     measurementAllowed: true,
     popoutAble: true,
+    recordingsUrl: 'https://atlas.cyclomedia.com/Recordings/wfs',
+    username: process.env.VUE_APP_CYCLOMEDIA_USERNAME,
+    password: process.env.VUE_APP_CYCLOMEDIA_PASSWORD,
+    apiKey: process.env.VUE_APP_CYCLOMEDIA_API_KEY,
   },
   pictometry: {
     enabled: true,
+    iframeId: 'pictometry-ipa',
+    apiKey: pictApiKey,
+    secretKey: pictSecretKey,
   },
   transforms,
   greeting,
@@ -199,12 +208,4 @@ mapboard({
       }
     },
   ],
-  // components: [
-  //   {
-  //     type: 'topic-set',
-  //     options: {
-  //       defaultTopic: 'property'
-  //     }
-  //   },
-  // ],
 });
