@@ -42,11 +42,11 @@ export default {
             value: function(state) {
               let opa = state.sources.opa.data
               const mailing = [];
-              opa.mailing_care_of.length > 0 ? mailing.push(titleCase(opa.mailing_care_of) +'<br>'):null;
-              opa.mailing_address_1.length > 0 ? mailing.push(titleCase(opa.mailing_address_1) +'<br>'):null;
-              opa.mailing_address_2.length > 0 ? mailing.push(titleCase(opa.mailing_address_2) +'<br>'):null;
+              opa.mailing_care_of != null && opa.mailing_care_of.length > 0 ? mailing.push(titleCase(opa.mailing_care_of) +'<br>'):null;
+              opa.mailing_address_1 != null && opa.mailing_address_1.length > 0 ? mailing.push(titleCase(opa.mailing_address_1) +'<br>'):null;
+              opa.mailing_address_2 != null && opa.mailing_address_2.length > 0 ? mailing.push(titleCase(opa.mailing_address_2) +'<br>'):null;
               console.log(mailing);
-              return opa.mailing_street.length > 0 ?
+              return opa.mailing_street != null && opa.mailing_street.length > 0 ?
                      mailing.join('') + titleCase(opa.mailing_street) +
                      '<br>'+ titleCase(opa.mailing_city_state).replace(/\w$/, c => c.toUpperCase()) +
                      '<br>'+ opa.mailing_zip : titleCase(opa.location) +
