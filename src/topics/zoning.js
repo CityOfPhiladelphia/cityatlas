@@ -65,6 +65,9 @@ export default {
           var address = concatDorAddress(item);
           return address;
         },
+        activeItem: function(state) {
+          return state.parcels.dor.activeParcel;
+        },
         // components for the content pane. this essentially a topic body.
         components: [
           {
