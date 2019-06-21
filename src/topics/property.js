@@ -33,7 +33,7 @@ export default {
           {
             label: 'OPA Address',
             value: function(state) {
-              return titleCase(state.geocode.data.properties.street_address) +
+              return titleCase(state.geocode.data.properties.opa_address) +
                      '<br>Philadelphia, PA ' + state.geocode.data.properties.zip_code;
             }
           },
