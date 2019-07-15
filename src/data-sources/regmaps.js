@@ -1,7 +1,7 @@
 export default {
   id: 'regmaps',
   type: 'esri',
-  url: '//services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/MASTERMAPINDEX/FeatureServer/0',
+  url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/MASTERMAPINDEX/FeatureServer/0',
   // deps: ['dorParcels'],
   deps: ['parcels.dor'],
   options: {

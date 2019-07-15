@@ -1,7 +1,7 @@
 export default {
  id: 'streetClosures',
  type: 'http-get',
- url: '//services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/LaneClosure_Master/FeatureServer/0/query',
+ url: 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/LaneClosure_Master/FeatureServer/0/query',
  options: {
    params: {
      where: function(feature, state) {

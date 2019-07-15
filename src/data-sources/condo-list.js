@@ -3,7 +3,7 @@ import helpers from '../util/helpers';
 export default {
   id: 'condoList',
   type: 'http-get',
-  url: '//api.phila.gov/ais/v1/search/',
+  url: 'https://api.phila.gov/ais/v1/search/',
   options: {
     params: {
       urlAddition: function (feature) {
