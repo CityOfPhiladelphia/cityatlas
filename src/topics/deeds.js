@@ -92,7 +92,7 @@ export default {
             type: 'vertical-table',
             options: {
               nullValue: 'None',
-              // id: 'dorData',
+              id: 'dorData',
             },
             slots: {
               title: 'Parcel Details',
