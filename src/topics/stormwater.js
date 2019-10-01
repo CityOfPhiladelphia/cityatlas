@@ -128,7 +128,7 @@ export default {
           name: 'Stormwater Billing',
           href: function(state) {
             var id = state.sources.stormwater.data.Parcel.ParcelID;
-            return '//www.phila.gov/water/swmap/Parcel.aspx?parcel_id=' + id;
+            return 'https://stormwater.phila.gov/parcelviewer/parcel/' + id;
           }
         }
       },
