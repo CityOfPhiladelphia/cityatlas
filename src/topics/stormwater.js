@@ -2,23 +2,17 @@ export default {
   key: 'stormwater',
   icon: 'tint',
   label: 'Stormwater',
-  // dataSources: ['stormwater'],
+  dataSources: [
+    'stormwater',
+    'stormwaterCap'
+  ],
   basemap: 'pwd',
   dynamicMapLayers: [
     'stormwater'
   ],
   identifyFeature: 'pwd-parcel',
   parcels: 'pwd',
-  // components: [
-  //   {
-  //     type: 'callout',
-  //     slots: {
-  //       text: 'Stormwater information is currently unavailable. This data will be available again after the Stormwater 2.0 App is released.'
-  //     }
-  //   }
-  // ]
   components: [
-
     {
       type: 'callout',
       slots: {
@@ -34,7 +28,6 @@ export default {
           {
             label: 'Parcel ID',
             value: function(state) {
-              // return state.geocode.data.properties.pwd_parcel_id;
               return state.sources.stormwater.data.Parcel.ParcelID;
             }
           },
@@ -71,7 +64,7 @@ export default {
           {
             label: 'CAP Eligible',
             value: function(state) {
-              return state.sources.stormwater.data.Parcel.CAPEligible;
+              return state.sources.stormwaterCap.data.CAP.Eligible;
             },
             transforms: [
               'booleanToYesNo'
