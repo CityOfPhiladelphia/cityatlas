@@ -64,6 +64,7 @@ import regmaps from './data-sources/regmaps';
 import sanitationCenters from './data-sources/sanitation-centers';
 import streetClosures from './data-sources/street-closures';
 import stormwater from './data-sources/stormwater';
+import stormwaterCap from './data-sources/stormwater-cap';
 import vacantBuilding from './data-sources/vacant-building';
 import vacantIndicatorsPoints from './data-sources/vacant-indicator-points';
 import vacantLand from './data-sources/vacant-land';
@@ -181,6 +182,7 @@ mapboard({
     sanitationCenters,
     streetClosures,
     stormwater,
+    stormwaterCap,
     vacantBuilding,
     vacantIndicatorsPoints,
     vacantLand,
