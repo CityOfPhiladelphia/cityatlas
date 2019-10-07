@@ -13,10 +13,10 @@
     "dev-build": "vue-cli-service build --mode development"
   },
   "dependencies": {
-    "@philly/mapboard": "^3.0.42",
+    "@philly/mapboard": "^3.0.43",
     "@sentry/browser": "4.3.4",
     "accounting": "^0.4.1",
-    "vue": "^2.6.9"
+    "vue": "^2.6.10"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
