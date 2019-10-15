@@ -9,5 +9,5 @@ export default {
     dateField: 'dispatch_date',
     params: {},
     distances: 250,
-  }
-}
+  },
+};

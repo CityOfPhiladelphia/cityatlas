@@ -9,5 +9,5 @@ export default {
     dateField: 'requested_datetime',
     params: {},
     distances: 250,
-  }
-}
+  },
+};

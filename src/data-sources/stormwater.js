@@ -5,10 +5,12 @@ export default {
   // url: 'https://api.phila.gov/stormwater',
   options: {
     params: {
-      q: function(feature){ return feature.properties.street_address; }
+      q: function(feature){
+        return feature.properties.street_address; 
+      },
     },
     success: function(data) {
       return data[0];
-    }
-  }
-}
+    },
+  },
+};

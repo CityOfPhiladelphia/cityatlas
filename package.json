@@ -10,7 +10,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "dev-build": "vue-cli-service build --mode development"
+    "dev-build": "vue-cli-service build --mode development",
+    "lint": "vue-cli-service lint",
+    "lintFix": "vue-cli-service lint --fix"
   },
   "dependencies": {
     "@philly/mapboard": "^3.0.43",
@@ -20,7 +22,11 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
+    "@vue/cli-plugin-eslint": "^3.12.0",
     "@vue/cli-service": "^3.4.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.5.1",
+    "eslint-plugin-vue": "^5.2.3",
     "vue-template-compiler": "^2.6.9",
     "webpack-visualizer-plugin": "^0.1.11"
   },

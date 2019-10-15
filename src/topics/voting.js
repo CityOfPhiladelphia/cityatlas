@@ -8,7 +8,7 @@ export default {
   key: 'voting',
   icon: 'gavel',
   label: 'Voting',
-  dataSources: ['divisions', 'pollingPlaces', 'electedOfficials', 'nextElectionAPI'],
+  dataSources: [ 'divisions', 'pollingPlaces', 'electedOfficials', 'nextElectionAPI' ],
   components: [
     {
       type: 'badge',
@@ -42,7 +42,7 @@ export default {
           href="//www.philadelphiavotes.com/en/voters/registering-to-vote"> \
           here</a>.\
         ',
-      }
+      },
     },
     {
       type: 'vertical-table',
@@ -54,8 +54,8 @@ export default {
           },
           href: function(state) {
             return '//www.philadelphiavotes.com/en/voters/absentee-and-alternative-ballots';
-          }
-        }
+          },
+        },
       },
       slots: {
         title: 'Polling Place',
@@ -64,24 +64,24 @@ export default {
             label: 'Location',
             value: function(state) {
               const pollingData = state.sources.pollingPlaces.data;
-                   return "<b>Ward " + pollingData.WARD +
+              return "<b>Ward " + pollingData.WARD +
                    ", Division " + pollingData.DIVISION + "</b><br>" +
                    titleCase(pollingData.PLACENAME) + "<br>" +
                    titleCase(pollingData.STREET_ADDRESS) + "<br>\
                    All locations are open on Election Day <br>from 7am to 8pm.";
-                  },
+            },
           },
           {
             label: 'Accessibility',
             value: function(state) {
               const pollingData = state.sources.pollingPlaces.data;
               const answer = pollingData.ACCESSIBILITY_CODE== "F" ? 'Building Fully Accessible' :
-                             pollingData.ACCESSIBILITY_CODE== "B" ? 'Building Substantially Accessible' :
-                             pollingData.ACCESSIBILITY_CODE== "M" ? 'Building Accessibility Modified' :
-                             pollingData.ACCESSIBILITY_CODE== "A" ? 'Alternate Entrance' :
-                             pollingData.ACCESSIBILITY_CODE== "R" ? 'Building Accessible With Ramp' :
-                             pollingData.ACCESSIBILITY_CODE== "N" ? 'Building Not Accessible' :
-                            'Information not available';
+                pollingData.ACCESSIBILITY_CODE== "B" ? 'Building Substantially Accessible' :
+                  pollingData.ACCESSIBILITY_CODE== "M" ? 'Building Accessibility Modified' :
+                    pollingData.ACCESSIBILITY_CODE== "A" ? 'Alternate Entrance' :
+                      pollingData.ACCESSIBILITY_CODE== "R" ? 'Building Accessible With Ramp' :
+                        pollingData.ACCESSIBILITY_CODE== "N" ? 'Building Not Accessible' :
+                          'Information not available';
               return '<a href="//www.philadelphiavotes.com/en/voters/polling-place-accessibility"\
                       target="_blank">'+answer+'</a>';
             },
@@ -91,13 +91,13 @@ export default {
             value: function(state) {
               const pollingData = state.sources.pollingPlaces.data;
               const parking = pollingData.PARKING_CODE == "N" ? 'No Parking' :
-                              pollingData.PARKING_CODE == "G" ? 'General Parking' :
-                              pollingData.PARKING_CODE == "L" ? 'Loading Zone' :
-                              'Information not available';
+                pollingData.PARKING_CODE == "G" ? 'General Parking' :
+                  pollingData.PARKING_CODE == "L" ? 'Loading Zone' :
+                    'Information not available';
               return parking;
             },
           },
-        ]
+        ],
       },
     },
     {
@@ -110,8 +110,8 @@ export default {
           },
           href: function(state) {
             return '//www.philadelphiavotes.com/en/voters/elected-officials';
-          }
-        }
+          },
+        },
       },
 
       slots: {
@@ -120,7 +120,9 @@ export default {
           {
             label: 'District Council Member',
             value: function(state) {
-              const council = state.sources.electedOfficials.data.rows.filter( function(item) {return item.office_label == "City Council";});
+              const council = state.sources.electedOfficials.data.rows.filter( function(item) {
+                return item.office_label == "City Council";
+              });
               return '<a href="' + council[0].website + '" target="_blank">' +
                 council[0].first_name +" " +council[0].last_name + " - " + nth(state.geocode.data.properties.council_district_2016) + " Council District </a>";
             },
@@ -128,7 +130,9 @@ export default {
           {
             label: 'City Hall Office',
             value: function(state) {
-              const council = state.sources.electedOfficials.data.rows.filter( function(item) {return item.office_label == "City Council";});
+              const council = state.sources.electedOfficials.data.rows.filter( function(item) {
+                return item.office_label == "City Council";
+              });
               return council[0].main_contact_address_2 + '<br>' +
                      phone(council[0].main_contact_phone_1) + ", " + phone(council[0].main_contact_phone_2) + '<br>\
                       F: '+ phone(council[0].main_contact_fax) + ' <br>\
@@ -138,18 +142,20 @@ export default {
           {
             label: 'Current Term',
             value: function(state) {
-              const council = state.sources.electedOfficials.data.rows.filter( function(item) {return item.office_label == "City Council";});
-              return council[0].next_election - 4 + ' - ' + council[0].next_election
+              const council = state.sources.electedOfficials.data.rows.filter( function(item) {
+                return item.office_label == "City Council";
+              });
+              return council[0].next_election - 4 + ' - ' + council[0].next_election;
             },
           },
-        ]
+        ],
       },
     }, // end table
   ],
-  zoomToShape: ['geojsonForTopic', 'markersForTopic'],
+  zoomToShape: [ 'geojsonForTopic', 'markersForTopic' ],
   geojsonForTopic: {
     data: function(state) {
-      return state.sources.divisions.data
+      return state.sources.divisions.data;
     },
     key: 'id',
     style: {
@@ -157,12 +163,12 @@ export default {
       color: '#9e9ac8',
       weight: 2,
       opacity: 1,
-      fillOpacity: 0.3
-    }
+      fillOpacity: 0.3,
+    },
   },
   markersForTopic: {
     data: function(state) {
-      return state.sources.pollingPlaces.data
+      return state.sources.pollingPlaces.data;
     },
     lat: 'LAT',
     lng: 'LON',
@@ -173,9 +179,9 @@ export default {
       icon: 'landmark',
       shadow: false,
       size: 35,
-    }
+    },
   },
   basemap: 'pwd',
   identifyFeature: 'address-marker',
-  parcels: 'pwd'
-}
+  parcels: 'pwd',
+};

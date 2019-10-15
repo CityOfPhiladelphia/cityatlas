@@ -4,11 +4,11 @@ export default {
   label: 'Stormwater',
   dataSources: [
     'stormwater',
-    'stormwaterCap'
+    'stormwaterCap',
   ],
   basemap: 'pwd',
   dynamicMapLayers: [
-    'stormwater'
+    'stormwater',
   ],
   identifyFeature: 'pwd-parcel',
   parcels: 'pwd',
@@ -16,8 +16,8 @@ export default {
     {
       type: 'callout',
       slots: {
-        text: 'Stormwater billing accounts associated with your search address. The property boundaries displayed on the map for reference only and may not be used in place of recorded deeds or land surveys. Boundaries are generalized for ease of visualization. Source: Philadelphia Water Department'
-      }
+        text: 'Stormwater billing accounts associated with your search address. The property boundaries displayed on the map for reference only and may not be used in place of recorded deeds or land surveys. Boundaries are generalized for ease of visualization. Source: Philadelphia Water Department',
+      },
     },
     {
       type: 'vertical-table',
@@ -29,19 +29,19 @@ export default {
             label: 'Parcel ID',
             value: function(state) {
               return state.sources.stormwater.data.Parcel.ParcelID;
-            }
+            },
           },
           {
             label: 'Address',
             value: function(state) {
               return state.sources.stormwater.data.Parcel.Address;
-            }
+            },
           },
           {
             label: 'Building Type',
             value: function(state) {
               return state.sources.stormwater.data.Parcel.BldgType;
-            }
+            },
           },
           {
             label: 'Gross Area',
@@ -49,8 +49,8 @@ export default {
               return state.sources.stormwater.data.Parcel.GrossArea + ' sq ft';
             },
             transforms: [
-              'thousandsPlace'
-            ]
+              'thousandsPlace',
+            ],
           },
           {
             label: 'Impervious Area',
@@ -58,8 +58,8 @@ export default {
               return state.sources.stormwater.data.Parcel.ImpervArea + ' sq ft';
             },
             transforms: [
-              'thousandsPlace'
-            ]
+              'thousandsPlace',
+            ],
           },
           {
             label: 'CAP Eligible',
@@ -67,10 +67,10 @@ export default {
               return state.sources.stormwaterCap.data.CAP.Eligible;
             },
             transforms: [
-              'booleanToYesNo'
-            ]
+              'booleanToYesNo',
+            ],
           },
-        ]
+        ],
       },
     },
     {
@@ -87,38 +87,38 @@ export default {
             label: 'Account #',
             value: function(state, item) {
               return item.AccountNumber;
-            }
+            },
           },
           {
             label: 'Customer',
             value: function(state, item) {
               return item.CustomerName;
-            }
+            },
           },
           {
             label: 'Status',
             value: function(state, item) {
               return item.AcctStatus;
-            }
+            },
           },
           {
             label: 'Service Type',
             value: function(state, item) {
               return item.ServiceTypeLabel;
-            }
+            },
           },
           {
             label: 'Size',
             value: function(state, item) {
               return item.MeterSize;
-            }
+            },
           },
           {
             label: 'Stormwater',
             value: function(state, item) {
               return item.StormwaterStatus;
-            }
-          }
+            },
+          },
         ],
         externalLink: {
           forceShow: true,
@@ -129,21 +129,21 @@ export default {
           href: function(state) {
             var id = state.sources.stormwater.data.Parcel.ParcelID;
             return 'https://stormwater.phila.gov/parcelviewer/parcel/' + id;
-          }
-        }
+          },
+        },
       },
       slots: {
         title: 'Accounts',
         items: function(state) {
-          var data = state.sources['stormwater'].data
+          var data = state.sources['stormwater'].data;
           var rows = data.Accounts.map(function(row){
             var itemRow = row;
             // var itemRow = Object.assign({}, row);
             return itemRow;
           });
           return rows;
-        }
-      }
-    }
-  ]
-}
+        },
+      },
+    },
+  ],
+};

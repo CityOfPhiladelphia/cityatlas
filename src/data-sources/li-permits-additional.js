@@ -5,13 +5,13 @@ export default {
   options: {
     params: {
       where: function(feature) {
-        return "ADDRESS = '" + feature.properties.street_address + "' OR ADDRESSKEY = '" + feature.properties.li_address_key + "'"
+        return "ADDRESS = '" + feature.properties.street_address + "' OR ADDRESSKEY = '" + feature.properties.li_address_key + "'";
       },
       outFields: '*',
-      f: 'json'
+      f: 'json',
     },
     success: function(data) {
       return data.features;
     },
   },
-}
+};

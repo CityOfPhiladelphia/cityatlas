@@ -7,7 +7,7 @@ export default {
     'liInspections',
     'liViolations',
     'liBusinessLicenses',
-    'zoningDocs'
+    'zoningDocs',
   ],
   components: [
     {
@@ -17,8 +17,8 @@ export default {
           Licenses, inspections, permits, property maintenance \
           violations, and zoning permit documents at your search address. \
           Source: Department of Licenses & Inspections\
-        '
-      }
+        ',
+      },
     },
     {
       type: 'horizontal-table',
@@ -30,30 +30,30 @@ export default {
           {
             label: 'Date',
             value: function(state, item){
-              return item.permitissuedate
+              return item.permitissuedate;
             },
             nullValue: 'no date available',
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.permitnumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.permitnumber+" <i class='fa fa-external-link-alt'></i></a>"
-            }
+              return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.permitnumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.permitnumber+" <i class='fa fa-external-link-alt'></i></a>";
+            },
           },
           {
             label: 'Description',
             value: function(state, item){
-              return item.permitdescription
-            }
+              return item.permitdescription;
+            },
           },
           {
             label: 'Status',
             value: function(state, item){
-              return item.status
-            }
+              return item.status;
+            },
           },
         ],
         sort: {
@@ -62,7 +62,7 @@ export default {
             return item.permitissuedate;
           },
           // asc or desc
-          order: 'desc'
+          order: 'desc',
         },
         externalLink: {
           action: function(count) {
@@ -73,8 +73,8 @@ export default {
             var address = state.geocode.data.properties.street_address;
             var addressEncoded = encodeURIComponent(address);
             return '//li.phila.gov/#summary?address=' + addressEncoded;
-          }
-        }
+          },
+        },
       },
       slots: {
         title: 'Permits',
@@ -98,18 +98,18 @@ export default {
           {
             label: 'Date',
             value: function(state, item){
-              return item.scan_date
+              return item.scan_date;
             },
             nullValue: 'no date available',
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
           {
             label: 'Permit Number',
             value: function(state, item){
-              return item.permit_number
-            }
+              return item.permit_number;
+            },
           },
           // {
           //   label: 'Type',
@@ -120,8 +120,8 @@ export default {
           {
             label: '# Pages',
             value: function(state, item){
-              return item.num_pages
-            }
+              return item.num_pages;
+            },
           },
           {
             label: 'ID',
@@ -138,9 +138,9 @@ export default {
                       + '.pdf">'
                       + item.doc_id
                       + ' <i class="fa fa-external-link-alt"></i></a>'
-                      + '</a>'
+                      + '</a>';
               // return item.appid + '-' + item.docid
-            }
+            },
           },
           // {
           //   label: 'Link',
@@ -156,7 +156,7 @@ export default {
             return item.scan_date;
           },
           // asc or desc
-          order: 'desc'
+          order: 'desc',
         },
       },
       slots: {
@@ -188,31 +188,31 @@ export default {
           {
             label: 'Date',
             value: function(state, item){
-              return item.inspectioncompleted
+              return item.inspectioncompleted;
             },
             nullValue: 'no date available',
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>"
+              return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
               // return item.casenumber
-            }
+            },
           },
           {
             label: 'Description',
             value: function(state, item){
-              return item.inspectiondescription
-            }
+              return item.inspectiondescription;
+            },
           },
           {
             label: 'Status',
             value: function(state, item){
-              return item.inspectionstatus
-            }
+              return item.inspectionstatus;
+            },
           },
         ],
         sort: {
@@ -221,7 +221,7 @@ export default {
             return item.inspectioncompleted;
           },
           // asc or desc
-          order: 'desc'
+          order: 'desc',
         },
         externalLink: {
           action: function(count) {
@@ -233,8 +233,8 @@ export default {
             var address = state.geocode.data.properties.street_address;
             var addressEncoded = encodeURIComponent(address);
             return '//li.phila.gov/#summary?address=' + addressEncoded;
-          }
-        }
+          },
+        },
       },
       slots: {
         title: 'Inspections',
@@ -261,31 +261,31 @@ export default {
           {
             label: 'Date',
             value: function(state, item){
-              return item.caseaddeddate
+              return item.caseaddeddate;
             },
             nullValue: 'no date available',
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>"
+              return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
               // return item.casenumber
-            }
+            },
           },
           {
             label: 'Description',
             value: function(state, item){
-              return item.violationdescription
-            }
+              return item.violationdescription;
+            },
           },
           {
             label: 'Status',
             value: function(state, item){
-              return item.status
-            }
+              return item.status;
+            },
           },
         ],
         sort: {
@@ -294,7 +294,7 @@ export default {
             return item.caseaddeddate;
           },
           // asc or desc
-          order: 'desc'
+          order: 'desc',
         },
         externalLink: {
           action: function(count) {
@@ -305,8 +305,8 @@ export default {
             var address = state.geocode.data.properties.street_address;
             var addressEncoded = encodeURIComponent(address);
             return '//li.phila.gov/#summary?address=' + addressEncoded;
-          }
-        }
+          },
+        },
       },
       slots: {
         title: 'Violations',
@@ -333,36 +333,36 @@ export default {
           {
             label: 'Issue Date',
             value: function(state, item){
-              return item.initialissuedate
+              return item.initialissuedate;
             },
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
           {
             label: 'License Number',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=licenses&eid="+item.licensenum+"&key="+item.street_address+"&address="+item.street_address+"'>"+item.licensenum+" <i class='fa fa-external-link-alt'></i></a>"
-              return item.licensenum
-            }
+              return "<a target='_blank' href='//li.phila.gov/#details?entity=licenses&eid="+item.licensenum+"&key="+item.street_address+"&address="+item.street_address+"'>"+item.licensenum+" <i class='fa fa-external-link-alt'></i></a>";
+              // return item.licensenum;
+            },
           },
           {
             label: 'Name',
             value: function(state, item){
-              return item.business_name
-            }
+              return item.business_name;
+            },
           },
           {
             label: 'Type',
             value: function(state, item){
-              return item.licensetype
-            }
+              return item.licensetype;
+            },
           },
           {
             label: 'Status',
             value: function(state, item){
-              return item.licensestatus
-            }
+              return item.licensestatus;
+            },
           },
         ],
         sort: {
@@ -371,7 +371,7 @@ export default {
             return item.initialissuedate;
           },
           // asc or desc
-          order: 'desc'
+          order: 'desc',
         },
         externalLink: {
           action: function(count) {
@@ -382,8 +382,8 @@ export default {
             var address = state.geocode.data.properties.street_address;
             var addressEncoded = encodeURIComponent(address);
             return '//li.phila.gov/#summary?address=' + addressEncoded;
-          }
-        }
+          },
+        },
       },
       slots: {
         title: 'Business Licenses',
@@ -410,38 +410,38 @@ export default {
           {
             label: 'Date',
             value: function(state, item){
-              return item.attributes.PERMITISSUEDATE
+              return item.attributes.PERMITISSUEDATE;
             },
             nullValue: 'no date available',
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.attributes.PERMITNUMBER+"&key="+item.attributes.ADDRESSKEY+"&address="+item.attributes.ADDRESS+"'>"+item.attributes.PERMITNUMBER+" <i class='fa fa-external-link-alt'></i></a>"
-            }
+              return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.attributes.PERMITNUMBER+"&key="+item.attributes.ADDRESSKEY+"&address="+item.attributes.ADDRESS+"'>"+item.attributes.PERMITNUMBER+" <i class='fa fa-external-link-alt'></i></a>";
+            },
           },
           {
             label: 'Building Area',
             value: function(state, item){
-              return item.attributes.BLDGAREA
+              return item.attributes.BLDGAREA;
             },
             nullValue: 'no area available',
             transforms: [
-              'thousandsPlace'
-            ]
+              'thousandsPlace',
+            ],
           },
           {
             label: 'Declared Value',
             value: function(state, item){
-              return item.attributes.DECLAREDVALUE
+              return item.attributes.DECLAREDVALUE;
             },
             nullValue: 'no value available',
             transforms: [
-              'currency'
-            ]
+              'currency',
+            ],
           },
         ],
         sort: {
@@ -450,7 +450,7 @@ export default {
             return item.attributes.PERMITISSUEDATE;
           },
           // asc or desc
-          order: 'desc'
+          order: 'desc',
         },
       },
       slots: {
@@ -470,7 +470,7 @@ export default {
           return rows;
         },
       },
-    }
+    },
 
   ],
   basemap: 'pwd',
@@ -478,5 +478,5 @@ export default {
     //'zoning'
   ],
   identifyFeature: 'address-marker',
-  parcels: 'pwd'
-}
+  parcels: 'pwd',
+};

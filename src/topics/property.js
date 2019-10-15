@@ -8,15 +8,15 @@ export default {
   icon: 'home',
   label: 'Property Assessments',
   // REVIEW can these be calculated from vue deps?
-  dataSources: ['assessmentHist', 'opa', 'zoningBase', 'zoningAppeals', 'zoningOverlay', 'rco'],
+  dataSources: [ 'assessmentHist', 'opa', 'zoningBase', 'zoningAppeals', 'zoningOverlay', 'rco' ],
   components: [
     {
       type: 'callout',
       slots: {
         text: '\
           Property assessment and sale information for this address. Source: Office of Property Assessments (OPA). OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City records may still use that name.\
-        '
-      }
+        ',
+      },
     },
     {
       type: 'vertical-table',
@@ -28,30 +28,30 @@ export default {
               var owners = state.geocode.data.properties.opa_owners;
               var ownersJoined = owners.join(', ');
               return titleCase(ownersJoined);
-            }
+            },
           },
           {
             label: 'OPA Address',
             value: function(state) {
               return titleCase(state.geocode.data.properties.opa_address) +
                      '<br>Philadelphia, PA ' + state.geocode.data.properties.zip_code;
-            }
+            },
           },
           {
             label: 'Mailing Address',
             value: function(state) {
-              let opa = state.sources.opa.data
+              let opa = state.sources.opa.data;
               const mailing = [];
               opa.mailing_care_of != null && opa.mailing_care_of.length > 0 ? mailing.push(titleCase(opa.mailing_care_of) +'<br>'):null;
               opa.mailing_address_1 != null && opa.mailing_address_1.length > 0 ? mailing.push(titleCase(opa.mailing_address_1) +'<br>'):null;
               opa.mailing_address_2 != null && opa.mailing_address_2.length > 0 ? mailing.push(titleCase(opa.mailing_address_2) +'<br>'):null;
               console.log(mailing);
               return opa.mailing_street != null && opa.mailing_street.length > 0 ?
-                     mailing.join('') + titleCase(opa.mailing_street) +
+                mailing.join('') + titleCase(opa.mailing_street) +
                      '<br>'+ titleCase(opa.mailing_city_state).replace(/\w$/, c => c.toUpperCase()) +
                      '<br>'+ opa.mailing_zip : titleCase(opa.location) +
-                     '<br> Philadelphia, PA '+ [opa.zip_code.slice(0, 5), "-", opa.zip_code.slice(5)].join('');
-            }
+                     '<br> Philadelphia, PA '+ [ opa.zip_code.slice(0, 5), "-", opa.zip_code.slice(5) ].join('');
+            },
           },
         ],
       },
@@ -64,9 +64,9 @@ export default {
           },
           href: function() {
             return '//legacy.phila.gov/revenue/realestatetax/';
-          }
-        }
-      }
+          },
+        },
+      },
     },
     {
       type: 'vertical-table',
@@ -80,16 +80,16 @@ export default {
             label: 'OPA Account #',
             value: function(state) {
               return state.geocode.data.properties.opa_account_num;
-            }
+            },
           },
           {
             label: 'Homestead Exemption',
             value: function(state) {
               if (state.sources.opa.data.homestead_exemption > 0) {
-                return state.sources.opa.data.homestead_exemption
-              } else {
-                return "No"
-              }
+                return state.sources.opa.data.homestead_exemption;
+              } 
+              return "No";
+              
             },
           },
           {
@@ -101,15 +101,15 @@ export default {
           {
             label: 'Condition',
             value: function(state) {
-              const exterior = state.sources.opa.data.exterior_condition
+              const exterior = state.sources.opa.data.exterior_condition;
               const condition =  exterior  == 0 ? 'Not Applicable' :
-              exterior  == 2 ? 'Newer Construction / Rehabbed' :
-              exterior  == 3 ? 'Above Average' :
-              exterior  == 4 ? 'Average' :
-              exterior  == 5 ? 'Below Average' :
-              exterior  == 6 ? 'Vacant' :
-              exterior  == 7 ? 'Sealed / Structurally Compromised, Open to the Weather' :
-              'Not available';
+                exterior  == 2 ? 'Newer Construction / Rehabbed' :
+                  exterior  == 3 ? 'Above Average' :
+                    exterior  == 4 ? 'Average' :
+                      exterior  == 5 ? 'Below Average' :
+                        exterior  == 6 ? 'Vacant' :
+                          exterior  == 7 ? 'Sealed / Structurally Compromised, Open to the Weather' :
+                            'Not available';
               return condition;
             },
           },
@@ -128,7 +128,7 @@ export default {
               'integer',
               'prettyNumber',
               'squareFeet',
-            ]
+            ],
           },
           {
             label: 'Improvement Area',
@@ -139,7 +139,7 @@ export default {
               'integer',
               'prettyNumber',
               'squareFeet',
-            ]
+            ],
           },
         ],
       },
@@ -156,8 +156,8 @@ export default {
               return state.sources.opa.data.sale_price;
             },
             transforms: [
-              'currency'
-            ]
+              'currency',
+            ],
           },
           {
             label: 'Sales Date',
@@ -165,8 +165,8 @@ export default {
               return state.sources.opa.data.sale_date;
             },
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
         ],
       },
@@ -179,43 +179,43 @@ export default {
           {
             label: 'Year',
             value: function(state, item){
-              return item.year
-            }
+              return item.year;
+            },
           },
           {
             label: 'Market Value',
             value: function(state, item){
-              return item.market_value || "$0"
+              return item.market_value || "$0";
             },
-            transforms: ['currency'],
+            transforms: [ 'currency' ],
           },
           {
             label: 'Taxable Land',
             value: function(state, item){
-              return item.taxable_land || "$0"
+              return item.taxable_land || "$0";
             },
-            transforms: ['currency'],
+            transforms: [ 'currency' ],
           },
           {
             label: 'Taxable Improvement',
             value: function(state, item){
-              return item.taxable_building || "$0"
+              return item.taxable_building || "$0";
             },
-            transforms: ['currency'],
+            transforms: [ 'currency' ],
           },
           {
             label: 'Exempt Land',
             value: function(state, item){
-              return item.exempt_land || "$0"
+              return item.exempt_land || "$0";
             },
-            transforms: ['currency'],
+            transforms: [ 'currency' ],
           },
           {
             label: 'Exempt Improvement',
             value: function(state, item){
-              return item.exempt_building || "$0"
+              return item.exempt_building || "$0";
             },
-            transforms: ['currency']
+            transforms: [ 'currency' ],
           },
         ],
         sort: {
@@ -224,7 +224,7 @@ export default {
             return item.year;
           },
           // asc or desc
-          order: 'desc'
+          order: 'desc',
         },
       },
       slots: {
@@ -267,30 +267,30 @@ export default {
   parcels: 'pwd',
   errorMessage: function (state) {
     var data = state.sources.condoList.data;
-        // features = data.features;
+    // features = data.features;
 
     if (data) {
       var numCondos = data.total_size;
 
       if (numCondos > 0) {
         var shouldPluralize = numCondos > 1,
-            isOrAre = shouldPluralize ? 'are' : 'is',
-            unitOrUnits = shouldPluralize ? 'units' : 'unit',
-            message = [
-              '<h3>',
-              'There ',
-              isOrAre,
-              // ' <strong>',
-              ' ',
-              numCondos,
-              ' condominium ',
-              unitOrUnits,
-              // '</strong> at this address.</h3>',
-              ' at this address.</h3>',
-              // ' at this address. ',
-              '<p>You can use the Condominiums tab below to see information for an individual unit.</p>'
-              // 'Please select a unit from the Condominiums tab below.'
-            ].join('');
+          isOrAre = shouldPluralize ? 'are' : 'is',
+          unitOrUnits = shouldPluralize ? 'units' : 'unit',
+          message = [
+            '<h3>',
+            'There ',
+            isOrAre,
+            // ' <strong>',
+            ' ',
+            numCondos,
+            ' condominium ',
+            unitOrUnits,
+            // '</strong> at this address.</h3>',
+            ' at this address.</h3>',
+            // ' at this address. ',
+            '<p>You can use the Condominiums tab below to see information for an individual unit.</p>',
+            // 'Please select a unit from the Condominiums tab below.'
+          ].join('');
 
         return message;
       }
@@ -298,4 +298,4 @@ export default {
       return 'There is no property assessment record for this address.';
     }
   },
-}
+};
