@@ -8,7 +8,7 @@ export default {
   key: 'safety',
   icon: 'star',
   label: 'Public Safety',
-  dataSources: ['policePSA', 'policeDistr', 'fireStation', 'crimeIncidents'],
+  dataSources: [ 'policePSA', 'policeDistr', 'fireStation', 'crimeIncidents' ],
 
   components: [
     {
@@ -22,7 +22,7 @@ export default {
           {
             label: 'Police Jurisdiction',
             value: function(state) {
-              let mail = 'police.co_'+state.geocode.data.properties.police_district+'@phila.gov'
+              let mail = 'police.co_'+state.geocode.data.properties.police_district+'@phila.gov';
               return ('<a href="//www.phillypolice.com/districts/'+ nth(state.geocode.data.properties.police_district)
                       + '/index.html" target="_blank"><b>'
                       + nth(state.geocode.data.properties.police_district)
@@ -34,8 +34,8 @@ export default {
                       + '<br> <a href="mailto:'+mail+'">'+mail+'</a>');
             },
           },
-        ]
-      }
+        ],
+      },
     }, // end police table
     {
       type: 'horizontal-table',
@@ -48,7 +48,7 @@ export default {
             return item._distance;
           },
           // asc or desc
-          order: 'asc'
+          order: 'asc',
         },
         fields: [
           {
@@ -58,15 +58,15 @@ export default {
                 if(item.properties.LAD > 0) {
                   return 'Engine '+ item.properties.ENG
                          +' / Ladder '+ item.properties.LAD;
-                } else {
-                  return 'Engine '+ item.properties.ENG
-                }
-              } else {
-                if (item.properties.LAD > 0) {
-                  return 'Ladder '+ item.properties.LAD;
-                }
+                } 
+                return 'Engine '+ item.properties.ENG;
+                
+              } 
+              if (item.properties.LAD > 0) {
+                return 'Ladder '+ item.properties.LAD;
               }
-            }
+              
+            },
           },
           {
             label: 'Location',
@@ -78,13 +78,13 @@ export default {
                 return str.join(' ');
               }
               return titleCase(item.properties.LOCATION);
-            }
+            },
           },
           {
             label: 'Distance',
             value: function(state, item) {
               return (item._distance/5280).toFixed(1) + ' miles';
-            }
+            },
           },
         ],
         externalLink: {
@@ -95,8 +95,8 @@ export default {
           name: '',
           href: function(state) {
             return '//www.phila.gov/services/safety-emergency-preparedness/fire-safety/find-a-fire-station/';
-          }
-        }
+          },
+        },
       },
       slots: {
         title: 'Nearby Fire Stations',
@@ -161,14 +161,14 @@ export default {
                 unit: 'days',
                 direction: 'subtract',
               },
-            ]
-          }
+            ],
+          },
         ],
         filterByText: {
           label: 'Filter by',
           fields: [
             'text_general_code',
-          ]
+          ],
         },
         mapOverlay: {
           marker: 'circle',
@@ -178,7 +178,7 @@ export default {
             color: '#6674df',
             weight: 1,
             opacity: 1,
-            fillOpacity: 1.0
+            fillOpacity: 1.0,
           },
           hoverStyle: {
             radius: 6,
@@ -186,8 +186,8 @@ export default {
             color: '#6674df',
             weight: 1,
             opacity: 1,
-            fillOpacity: 1.0
-          }
+            fillOpacity: 1.0,
+          },
         },
         fields: [
           {
@@ -197,28 +197,28 @@ export default {
             },
             nullValue: 'no date available',
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
           {
             label: 'Location',
             value: function(state, item) {
               return item.location_block;
-            }
+            },
           },
           {
             label: 'Description',
             value: function(state, item) {
               return item.text_general_code;
-            }
+            },
           },
           {
             label: 'Distance',
             value: function(state, item) {
               return parseInt(item.distance) + ' ft';
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       slots: {
         title: 'Crime Incidents',
@@ -232,7 +232,7 @@ export default {
           });
           return rows;
         },
-      } // end of slots
+      }, // end of slots
     }, // end of horizontal-table
   ], // end comps
   basemap: 'pwd',
@@ -240,5 +240,5 @@ export default {
     //'zoning'
   ],
   identifyFeature: 'address-marker',
-  parcels: 'pwd'
-}
+  parcels: 'pwd',
+};

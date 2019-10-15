@@ -4,7 +4,9 @@ export default {
   url: 'https://phl.carto.com/api/v2/sql',
   options: {
     params: {
-      q: function(feature){ return "select * from assessments where parcel_number = '" + feature.properties.opa_account_num +"'"},
-    }
-  }
-}
+      q: function(feature){
+        return "select * from assessments where parcel_number = '" + feature.properties.opa_account_num +"'";
+      },
+    },
+  },
+};

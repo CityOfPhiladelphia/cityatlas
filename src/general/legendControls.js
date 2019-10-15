@@ -1,8 +1,8 @@
 export default {
   stormwater: {
     options: {
-      topics: ['stormwater'],
-      showWithBaseMapOnly: false
+      topics: [ 'stormwater' ],
+      showWithBaseMapOnly: false,
     },
     data: {
       'Roof': {
@@ -10,13 +10,13 @@ export default {
       },
       'Other Impervious Surface': {
         'background-color': '#F2DCFF',
-      }
-    }
+      },
+    },
   },
   deeds: {
     options: {
-      topics: ['deeds', 'zoning'],
-      showWithBaseMapOnly: true
+      topics: [ 'deeds', 'zoning' ],
+      showWithBaseMapOnly: true,
     },
     data: {
       'Easements': {
@@ -42,7 +42,7 @@ export default {
         'width': '12px',
         'height': '12px',
         'font-size': '10px',
-      }
-    }
+      },
+    },
   },
-}
+};

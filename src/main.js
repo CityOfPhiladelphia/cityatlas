@@ -17,7 +17,7 @@ if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
 }
 
 // Font Awesome Icons
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { faDotCircle } from '@fortawesome/free-regular-svg-icons/faDotCircle';
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
@@ -103,27 +103,27 @@ mapboard({
   // defaultAddress: '1234 MARKET ST',
   panels: [
     'topics',
-    'map'
+    'map',
   ],
   router: {
-    enabled: true
+    enabled: true,
   },
   defaultAddressTextPlaceholder: {
     // text: "Search Address or 9-digit OPA Property Number",
     wideStyle: {
       'max-width': '100%',
       'font-size': '24px',
-      'line-height': '28px'
+      'line-height': '28px',
     },
     narrowStyle: {
       'max-width': '100%',
       'font-size': '20px',
-      'line-height': '24px'
-    }
+      'line-height': '24px',
+    },
   },
   geolocation: {
     enabled: false,
-    icon: ['far', 'dot-circle']
+    icon: [ 'far', 'dot-circle' ],
   },
   addressInput: {
     width: 415,
@@ -206,8 +206,8 @@ mapboard({
     {
       type: 'topic-set',
       options: {
-        defaultTopic: 'property'
-      }
+        defaultTopic: 'property',
+      },
     },
   ],
 });

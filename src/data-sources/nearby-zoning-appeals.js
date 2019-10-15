@@ -9,5 +9,5 @@ export default {
     dateField: 'decisiondate',
     params: {},
     distances: 250,
-  }
-}
+  },
+};

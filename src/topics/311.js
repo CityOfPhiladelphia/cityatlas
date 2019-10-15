@@ -2,7 +2,7 @@ export default {
   key: '311',
   icon: 'phone',
   label: '311',
-  dataSources: ['threeOneOne'],
+  dataSources: [ 'threeOneOne' ],
   basemap: 'pwd',
   identifyFeature: 'address-marker',
   parcels: 'pwd',
@@ -14,8 +14,8 @@ export default {
           search address. This includes sensitive information, such as \
           request descriptions and records marked private by the customer,\
           that cannot be shared with the public.\
-        '
-      }
+        ',
+      },
     },
     {
       type: 'horizontal-table',
@@ -35,15 +35,6 @@ export default {
               val = item.properties.REQUESTED_DATETIME;
             } else if (sortField === 'distance') {
               val = item._distance;
-            }
-            return val;
-          },
-          order: function(sortField) {
-            var val;
-            if (sortField === 'date') {
-              val = 'desc';
-            } else {
-              val = 'asc';
             }
             return val;
           },
@@ -82,17 +73,17 @@ export default {
                 value: '1',
                 unit: 'years',
                 direction: 'subtract',
-              }
-            ]
-          }
+              },
+            ],
+          },
         ],
         filterByText: {
           label: 'Filter by',
           fields: [
             'DESCRIPTION',
             'SUBJECT',
-            'ADDRESS'
-          ]
+            'ADDRESS',
+          ],
         },
         mapOverlay: {
           marker: 'circle',
@@ -102,7 +93,7 @@ export default {
             color: '#ff0000',
             weight: 1,
             opacity: 1,
-            fillOpacity: 1.0
+            fillOpacity: 1.0,
           },
           hoverStyle: {
             radius: 6,
@@ -110,8 +101,8 @@ export default {
             color: '#ff0000',
             weight: 1,
             opacity: 1,
-            fillOpacity: 1.0
-          }
+            fillOpacity: 1.0,
+          },
         },
         fields: [
           {
@@ -121,39 +112,39 @@ export default {
             },
             nullValue: 'no date available',
             transforms: [
-              'date'
-            ]
+              'date',
+            ],
           },
           {
             label: 'Address',
             value: function(state, item) {
               return item.properties.ADDRESS;
-            }
+            },
           },
           {
             label: 'Subject',
             value: function(state, item) {
               if (item.properties.MEDIA_URL) {
                 return '<a target="_blank" href='+item.properties.MEDIA_URL+'>'+item.properties.SUBJECT+'</a>';
-              } else {
-                return item.properties.SUBJECT;
               }
-            }
+              return item.properties.SUBJECT;
+
+            },
           },
           {
             label: 'Description (not shared with the public)',
             value: function(state, item) {
               return item.properties.DESCRIPTION;
-            }
+            },
           },
           {
             label: 'Distance',
             value: function(state, item) {
               // return `${item._distance} ft`;
               return item._distance + ' ft';
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       slots: {
         title: 'Nearby Service Requests',
@@ -168,7 +159,7 @@ export default {
           });
           return rows;
         },
-      }
-    }
-  ]
-}
+      },
+    },
+  ],
+};

@@ -18,7 +18,7 @@ export default {
           only and should not be used in place of the recorded deeds or \
           land surveys. Source: Department of Records\
         ',
-      }
+      },
     },
     {
       type: 'collection-summary',
@@ -30,30 +30,34 @@ export default {
           return item.properties.STATUS;
         },
         context: {
-          singular: function(list){ return 'There is ' + list + ' at this address.'},
-          plural: function(list){ return 'There are ' + list + ' at this address.'}
+          singular: function(list){
+            return 'There is ' + list + ' at this address.';
+          },
+          plural: function(list){
+            return 'There are ' + list + ' at this address.';
+          },
         },
         types: [
           {
             value: 1,
-            label: 'active parcel'
+            label: 'active parcel',
           },
           {
             value: 2,
-            label: 'inactive parcel'
+            label: 'inactive parcel',
           },
           {
             value: 3,
-            label: 'remainder parcel'
-          }
-        ]
+            label: 'remainder parcel',
+          },
+        ],
       },
       slots: {
         items: function(state) {
           // return state.dorParcels.data;
           return state.parcels.dor.data;
-        }
-      }
+        },
+      },
     },
     {
       type: 'tab-group',
@@ -115,17 +119,17 @@ export default {
                     var status = item.properties.STATUS;
                     var desc;
                     switch(status) {
-                      case 1:
-                        desc = 'Active';
-                        break;
-                      case 2:
-                        desc = 'Inactive';
-                        break;
-                      case 3:
-                        desc = 'Remainder';
-                        break;
-                      default:
-                        break;
+                    case 1:
+                      desc = 'Active';
+                      break;
+                    case 2:
+                      desc = 'Inactive';
+                      break;
+                    case 3:
+                      desc = 'Remainder';
+                      break;
+                    default:
+                      break;
                     }
                     return desc;
                   },
@@ -136,8 +140,8 @@ export default {
                     return item.properties.ORIG_DATE;
                   },
                   transforms: [
-                    'date'
-                  ]
+                    'date',
+                  ],
                 },
                 {
                   label: 'Inactive Date',
@@ -145,8 +149,8 @@ export default {
                     return item.properties.INACTDATE;
                   },
                   transforms: [
-                    'date'
-                  ]
+                    'date',
+                  ],
                 },
                 {
                   label: 'Has Air Rights',
@@ -160,9 +164,9 @@ export default {
                   value: function(state, item) {
                     if (!item.properties.CONDOFLAG) {
                       return 'No';
-                    } else {
-                      return 'Yes';
-                    }
+                    } 
+                    return 'Yes';
+                    
                     // return item.properties.CONDOFLAG ? 'Yes' : 'No';
                   },
                   // fieldFunction: function(state, item) {
@@ -178,7 +182,7 @@ export default {
                     'integer',
                     'prettyNumber',
                     'feet',
-                  ]
+                  ],
                 },
                 {
                   label: 'Area',
@@ -189,10 +193,10 @@ export default {
                     'integer',
                     'prettyNumber',
                     'squareFeet',
-                  ]
+                  ],
                 },
-              ]
-            }  // end slots
+              ],
+            },  // end slots
           },  // end vertical table
           // {
           //   type: 'horizontal-table',
@@ -313,20 +317,20 @@ export default {
                   return item.condounit;
                 },
                 // asc or desc
-                order: 'asc'
-              }
+                order: 'asc',
+              },
             },
             slots: {
               title: 'Deeded Condominiums',
               items: function (state, item) {
                 var id = item.properties.OBJECTID,
-                    target = state.sources.dorCondoList.targets[id],
-                    data = target && target.data,
-                    rows = (data && data.rows) || [];
+                  target = state.sources.dorCondoList.targets[id],
+                  data = target && target.data,
+                  rows = (data && data.rows) || [];
 
-                return rows
+                return rows;
               },
-            } // end slots
+            }, // end slots
           }, // end condos table
 
           {
@@ -341,7 +345,7 @@ export default {
                Discrepancies are indicated for deed documents from May, 2018 \
                to present. Discrepancy details may be accessed by clicking on \
                the link in the ID field.\
-              '
+              ',
             },
           },
 
@@ -355,7 +359,7 @@ export default {
                 {
                   label: 'ID',
                   value: function (state, item) {
-                    return "<a target='_blank' href='http://pdx-app01.city.phila.local/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.DOCUMENT_ID+"'>"+item.attributes.DOCUMENT_ID+"<i class='fa fa-external-link-alt'></i></a>"
+                    return "<a target='_blank' href='http://pdx-app01.city.phila.local/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.DOCUMENT_ID+"'>"+item.attributes.DOCUMENT_ID+"<i class='fa fa-external-link-alt'></i></a>";
                     // return "<a target='_blank' href='http://pdx-app01.city.phila.local/recorder/eagleweb/viewDoc.jsp?node=DOCC"+item.attributes.R_NUM+"'>"+item.attributes.R_NUM+"<i class='fa fa-external-link-alt'></i></a>"
                   },
                 },
@@ -367,8 +371,8 @@ export default {
                   },
                   nullValue: 'no date available',
                   transforms: [
-                    'date'
-                  ]
+                    'date',
+                  ],
                 },
                 {
                   label: 'Type',
@@ -402,8 +406,8 @@ export default {
                   return item.attributes.DISPLAY_DATE;
                 },
                 // asc or desc
-                order: 'desc'
-              }
+                order: 'desc',
+              },
             },
             slots: {
               title: 'Documents',
@@ -412,11 +416,11 @@ export default {
                 var id = item.properties.OBJECTID;
                 if (state.sources.dorDocuments.targets[id]) {
                   return state.sources.dorDocuments.targets[id].data;
-                } else {
-                  return [];
-                }
+                } 
+                return [];
+                
               },
-            } // end slots
+            }, // end slots
 
             // slots: {
             //   title: 'Condominiums',
@@ -434,13 +438,13 @@ export default {
             // } // end slots
 
           }, // end docs table
-        ] // end parcel tab content comps
+        ], // end parcel tab content comps
       }, // end parcel tab options
       slots: {
         items: function(state) {
           // return state.dorParcels.data;
           return state.parcels.dor.data;
-        }
+        },
       },
     }, // end dor parcel tab group comp
     {
@@ -464,8 +468,8 @@ export default {
         title: 'Registry Maps',
         items: function(state) {
           return state.sources.regmaps.data;
-        }
-      }
+        },
+      },
     },
     // {
     //   type: 'callout',
@@ -481,4 +485,4 @@ export default {
   parcels: 'dor',
   // parcels: 'pwd'
   imageOverlayGroup: 'regmaps',
-}
+};

@@ -7,4 +7,4 @@ export default {
     distances: 800,
     calculateDistance: true,
   },
-}
+};

@@ -6,5 +6,5 @@ export default {
     table: 'sanitation_convenience_centers',
     params: {},
     distances: 30000,
-  }
-}
+  },
+};
