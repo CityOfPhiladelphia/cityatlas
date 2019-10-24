@@ -1,5 +1,5 @@
 import accounting from 'accounting';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 accounting.settings.currency.precision = 0;
 
@@ -31,8 +31,14 @@ export default {
     },
   },
   date: {
-    transform: function (value, globals) {
-      return format(value, 'MM/DD/YYYY');
+    transform: function (value) {
+      let transformedValue;
+      if (typeof value === 'string') {
+        transformedValue = format(parseISO(value), 'MM/dd/yyyy');
+      } else {
+        transformedValue = format(value, 'MM/dd/yyyy');
+      }
+      return transformedValue;
     },
   },
   dayofweek: {
