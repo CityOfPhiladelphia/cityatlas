@@ -84,7 +84,7 @@ import stormwaterTopic from './topics/stormwater';
 import nearby from './topics/nearby';
 import districts from './topics/districts';
 
-var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@6126861722cee9384694742363d1661e771493b9/config.js';
+var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@d664e218cbf7db07cc3ef2382640b54320aefb2b/config.js';
 
 // configure accounting.js
 accounting.settings.currency.precision = 0;
@@ -107,6 +107,7 @@ mapboard({
   ],
   router: {
     enabled: true,
+    type: 'custom',
   },
   defaultAddressTextPlaceholder: {
     // text: "Search Address or 9-digit OPA Property Number",
@@ -139,7 +140,7 @@ mapboard({
     left: 0,
     right: 0,
   },
-  gatekeeperKey: helpers.GATEKEEPER_KEY,
+  gatekeeperKey: process.env.VUE_APP_GATEKEEPER_KEY,
   map,
   baseConfig: BASE_CONFIG_URL,
   parcels,
@@ -147,6 +148,7 @@ mapboard({
   legendControls,
   cyclomedia: {
     enabled: true,
+    orientation: 'horizontal',
     measurementAllowed: true,
     popoutAble: true,
     recordingsUrl: 'https://atlas.cyclomedia.com/Recordings/wfs',
@@ -156,6 +158,7 @@ mapboard({
   },
   pictometry: {
     enabled: true,
+    orientation: 'horizontal',
     iframeId: 'pictometry-ipa',
     apiKey: pictApiKey,
     secretKey: pictSecretKey,

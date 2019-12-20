@@ -61,7 +61,7 @@ export default {
       var coordsAreDefined = [ xMin, xMax, yMin, yMax ].every(
         function (coord) {
           return coord; 
-        }
+        },
       );
 
       // if they aren't

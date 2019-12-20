@@ -1,6 +1,7 @@
 export default {
   pwd: {
     multipleAllowed: false,
+    mapregStuff: false,
     geocodeFailAttemptParcel: null,
     clearStateOnError: false,
     wipeOutOtherParcelsOnReverseGeocodeOnly: true,
@@ -10,6 +11,7 @@ export default {
   },
   dor: {
     multipleAllowed: true,
+    mapregStuff: true,
     geocodeFailAttemptParcel: 'pwd',
     clearStateOnError: true,
     wipeOutOtherParcelsOnReverseGeocodeOnly: false,
