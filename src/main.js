@@ -30,7 +30,8 @@ import { faBuilding } from '@fortawesome/free-solid-svg-icons/faBuilding';
 import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
 import { faTint } from '@fortawesome/free-solid-svg-icons/faTint';
 import { faClone } from '@fortawesome/free-solid-svg-icons/faClone';
-library.add(faDotCircle, faHome, faBook, faWrench, faUniversity, faGavel, faMapMarkerAlt, faLandmark, faBuilding, faPhone, faTint, faClone);
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons/faExclamationTriangle';
+library.add(faDotCircle, faHome, faBook, faWrench, faUniversity, faGavel, faMapMarkerAlt, faLandmark, faBuilding, faPhone, faTint, faClone, faExclamationTriangle);
 
 import accounting from 'accounting';
 import mapboard from '@phila/mapboard/src/main.js';
@@ -84,6 +85,12 @@ import stormwaterTopic from './topics/stormwater';
 import nearby from './topics/nearby';
 import districts from './topics/districts';
 
+import exclamationCallout from './components/ExclamationCallout';
+
+const customComps = {
+  'exclamationCallout': exclamationCallout,
+};
+
 var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@d664e218cbf7db07cc3ef2382640b54320aefb2b/config.js';
 
 // configure accounting.js
@@ -101,6 +108,7 @@ if (host === 'cityatlas-dev.phila.gov') {
 
 mapboard({
   // defaultAddress: '1234 MARKET ST',
+  customComps,
   panels: [
     'topics',
     'map',
