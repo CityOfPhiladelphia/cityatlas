@@ -72,6 +72,7 @@ import vacantLand from './data-sources/vacant-land';
 import zoningAppeals from './data-sources/zoning-appeals';
 import zoningBase from './data-sources/zoning-base';
 import zoningDocs from './data-sources/zoning-docs';
+import zoningDocsEclipse from './data-sources/zoning-docs-eclipse';
 import zoningOverlay from './data-sources/zoning-overlay';
 
 // Topics
@@ -200,6 +201,7 @@ mapboard({
     zoningAppeals,
     zoningBase,
     zoningDocs,
+    zoningDocsEclipse,
     zoningOverlay,
   },
   topics: [
