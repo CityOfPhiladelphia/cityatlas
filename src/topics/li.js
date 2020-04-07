@@ -49,7 +49,7 @@ export default {
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.permitnumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.permitnumber+" <i class='fa fa-external-link-alt'></i></a>";
+              return "<a target='_blank' href='http://li.phila.gov/#details?entity=permits&eid="+item.permitnumber+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.permitnumber+" <i class='fa fa-external-link-alt'></i></a>";
             },
           },
           {
@@ -239,7 +239,7 @@ export default {
           {
             label: 'Date',
             value: function(state, item){
-              return item.inspectioncompleted;
+              return item.investigationcompleted;
             },
             nullValue: 'no date available',
             transforms: [
@@ -249,27 +249,27 @@ export default {
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
-              // return item.casenumber
+              return "<a target='_blank' href='http://li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
             },
           },
           {
             label: 'Description',
             value: function(state, item){
-              return item.inspectiondescription;
+              // return item.inspectiondescription;
+              return item.investigationtype;
             },
           },
           {
             label: 'Status',
             value: function(state, item){
-              return item.inspectionstatus;
+              return item.investigationstatus;
             },
           },
         ],
         sort: {
           // this should return the val to sort on
           getValue: function(item) {
-            return item.inspectioncompleted;
+            return item.investigationcompleted;
           },
           // asc or desc
           order: 'desc',
@@ -322,20 +322,19 @@ export default {
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
-              // return item.casenumber
+              return "<a target='_blank' href='http://li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
             },
           },
           {
             label: 'Description',
             value: function(state, item){
-              return item.violationdescription;
+              return item.violationcodetitle;
             },
           },
           {
             label: 'Status',
             value: function(state, item){
-              return item.status;
+              return item.violationstatus;
             },
           },
         ],
