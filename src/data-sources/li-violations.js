@@ -5,7 +5,16 @@ export default {
   options: {
     params: {
       q: function(feature){
-        return "select * from li_violations where address = '" + feature.properties.street_address + "' or addresskey = '" + feature.properties.li_address_key.toString() + "'";
+        var eclipseLocId = feature.properties.eclipse_location_id.split('|');
+        var str = "'" + feature.properties.li_address_key + "', '";
+        var i;
+        for (i = 0; i < eclipseLocId.length; i++) {
+          str += eclipseLocId[i];
+          str += "', '";
+        }
+        str = str.slice(0, str.length - 3);
+
+        return "select * from violations where address = '" + feature.properties.street_address + "' or addressobjectid in (" + str + ")";
       },
     },
   },
