@@ -327,7 +327,7 @@ export default {
           {
             label: 'Date',
             value: function(state, item){
-              return item.caseaddeddate;
+              return item.casecreateddate;
             },
             nullValue: 'no date available',
             transforms: [
@@ -356,7 +356,7 @@ export default {
         sort: {
           // this should return the val to sort on
           getValue: function(item) {
-            return item.caseaddeddate;
+            return item.casecreateddate;
           },
           // asc or desc
           order: 'desc',
