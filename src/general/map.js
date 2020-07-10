@@ -311,7 +311,7 @@ export default {
         maxzoom: 22,
       },
       source: {
-        tileSize: 2048,
+        // tileSize: 2048,
         tiles: [ '\
   https://stormwater.phila.gov/arcgis/rest/services/parcel_viewer/pv_data/MapServer/export?dpi=110\
   &transparent=true\
@@ -319,7 +319,7 @@ export default {
   &bbox={bbox-epsg-3857}\
   &bboxSR=3857\
   &imageSR=3857\
-  &size=2300,2300\
+  &size=512,512\
   &f=image\
       ' ],
       },
