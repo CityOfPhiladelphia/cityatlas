@@ -39,6 +39,7 @@ import mapboard from '@phila/mapboard/src/main.js';
 // General Config Modules
 import helpers from './util/helpers';
 import map from './general/map';
+import mbStyle from './general/mbStyle';
 import transforms from './general/transforms';
 import parcels from './general/parcels';
 import legendControls from './general/legendControls';
@@ -151,6 +152,7 @@ mapboard({
   },
   gatekeeperKey: process.env.VUE_APP_GATEKEEPER_KEY,
   map,
+  mbStyle,
   baseConfig: BASE_CONFIG_URL,
   parcels,
   imageOverlayGroups,
@@ -210,7 +212,7 @@ mapboard({
     deeds,
     li,
     zoning,
-    threeOneOneTopic,
+    // threeOneOneTopic,
     stormwaterTopic,
     nearby,
     districts,

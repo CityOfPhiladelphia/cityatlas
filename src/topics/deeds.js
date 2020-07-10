@@ -164,9 +164,9 @@ export default {
                   value: function(state, item) {
                     if (!item.properties.CONDOFLAG) {
                       return 'No';
-                    } 
+                    }
                     return 'Yes';
-                    
+
                     // return item.properties.CONDOFLAG ? 'Yes' : 'No';
                   },
                   // fieldFunction: function(state, item) {
@@ -416,9 +416,9 @@ export default {
                 var id = item.properties.OBJECTID;
                 if (state.sources.dorDocuments.targets[id]) {
                   return state.sources.dorDocuments.targets[id].data;
-                } 
+                }
                 return [];
-                
+
               },
             }, // end slots
 
@@ -478,7 +478,7 @@ export default {
     //   }
     // }
   ], // end deeds comps
-  basemap: 'dor',
+  // basemap: 'dor',
   identifyFeature: 'dor-parcel',
   // identifyFeature: 'address-marker',
   // we might not need this anymore, now that we have identifyFeature
