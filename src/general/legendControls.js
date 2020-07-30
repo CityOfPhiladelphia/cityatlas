@@ -3,13 +3,17 @@ export default {
     options: {
       topics: [ 'stormwater' ],
       showWithBaseMapOnly: false,
+      marginBottom: '0px',
+      marginRight: '40px',
     },
     data: {
       'Roof': {
         'background-color': '#FEFF7F',
+        'font-size': '12px',
       },
       'Other Impervious Surface': {
         'background-color': '#F2DCFF',
+        'font-size': '12px',
       },
     },
   },
@@ -17,6 +21,8 @@ export default {
     options: {
       topics: [ 'deeds', 'zoning' ],
       showWithBaseMapOnly: true,
+      marginBottom: '0px',
+      marginRight: '40px',
     },
     data: {
       'Easements': {

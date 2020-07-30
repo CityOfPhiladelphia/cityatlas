@@ -7,8 +7,8 @@ export default {
   dataSources: [
     'zoningOverlay',
     'zoningBase',
-    'zoningAppeals',
-    'rco',
+    // 'zoningAppeals',
+    // 'rco',
   ],
   components: [
     {
@@ -93,7 +93,7 @@ export default {
                       {
                         label: 'Code',
                         value: function (state, item) {
-                          return item;
+                          return item.code;
                         },
                         transforms: [
                           'nowrap',
@@ -103,7 +103,7 @@ export default {
                       {
                         label: 'Description',
                         value: function (state, item) {
-                          return helpers.ZONING_CODE_MAP[item];
+                          return helpers.ZONING_CODE_MAP[item.code];
                         },
                       },
                     ], // end fields
@@ -120,8 +120,13 @@ export default {
                       // get unique zoning codes
                       const longCodes = rows.map(row => row.long_code);
                       const longCodesUniqueSet = new Set(longCodes);
-                      const longCodesUnique = Array.from(longCodesUniqueSet);
-
+                      let longCodesUnique = [];
+                      // const longCodesUnique = Array.from(longCodesUniqueSet);
+                      for (let code of longCodesUniqueSet) {
+                        longCodesUnique.push(
+                          { 'code': code },
+                        );
+                      }
                       return longCodesUnique;
                     },
                   }, // end slots
