@@ -93,7 +93,7 @@ export default {
                       {
                         label: 'Code',
                         value: function (state, item) {
-                          return item;
+                          return item.code;
                         },
                         transforms: [
                           'nowrap',
@@ -103,7 +103,7 @@ export default {
                       {
                         label: 'Description',
                         value: function (state, item) {
-                          return helpers.ZONING_CODE_MAP[item];
+                          return helpers.ZONING_CODE_MAP[item.code];
                         },
                       },
                     ], // end fields

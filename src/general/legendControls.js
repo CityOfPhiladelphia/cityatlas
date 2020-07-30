@@ -3,7 +3,8 @@ export default {
     options: {
       topics: [ 'stormwater' ],
       showWithBaseMapOnly: false,
-      marginBottom: '40px',
+      marginBottom: '0px',
+      marginRight: '40px',
     },
     data: {
       'Roof': {
@@ -20,7 +21,8 @@ export default {
     options: {
       topics: [ 'deeds', 'zoning' ],
       showWithBaseMapOnly: true,
-      marginBottom: '40px',
+      marginBottom: '0px',
+      marginRight: '40px',
     },
     data: {
       'Easements': {

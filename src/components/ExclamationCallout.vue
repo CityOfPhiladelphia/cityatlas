@@ -6,18 +6,11 @@
         icon="exclamation-triangle"
         class="fa-3x inline-block-class"
       />
-      <!-- <div class="inline-block-class"> -->
-        <div class="topic-header-label-holder"
-          v-if="message"
-          v-html="message"
-        />
-        <!-- class="inline-block-class" -->
-      <!-- </div> -->
-      <!-- <topic-component-group
-        v-if="components"
-        :topic-components="components"
-      /> -->
-
+      <div
+        v-if="message"
+        class="topic-header-label-holder"
+        v-html="message"
+      />
     </div>
   </div>
 </template>

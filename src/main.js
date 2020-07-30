@@ -212,7 +212,7 @@ mapboard({
     deeds,
     li,
     zoning,
-    // threeOneOneTopic,
+    threeOneOneTopic,
     stormwaterTopic,
     nearby,
     districts,
