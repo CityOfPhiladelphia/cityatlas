@@ -39,7 +39,7 @@ import mapboard from '@phila/mapboard/src/main.js';
 // General Config Modules
 import helpers from './util/helpers';
 import map from './general/map';
-import mbStyle from './general/mbStyle';
+// import mbStyle from './general/mbStyle';
 import transforms from './general/transforms';
 import parcels from './general/parcels';
 import legendControls from './general/legendControls';
@@ -93,7 +93,7 @@ const customComps = {
   'exclamationCallout': exclamationCallout,
 };
 
-var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@d664e218cbf7db07cc3ef2382640b54320aefb2b/config.js';
+var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@1284f38b676f5588da6754b6f66e821a7a8b026f/config.js';
 
 // configure accounting.js
 accounting.settings.currency.precision = 0;
@@ -152,7 +152,7 @@ mapboard({
   },
   gatekeeperKey: process.env.VUE_APP_GATEKEEPER_KEY,
   map,
-  mbStyle,
+  // mbStyle,
   baseConfig: BASE_CONFIG_URL,
   parcels,
   imageOverlayGroups,
