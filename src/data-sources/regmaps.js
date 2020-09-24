@@ -1,3 +1,5 @@
+import bboxPolygon from '@turf/bbox-polygon';
+
 export default {
   id: 'regmaps',
   type: 'esri',
@@ -6,7 +8,7 @@ export default {
   deps: [ 'parcels.dor' ],
   options: {
     relationship: 'intersects',
-    targetGeometry: function (state, Leaflet) {
+    targetGeometry: function (state) {
       // get combined extent of dor parcels
       // var parcels = state.dorParcels.data;
       var parcels = state.parcels.dor.data;
@@ -23,8 +25,6 @@ export default {
         // loop over parts (whether it's simple or multipart)
         parts.forEach(function (coordPairs) {
           coordPairs.forEach(function (coordPair) {
-            // console.log('coordPair', coordPair);
-
             // if the polygon has a hole, it has another level of coord
             // pairs, presumably one for the outer coords and another for
             // inner. for simplicity, add them all.
@@ -60,7 +60,7 @@ export default {
       // make sure all coords are defined. no NaNs allowed.
       var coordsAreDefined = [ xMin, xMax, yMin, yMax ].every(
         function (coord) {
-          return coord; 
+          return coord;
         },
       );
 
@@ -72,15 +72,21 @@ export default {
       }
 
       // construct geometry
-      var bounds = Leaflet.latLngBounds([
-        [ yMin, xMin ],
-        [ yMax, xMax ],
-      ]);
+      var bbox = [ xMin, yMin, xMax, yMax ];
+      var bounds = bboxPolygon(bbox).geometry;
+
+      // var bounds = Leaflet.latLngBounds([
+      //   [ yMin, xMin ],
+      //   [ yMax, xMax ],
+      // ]);
 
       return bounds;
     },
   },
   success: function(data) {
-    return data;
+    // return data;
+  },
+  error: function(err) {
+    console.log('regmaps error:', err);
   },
 };
