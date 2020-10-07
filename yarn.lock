@@ -1018,21 +1018,21 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@phila/mapboard@4.2.4":
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/@phila/mapboard/-/mapboard-4.2.4.tgz#6eebb35dc9c73b97e1aa08525903367180e1af1f"
-  integrity sha512-uQuf7p7EhbcGHUs4jxjihJyRn3aURuj3aNGd5GrW5zHBqLFGGbrCovFul1mPiwLTQjF9N9UhzbVdAgD+WMmqqA==
+"@phila/mapboard@4.2.5":
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/@phila/mapboard/-/mapboard-4.2.5.tgz#70cf43822b7f670bebe3495bfbeb96788d01a14f"
+  integrity sha512-8uKG0o6o/jpw8q/tusMXFJZzY3NOemuAgGiXpPdQEYD3bpKa8pJ01ZjgasHU3zVSUW2GoPV3nvpQqhqBKxZF8A==
   dependencies:
-    "@phila/vue-comps" "2.1.14"
-    "@phila/vue-datafetch" "1.4.2"
-    "@phila/vue-mapping" "2.2.8"
+    "@phila/vue-comps" "2.1.15"
+    "@phila/vue-datafetch" "1.4.3"
+    "@phila/vue-mapping" "2.2.9"
     vue "^2.6.10"
     vuex "^3.1.2"
 
-"@phila/vue-comps@2.1.14":
-  version "2.1.14"
-  resolved "https://registry.yarnpkg.com/@phila/vue-comps/-/vue-comps-2.1.14.tgz#70622b16b0fae0de91b66ff4f1fec7112418e01b"
-  integrity sha512-hTMHJPnS/2dAT2wBRFh4zx+0/UO3gm3K7IRwUfISkU2IFSeFTVlk/0tXAwuHBa/gCV5e0i4Rkb4iLCv2VJCq0g==
+"@phila/vue-comps@2.1.15":
+  version "2.1.15"
+  resolved "https://registry.yarnpkg.com/@phila/vue-comps/-/vue-comps-2.1.15.tgz#9105adddaaf7099d7965860bb81e87f98a674dff"
+  integrity sha512-FmMdOTEkV4D0mF3JXSG5OJ3UXC1e8lfeCVn9uJn1/1ZyQpe5yrgdYTR2A1ZmNydcm4ptt0RFDFCSscFj6fijcw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
@@ -1048,10 +1048,10 @@
     vue "^2.6.11"
     vuex "^3.1.2"
 
-"@phila/vue-datafetch@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@phila/vue-datafetch/-/vue-datafetch-1.4.2.tgz#508a5ac9748b1a6339776232b9a9f7c837d05428"
-  integrity sha512-M6tlcEGLDNUUBw2oCPiL3XHpAmtBjhhHrbaO8o27+WAgrVVx0gkIUI7BEwVooJUCVA/cGHdTvfy9tFQyUFelJg==
+"@phila/vue-datafetch@1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@phila/vue-datafetch/-/vue-datafetch-1.4.3.tgz#8bfa2d8893534c0e070f907b6a2d120f0d0b10f8"
+  integrity sha512-Z6DpFb69fP6GsphernIm/Bz3EizOWhwC3MEbGvAOeMc8o71j3a/WuEGMElw+ASxz7GfyLn/zIGK5huqPoV0fqQ==
   dependencies:
     "@turf/turf" "^5.1.6"
     airtable "^0.8.1"
@@ -1064,10 +1064,10 @@
     vue "^2.6.11"
     vuex "^3.5.1"
 
-"@phila/vue-mapping@2.2.8":
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/@phila/vue-mapping/-/vue-mapping-2.2.8.tgz#0264c84b25eee242aacf565d7a1b39d2e22a7c1c"
-  integrity sha512-xhnUCo7qehp/xGPrm0R3Qyb34LYJ2Po8YCK2soHt0+8xSPEpYsaeocr1vSXLzLN27aBNzQu+FWc1RRGYNM0IlQ==
+"@phila/vue-mapping@2.2.9":
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/@phila/vue-mapping/-/vue-mapping-2.2.9.tgz#06cdf5b25537dd6c8c2a4b5bd333a3366a5d10ad"
+  integrity sha512-FFIWtOD/Q9TBhrI6+bM0ugKz6416WKWndZJMW9pJ4CRLLSDY7Yx22KhYgU0/0vg7uUfULrkcUd12mSbnWdfJfw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
