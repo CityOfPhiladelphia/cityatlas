@@ -90,7 +90,7 @@ const customComps = {
   'exclamationCallout': exclamationCallout,
 };
 
-var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@1284f38b676f5588da6754b6f66e821a7a8b026f/config.js';
+var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@36eae931932f27f59e861178d32846e71259690e/config.js';
 
 // configure accounting.js
 accounting.settings.currency.precision = 0;
