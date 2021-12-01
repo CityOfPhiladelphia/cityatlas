@@ -215,6 +215,7 @@ mapboard({
     nearby,
     districts,
   ],
+  defaultTopic: 'property',
   components: [
     {
       type: 'topic-set',
