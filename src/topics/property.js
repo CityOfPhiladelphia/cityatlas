@@ -5,7 +5,7 @@ const titleCase = transforms.titleCase.transform;
 
 export default {
   key: 'property',
-  icon: 'home',
+  icon: 'house',
   label: 'Property Assessments',
   // REVIEW can these be calculated from vue deps?
   dataSources: [ 'assessmentHist', 'opa', 'zoningBase', 'zoningAppeals', 'zoningOverlay', 'rco' ],
@@ -87,9 +87,9 @@ export default {
             value: function(state) {
               if (state.sources.opa.data.homestead_exemption > 0) {
                 return state.sources.opa.data.homestead_exemption;
-              } 
+              }
               return "No";
-              
+
             },
           },
           {

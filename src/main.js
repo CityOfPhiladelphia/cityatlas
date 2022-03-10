@@ -16,20 +16,20 @@ if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
 
 // Font Awesome Icons
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faDotCircle } from '@fortawesome/free-regular-svg-icons/faDotCircle';
-import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
+import { faCircleDot } from '@fortawesome/free-regular-svg-icons/faCircleDot';
+import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
-import { faUniversity } from '@fortawesome/free-solid-svg-icons/faUniversity';
+import { faBuildingColumns } from '@fortawesome/free-solid-svg-icons/faBuildingColumns';
 import { faGavel } from '@fortawesome/free-solid-svg-icons/faGavel';
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons/faMapMarkerAlt';
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons/faLocationDot';
 import { faLandmark } from '@fortawesome/free-solid-svg-icons/faLandmark';
 import { faBuilding } from '@fortawesome/free-solid-svg-icons/faBuilding';
 import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
-import { faTint } from '@fortawesome/free-solid-svg-icons/faTint';
+import { faDroplet } from '@fortawesome/free-solid-svg-icons/faDroplet';
 import { faClone } from '@fortawesome/free-solid-svg-icons/faClone';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons/faExclamationTriangle';
-library.add(faDotCircle, faHome, faBook, faWrench, faUniversity, faGavel, faMapMarkerAlt, faLandmark, faBuilding, faPhone, faTint, faClone, faExclamationTriangle);
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons/faTriangleExclamation';
+library.add(faCircleDot, faHouse, faBook, faWrench, faBuildingColumns, faGavel, faLocationDot, faLandmark, faBuilding, faPhone, faDroplet, faClone, faTriangleExclamation);
 
 import accounting from 'accounting';
 import mapboard from '@phila/mapboard/src/main.js';

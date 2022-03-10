@@ -1,6 +1,6 @@
 export default {
   key: 'nearby',
-  icon: 'map-marker-alt',
+  icon: 'location-dot',
   label: 'Nearby',
   dataSources: [ 'threeOneOneCarto', 'crimeIncidents', 'nearbyZoningAppeals' ],
   // dataSources: ['311Carto', 'crimeIncidents', 'nearbyZoningAppeals', 'vacantIndicatorsPoints'],
@@ -200,9 +200,9 @@ export default {
                   value: function(state, item) {
                     if (item.media_url) {
                       return '<a target="_blank" href='+item.media_url+'>'+item.service_name+'</a>';
-                    } 
+                    }
                     return item.service_name;
-                    
+
                   },
                 },
                 {
