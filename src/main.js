@@ -158,7 +158,7 @@ mapboard({
   legendControls,
   cyclomedia: {
     enabled: true,
-    orientation: 'horizontal',
+    // orientation: 'horizontal',
     measurementAllowed: true,
     popoutAble: true,
     recordingsUrl: 'https://atlas.cyclomedia.com/Recordings/wfs',
