@@ -2,7 +2,7 @@ import helpers from '../util/helpers';
 
 export default {
   key: 'zoning',
-  icon: 'university',
+  icon: 'building-columns',
   label: 'Zoning',
   dataSources: [
     'zoningOverlay',
@@ -162,7 +162,7 @@ export default {
                 {
                   label: 'Pending Bill',
                   value: function (state, item) {
-                    return `<a target="_blank" href="${item.pendingbillurl}">${item.pendingbill} <i class="fa fa-external-link-alt"></i></a>`;
+                    return `<a target="_blank" href="${item.pendingbillurl}">${item.pendingbill} <i class="fa fa-arrow-up-right-from-square"></i></a>`;
                   },
                 },
               ], // end fields
@@ -224,7 +224,7 @@ export default {
                 {
                   label: 'Code Section',
                   value: function (state, item) {
-                    return "<a target='_blank' href='"+item.code_section_link+"'>"+item.code_section+" <i class='fa fa-external-link-alt'></i></a>";
+                    return "<a target='_blank' href='"+item.code_section_link+"'>"+item.code_section+" <i class='fa fa-arrow-up-right-from-square'></i></a>";
                   },
                 },
               ],
@@ -270,8 +270,8 @@ export default {
             label: 'ID',
             value: function(state, item){
               //return item.appeal_key
-              // return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>"
-              return "<a target='_blank' href='http://li.phila.gov/#details?entity=appeals&eid="+item.internaljobid+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.appealnumber+"<i class='fa fa-external-link-alt'></i></a>";
+              // return "<a target='_blank' href='//li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addresskey+"&address="+item.address+"'>"+item.casenumber+" <i class='fa fa-arrow-up-right-from-square'></i></a>"
+              return "<a target='_blank' href='http://li.phila.gov/#details?entity=appeals&eid="+item.internaljobid+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.appealnumber+"<i class='fa fa-arrow-up-right-from-square'></i></a>";
             },
           },
           {

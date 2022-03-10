@@ -49,7 +49,7 @@ export default {
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='http://li.phila.gov/#details?entity=permits&eid="+item.permitnumber+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.permitnumber+" <i class='fa fa-external-link-alt'></i></a>";
+              return "<a target='_blank' href='http://li.phila.gov/#details?entity=permits&eid="+item.permitnumber+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.permitnumber+" <i class='fa fa-arrow-up-right-from-square'></i></a>";
             },
           },
           {
@@ -174,7 +174,7 @@ export default {
                       + '.pdf">'
                       + docId
                       // + item.doc_id
-                      + ' <i class="fa fa-external-link-alt"></i></a>'
+                      + ' <i class="fa fa-arrow-up-right-from-square"></i></a>'
                       + '</a>';
               // return item.appid + '-' + item.docid
             },
@@ -264,7 +264,7 @@ export default {
               }
               str = str.slice(0, str.length - 1);
               // console.log('str:', str);
-              return "<a target='_blank' href='http://li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+str+"&address="+encodeURIComponent(item.address)+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
+              return "<a target='_blank' href='http://li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+str+"&address="+encodeURIComponent(item.address)+"'>"+item.casenumber+" <i class='fa fa-arrow-up-right-from-square'></i></a>";
             },
           },
           {
@@ -337,7 +337,7 @@ export default {
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='http://li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
+              return "<a target='_blank' href='http://li.phila.gov/#details?entity=violationdetails&eid="+item.casenumber+"&key="+item.addressobjectid+"&address="+encodeURIComponent(item.address)+"'>"+item.casenumber+" <i class='fa fa-arrow-up-right-from-square'></i></a>";
             },
           },
           {
@@ -407,7 +407,7 @@ export default {
           {
             label: 'License Number',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=licenses&eid="+item.licensenum+"&key="+item.street_address+"&address="+item.street_address+"'>"+item.licensenum+" <i class='fa fa-external-link-alt'></i></a>";
+              return "<a target='_blank' href='//li.phila.gov/#details?entity=licenses&eid="+item.licensenum+"&key="+item.street_address+"&address="+item.street_address+"'>"+item.licensenum+" <i class='fa fa-arrow-up-right-from-square'></i></a>";
               // return item.licensenum;
             },
           },
@@ -485,7 +485,7 @@ export default {
           {
             label: 'ID',
             value: function(state, item){
-              return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.attributes.PERMITNUMBER+"&key="+item.attributes.ADDRESSKEY+"&address="+item.attributes.ADDRESS+"'>"+item.attributes.PERMITNUMBER+" <i class='fa fa-external-link-alt'></i></a>";
+              return "<a target='_blank' href='//li.phila.gov/#details?entity=permits&eid="+item.attributes.PERMITNUMBER+"&key="+item.attributes.ADDRESSKEY+"&address="+item.attributes.ADDRESS+"'>"+item.attributes.PERMITNUMBER+" <i class='fa fa-arrow-up-right-from-square'></i></a>";
             },
           },
           {
