@@ -13,23 +13,22 @@ if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
   console.log = console.info = console.debug = console.error = function () {};
 }
 
-
 // Font Awesome Icons
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCircleDot } from '@fortawesome/free-regular-svg-icons/faCircleDot';
-import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse';
+import { faDotCircle } from '@fortawesome/free-regular-svg-icons/faDotCircle';
+import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
-import { faBuildingColumns } from '@fortawesome/free-solid-svg-icons/faBuildingColumns';
+import { faUniversity } from '@fortawesome/free-solid-svg-icons/faUniversity';
 import { faGavel } from '@fortawesome/free-solid-svg-icons/faGavel';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons/faLocationDot';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons/faMapMarkerAlt';
 import { faLandmark } from '@fortawesome/free-solid-svg-icons/faLandmark';
 import { faBuilding } from '@fortawesome/free-solid-svg-icons/faBuilding';
 import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
-import { faDroplet } from '@fortawesome/free-solid-svg-icons/faDroplet';
+import { faTint } from '@fortawesome/free-solid-svg-icons/faTint';
 import { faClone } from '@fortawesome/free-solid-svg-icons/faClone';
-import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons/faTriangleExclamation';
-library.add(faCircleDot, faHouse, faBook, faWrench, faBuildingColumns, faGavel, faLocationDot, faLandmark, faBuilding, faPhone, faDroplet, faClone, faTriangleExclamation);
+// import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons/faTriangleExclamation';
+library.add(faDotCircle, faHome, faBook, faWrench, faUniversity, faGavel, faMapMarkerAlt, faLandmark, faBuilding, faPhone, faTint, faClone);
 
 import accounting from 'accounting';
 import mapboard from '@phila/mapboard/src/main.js';
@@ -91,7 +90,7 @@ const customComps = {
   'exclamationCallout': exclamationCallout,
 };
 
-var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@36eae931932f27f59e861178d32846e71259690e/config.js';
+var BASE_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/cityofphiladelphia/mapboard-default-base-config@fcdd5727367c60e76fd94761be8da076261b5dca/config.js';
 
 // configure accounting.js
 accounting.settings.currency.precision = 0;
