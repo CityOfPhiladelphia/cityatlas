@@ -1,6 +1,6 @@
 export default {
   key: 'stormwater',
-  icon: 'droplet',
+  icon: 'tint',
   label: 'Stormwater',
   dataSources: [
     'stormwater',
