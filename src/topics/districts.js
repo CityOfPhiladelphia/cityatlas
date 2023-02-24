@@ -56,6 +56,18 @@ export default {
               
             },
           },
+          {
+            label: 'Sanitation District',
+            value: function(state) {
+              return state.geocode.data.properties.sanitation_district;
+            },
+          },
+          {
+            label: 'Sanitation Convenience Center',
+            value: function(state) {
+              return state.geocode.data.properties.sanitation_convenience_center;
+            },
+          },
         ],
       },
       options: {
