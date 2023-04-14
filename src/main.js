@@ -224,4 +224,7 @@ mapboard({
       },
     },
   ],
+  gtag: {
+    category: 'mb-cityatlas',
+  },
 });
