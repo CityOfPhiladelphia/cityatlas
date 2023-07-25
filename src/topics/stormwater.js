@@ -4,7 +4,7 @@ export default {
   label: 'Stormwater',
   dataSources: [
     'stormwater',
-    'stormwaterCap',
+    // 'stormwaterCap',
   ],
   basemap: 'pwd',
   dynamicMapLayers: [
