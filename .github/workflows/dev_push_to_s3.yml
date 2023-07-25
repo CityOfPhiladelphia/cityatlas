@@ -6,7 +6,7 @@ name: dev Push to S3
 on:
   push:
     branches:
-      - add-vue-gtag
+      - token-post
 
 jobs:
   build:
