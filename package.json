@@ -15,7 +15,7 @@
     "lintFix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@phila/mapboard": "4.4.17",
+    "@phila/mapboard": "https://github.com/CityOfPhiladelphia/mapboard#413a81e417e5d27257990c29866ab0cc765e4b3f",
     "accounting": "^0.4.1",
     "vue": "^2.7.10"
   },
