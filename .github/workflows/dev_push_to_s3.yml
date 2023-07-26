@@ -33,6 +33,8 @@ jobs:
         VUE_APP_CYCLOMEDIA_USERNAME: ${{ secrets.VUE_APP_CYCLOMEDIA_USERNAME }}
         VUE_APP_PICTOMETRY_API_KEY: ${{ secrets.VUE_APP_PICTOMETRY_API_KEY }}
         VUE_APP_PICTOMETRY_SECRET_KEY: ${{ secrets.VUE_APP_PICTOMETRY_SECRET_KEY }}
+        VUE_APP_AGO_USERNAME: ${{ secrets.VUE_APP_AGO_USERNAME }}
+        VUE_APP_AGO_PASSWORD: ${{ secrets.VUE_APP_AGO_PASSWORD }}
 
     - name: Deploy to Dev s3, Set index headers
       env:
