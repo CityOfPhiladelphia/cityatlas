@@ -107,6 +107,7 @@ if (host === 'cityatlas-dev.phila.gov') {
 
 mapboard({
   // defaultAddress: '1234 MARKET ST',
+  agoTokenNeeded: true,
   resetDataOnGeocode: true,
   customComps,
   panels: [
