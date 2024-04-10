@@ -8,5 +8,5 @@ export default {
   imagery: {
     enabled: true,
   },
-  initialImagery: 'imagery2022',
+  initialImagery: 'imagery2023',
 };
